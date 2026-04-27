@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터의 흩어짐 측정 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"SPREAD";position:absolute;right:-42px;bottom:-70px;font-size:145px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계</div><h1>데이터 탐색 ②<br>데이터의 흩어짐 측정</h1><p>범위, 편차, 분산, 표준편차, 사분위범위를 통해 데이터가 평균 주변에 얼마나 흩어져 있는지 탐구하는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (1) 데이터 탐색 → 2) 데이터의 흩어짐 측정</td></tr>
+<tr><th>핵심 개념</th><td>산포도, 범위, 편차, 편차제곱, 분산, 표준편차, 사분위수, 사분위범위, 이상치, 데이터 안정성, 변동성</td></tr>
+<tr><th>수업 목표</th><td>① 데이터의 흩어짐을 측정해야 하는 이유를 설명할 수 있다.<br>② 범위, 편차, 분산, 표준편차의 의미를 이해하고 계산할 수 있다.<br>③ 사분위범위와 이상치 판별의 기본 원리를 설명할 수 있다.<br>④ 파이썬으로 데이터의 흩어짐 정도를 계산하고 비교할 수 있다.<br>⑤ 평균이 같아도 흩어짐이 다르면 해석이 달라짐을 설명할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“평균이 같으면 두 데이터 집단은 정말 같은 특징을 가질까?”<br>“데이터가 얼마나 안정적인지 어떻게 판단할 수 있을까?”<br>“표준편차가 크다는 말은 실제 생활에서 어떤 의미일까?”</td></tr>
+<tr><th>성취 기준</th><td>데이터의 산포 정도를 나타내는 여러 지표를 이해하고, 범위·분산·표준편차·사분위범위를 계산하여 자료의 안정성과 변동성을 해석한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 같은 평균을 가진 두 학급 점수 비교 → 전개: 범위·편차·분산·표준편차·IQR 개념 학습 → 실습: 파이썬으로 산포도 계산 → 적용: 실생활 데이터 변동성 비교 → 정리: 컴퓨터과학·수학·과학과 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 표준편차 계산 활동, 코드 실행 결과 예측, 실생활 데이터 변동성 해석 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>범위, 편차, 분산, 표준편차, 사분위범위, 이상치의 의미를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 데이터의 산포도를 계산하고, 두 데이터 집단의 안정성과 변동성을 비교한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>평균 하나만으로 판단하지 않고 데이터가 얼마나 흩어져 있는지 함께 확인하는 태도를 기른다.</p></div>
+</div>
+<div class="flow"><span>데이터 확인</span><span class="arrow">→</span><span>평균 계산</span><span class="arrow">→</span><span>편차 확인</span><span class="arrow">→</span><span>분산·표준편차</span><span class="arrow">→</span><span>흩어짐 해석</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">두 학급의 평균 점수가 모두 80점이라고 해 봅시다. A학급은 대부분 78~82점이고, B학급은 50점과 100점이 섞여 있습니다. 평균만 보면 두 학급은 같아 보이지만 실제 모습은 매우 다릅니다. 그래서 데이터 분석에서는 “중심”뿐 아니라 “얼마나 흩어져 있는가”도 반드시 살펴야 합니다. 오늘은 데이터의 안정성, 변동성, 예측 가능성을 판단하는 흩어짐의 측정 방법을 배웁니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 산포도</h3><p>산포도는 데이터가 중심값 주변에 얼마나 퍼져 있는지를 나타내는 정도입니다. 평균이 같아도 산포도가 크면 값들이 넓게 흩어져 있고, 산포도가 작으면 값들이 평균 주변에 모여 있습니다.</p></div>
+<div class="card"><h3>개념 2. 범위</h3><p>범위는 최댓값에서 최솟값을 뺀 값입니다. 계산이 매우 쉽지만, 최댓값과 최솟값 두 개만 사용하므로 이상치의 영향을 크게 받습니다.</p><p>\[ \text{범위} = \text{최댓값} - \text{최솟값} \]</p></div>
+<div class="card"><h3>개념 3. 편차</h3><p>편차는 각 데이터 값이 평균에서 얼마나 떨어져 있는지를 나타냅니다. 어떤 값이 평균보다 크면 양의 편차, 평균보다 작으면 음의 편차를 가집니다.</p><p>\[ \text{편차} = x_i - \bar{x} \]</p></div>
+<div class="card"><h3>개념 4. 분산</h3><p>분산은 편차를 제곱한 값들의 평균입니다. 편차를 그냥 더하면 양수와 음수가 상쇄되므로 제곱하여 흩어짐의 크기를 측정합니다.</p><p>\[ \text{분산} = \frac{\sum (x_i-\bar{x})^2}{n} \]</p></div>
+<div class="card"><h3>개념 5. 표준편차</h3><p>표준편차는 분산의 제곱근입니다. 분산은 단위가 제곱되기 때문에 원래 데이터 단위로 해석하기 어렵습니다. 표준편차는 원래 단위와 같아 해석하기 더 쉽습니다.</p><p>\[ \text{표준편차} = \sqrt{\frac{\sum (x_i-\bar{x})^2}{n}} \]</p></div>
+<div class="card"><h3>개념 6. 사분위범위</h3><p>사분위범위는 제3사분위수(Q3)에서 제1사분위수(Q1)를 뺀 값입니다. 데이터의 가운데 50%가 얼마나 퍼져 있는지 보여 주며, 이상치의 영향을 평균보다 덜 받습니다.</p><p>\[ \text{IQR} = Q_3 - Q_1 \]</p></div>
+<div class="card warning"><h3>개념 7. 이상치</h3><p>이상치는 다른 값들과 크게 떨어져 있는 값입니다. 이상치는 입력 오류일 수도 있고, 특별한 사건일 수도 있습니다. 흩어짐을 해석할 때 이상치를 확인해야 합니다.</p></div>
+<div class="card"><h3>개념 8. 안정성과 변동성</h3><p>표준편차가 작으면 데이터가 비교적 안정적이고 예측 가능성이 높다고 볼 수 있습니다. 표준편차가 크면 값의 변화가 크고 불확실성이 큽니다.</p></div>
+<div class="card deep"><h3>개념 9. 평균과 표준편차의 함께 해석</h3><p>평균은 중심을 알려 주고, 표준편차는 흩어짐을 알려 줍니다. 데이터 분석에서는 평균과 표준편차를 함께 보아야 자료의 전체적인 특징을 더 정확하게 이해할 수 있습니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 범위 구하기</h3><pre class="codebox"><code>data = [70, 75, 80, 85, 90]
+
+data_range = max(data) - min(data)
+
+print("최댓값:", max(data))
+print("최솟값:", min(data))
+print("범위:", data_range)</code></pre><p><strong>설명:</strong> 범위는 가장 큰 값과 가장 작은 값의 차이입니다.</p>
+
+<h3>코드 2. 편차 구하기</h3><pre class="codebox"><code>data = [70, 75, 80, 85, 90]
+
+mean = sum(data) / len(data)
+deviations = [x - mean for x in data]
+
+print("평균:", mean)
+print("편차:", deviations)</code></pre><p><strong>설명:</strong> 각 값이 평균에서 얼마나 떨어져 있는지 계산합니다.</p>
+
+<h3>코드 3. 분산 구하기</h3><pre class="codebox"><code>data = [70, 75, 80, 85, 90]
+
+mean = sum(data) / len(data)
+variance = sum((x - mean) ** 2 for x in data) / len(data)
+
+print("분산:", variance)</code></pre><p><strong>설명:</strong> 편차를 제곱하여 평균을 내면 분산이 됩니다.</p>
+
+<h3>코드 4. 표준편차 구하기</h3><pre class="codebox"><code>data = [70, 75, 80, 85, 90]
+
+mean = sum(data) / len(data)
+variance = sum((x - mean) ** 2 for x in data) / len(data)
+std = variance ** 0.5
+
+print("표준편차:", std)</code></pre><p><strong>설명:</strong> 표준편차는 분산의 제곱근이며, 원래 데이터 단위로 해석하기 쉽습니다.</p>
+
+<h3>코드 5. 두 집단의 흩어짐 비교</h3><pre class="codebox"><code>class_a = [78, 79, 80, 81, 82]
+class_b = [50, 65, 80, 95, 110]
+
+def std(data):
+    mean = sum(data) / len(data)
+    variance = sum((x - mean) ** 2 for x in data) / len(data)
+    return variance ** 0.5
+
+print("A학급 평균:", sum(class_a) / len(class_a))
+print("A학급 표준편차:", std(class_a))
+print("B학급 평균:", sum(class_b) / len(class_b))
+print("B학급 표준편차:", std(class_b))</code></pre><p><strong>설명:</strong> 두 학급의 평균이 같아도 표준편차가 다르면 데이터의 흩어짐이 다릅니다.</p>
+
+<h3>코드 6. 사분위범위 구하기</h3><pre class="codebox"><code>data = [50, 60, 70, 80, 90, 100, 110]
+
+data.sort()
+q1 = data[len(data)//4]
+q3 = data[(len(data)*3)//4]
+iqr = q3 - q1
+
+print("Q1:", q1)
+print("Q3:", q3)
+print("IQR:", iqr)</code></pre><p><strong>설명:</strong> IQR은 데이터의 가운데 50%가 얼마나 퍼져 있는지 보여 줍니다.</p>
+
+<h3>코드 7. statistics 라이브러리 활용</h3><pre class="codebox"><code>import statistics as st
+
+data = [70, 75, 80, 85, 90]
+
+print("평균:", st.mean(data))
+print("분산:", st.pvariance(data))
+print("표준편차:", st.pstdev(data))</code></pre><p><strong>설명:</strong> 파이썬의 statistics 라이브러리를 사용하면 통계량을 간단히 구할 수 있습니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 산포도는 데이터가 얼마나 흩어져 있는지를 나타낸다. (O/X)</p><div class="answer">정답: O</div><div class="explain">산포도는 중심값 주변에 데이터가 퍼진 정도를 의미합니다.</div></div>
+<div class="q"><p class="q-title">2. 범위는 최댓값에서 최솟값을 뺀 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">범위는 가장 간단한 흩어짐 측정값입니다.</div></div>
+<div class="q"><p class="q-title">3. 범위는 이상치의 영향을 전혀 받지 않는다. (O/X)</p><div class="answer">정답: X</div><div class="explain">범위는 최댓값과 최솟값만 사용하므로 이상치에 크게 영향을 받습니다.</div></div>
+<div class="q"><p class="q-title">4. 편차는 각 값에서 평균을 뺀 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">편차는 각 데이터가 평균에서 얼마나 떨어져 있는지 나타냅니다.</div></div>
+<div class="q"><p class="q-title">5. 분산은 편차를 제곱한 값들의 평균이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">편차의 양수와 음수 상쇄를 막기 위해 제곱을 사용합니다.</div></div>
+<div class="q"><p class="q-title">6. 표준편차는 분산의 제곱근이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">표준편차는 분산을 원래 단위에 가깝게 해석할 수 있도록 만든 값입니다.</div></div>
+<div class="q"><p class="q-title">7. 표준편차가 크면 데이터가 평균 주변에 매우 촘촘히 모여 있다는 뜻이다. (O/X)</p><div class="answer">정답: X</div><div class="explain">표준편차가 크면 데이터가 평균에서 멀리 흩어져 있다는 뜻입니다.</div></div>
+<div class="q"><p class="q-title">8. 평균이 같은 두 데이터 집단도 표준편차는 다를 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">평균은 중심만 보여 주며 흩어짐까지 보여 주지는 않습니다.</div></div>
+<div class="q"><p class="q-title">9. 사분위범위는 Q3에서 Q1을 뺀 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">IQR은 데이터의 가운데 50% 범위를 나타냅니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 탐색에서는 평균뿐 아니라 흩어짐도 함께 확인하는 것이 좋다. (O/X)</p><div class="answer">정답: O</div><div class="explain">평균과 산포도를 함께 봐야 데이터의 특징을 더 정확히 이해할 수 있습니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 데이터의 흩어짐 정도를 나타내는 말은?</p><ul class="choice"><li>① 산포도</li><li>② 제목</li><li>③ 파일명</li><li>④ 색상</li><li>⑤ 주석</li></ul><div class="answer">정답: ①</div><div class="explain">산포도는 데이터가 얼마나 퍼져 있는지를 나타냅니다.</div></div>
+<div class="q"><p class="q-title">2. 데이터 [3, 5, 7, 10]의 범위는?</p><ul class="choice"><li>① 3</li><li>② 5</li><li>③ 7</li><li>④ 10</li><li>⑤ 13</li></ul><div class="answer">정답: ③</div><div class="explain">최댓값 10에서 최솟값 3을 빼면 7입니다.</div></div>
+<div class="q"><p class="q-title">3. 편차의 의미로 옳은 것은?</p><ul class="choice"><li>① 각 값이 평균에서 떨어진 정도</li><li>② 모든 값의 합</li><li>③ 가장 많이 나온 값</li><li>④ 자료의 개수</li><li>⑤ 그래프 제목</li></ul><div class="answer">정답: ①</div><div class="explain">편차는 데이터 값에서 평균을 뺀 값입니다.</div></div>
+<div class="q"><p class="q-title">4. 분산을 계산할 때 편차를 제곱하는 이유로 가장 적절한 것은?</p><ul class="choice"><li>① 양수와 음수가 상쇄되는 것을 막기 위해</li><li>② 데이터를 삭제하기 위해</li><li>③ 평균을 없애기 위해</li><li>④ 범주형 데이터로 바꾸기 위해</li><li>⑤ 그래프를 그리지 않기 위해</li></ul><div class="answer">정답: ①</div><div class="explain">편차를 그냥 더하면 양수와 음수가 상쇄되므로 제곱합니다.</div></div>
+<div class="q"><p class="q-title">5. 표준편차는 무엇의 제곱근인가?</p><ul class="choice"><li>① 분산</li><li>② 평균</li><li>③ 최빈값</li><li>④ 자료 개수</li><li>⑤ 최댓값</li></ul><div class="answer">정답: ①</div><div class="explain">표준편차는 분산의 제곱근입니다.</div></div>
+<div class="q"><p class="q-title">6. 표준편차가 작다는 의미로 가장 적절한 것은?</p><ul class="choice"><li>① 데이터가 평균 주변에 비교적 모여 있다.</li><li>② 데이터가 매우 넓게 퍼져 있다.</li><li>③ 모든 데이터가 음수이다.</li><li>④ 평균이 존재하지 않는다.</li><li>⑤ 데이터가 삭제되었다.</li></ul><div class="answer">정답: ①</div><div class="explain">표준편차가 작으면 값들이 평균 가까이에 모여 있는 경향이 있습니다.</div></div>
+<div class="q"><p class="q-title">7. 사분위범위 IQR을 구하는 식은?</p><ul class="choice"><li>① Q3 - Q1</li><li>② 평균 + 최댓값</li><li>③ 최솟값 - 최댓값</li><li>④ 자료 개수 × 2</li><li>⑤ 표준편차 + 평균</li></ul><div class="answer">정답: ①</div><div class="explain">IQR은 제3사분위수에서 제1사분위수를 뺀 값입니다.</div></div>
+<div class="q"><p class="q-title">8. 이상치에 대한 설명으로 옳은 것은?</p><ul class="choice"><li>① 다른 값들과 매우 동떨어진 값</li><li>② 항상 평균과 같은 값</li><li>③ 무조건 가장 좋은 데이터</li><li>④ 자료의 개수</li><li>⑤ 그래프의 제목</li></ul><div class="answer">정답: ①</div><div class="explain">이상치는 다른 데이터와 크게 차이 나는 값입니다.</div></div>
+<div class="q"><p class="q-title">9. 평균이 같은 두 집단을 비교할 때 추가로 보면 좋은 값은?</p><ul class="choice"><li>① 표준편차</li><li>② 파일 이름</li><li>③ 글꼴 크기</li><li>④ 코드 색상</li><li>⑤ 인터넷 주소</li></ul><div class="answer">정답: ①</div><div class="explain">표준편차를 보면 두 집단의 흩어짐 차이를 알 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 해석 태도로 가장 바람직한 것은?</p><ul class="choice"><li>① 평균만 보고 판단한다.</li><li>② 평균과 흩어짐을 함께 확인한다.</li><li>③ 이상치를 무조건 숨긴다.</li><li>④ 표준편차는 절대 보지 않는다.</li><li>⑤ 데이터 개수를 확인하지 않는다.</li></ul><div class="answer">정답: ②</div><div class="explain">중심과 흩어짐을 함께 봐야 더 정확한 해석이 가능합니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 두 학급 점수 안정성 비교</h3><pre class="codebox"><code>class_a = [78, 79, 80, 81, 82]
+class_b = [60, 70, 80, 90, 100]
+
+def std(data):
+    mean = sum(data) / len(data)
+    return (sum((x - mean) ** 2 for x in data) / len(data)) ** 0.5
+
+print("A학급 표준편차:", std(class_a))
+print("B학급 표준편차:", std(class_b))</code></pre><p><span class="tag">교육 데이터</span>평균이 비슷해도 표준편차가 큰 학급은 학생 간 점수 차이가 크다고 해석할 수 있습니다.</p>
+
+<h3>예제 2. 일주일 기온 변동성 측정</h3><pre class="codebox"><code>temperatures = [21, 22, 25, 29, 30, 28, 24]
+
+temp_range = max(temperatures) - min(temperatures)
+
+print("기온 범위:", temp_range)</code></pre><p><span class="tag">날씨 데이터</span>기온 범위가 크면 일주일 동안 기온 변화가 컸다는 뜻입니다.</p>
+
+<h3>예제 3. 스마트폰 사용 시간 표준편차</h3><pre class="codebox"><code>hours = [2.5, 2.8, 3.0, 3.2, 7.0]
+
+mean = sum(hours) / len(hours)
+std = (sum((x - mean) ** 2 for x in hours) / len(hours)) ** 0.5
+
+print("평균 사용 시간:", mean)
+print("표준편차:", std)</code></pre><p><span class="tag">생활 습관 데이터</span>특정 날 사용 시간이 크게 늘어나면 표준편차가 커지고 생활 패턴이 불규칙하다고 해석할 수 있습니다.</p>
+
+<h3>예제 4. 상품 가격의 IQR</h3><pre class="codebox"><code>prices = [3000, 3200, 3300, 3500, 3700, 4000, 12000]
+
+prices.sort()
+q1 = prices[len(prices)//4]
+q3 = prices[(len(prices)*3)//4]
+iqr = q3 - q1
+
+print("Q1:", q1)
+print("Q3:", q3)
+print("IQR:", iqr)</code></pre><p><span class="tag">소비 데이터</span>IQR은 가운데 가격대가 얼마나 퍼져 있는지 보여 주므로 극단적으로 비싼 상품의 영향을 줄여 해석할 수 있습니다.</p>
+
+<h3>예제 5. 운동 기록의 변동성 비교</h3><pre class="codebox"><code>week1 = [5200, 5400, 5300, 5500, 5600]
+week2 = [3000, 8000, 4200, 9000, 2500]
+
+def data_summary(data):
+    mean = sum(data) / len(data)
+    std = (sum((x - mean) ** 2 for x in data) / len(data)) ** 0.5
+    return mean, std
+
+print("1주차 평균과 표준편차:", data_summary(week1))
+print("2주차 평균과 표준편차:", data_summary(week2))</code></pre><p><span class="tag">건강 데이터</span>걸음 수 평균뿐 아니라 표준편차를 보면 운동 습관이 꾸준한지 불규칙한지 파악할 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 데이터의 중심을 나타내는 평균만으로는 충분하지 않다는 것을 배웠습니다. 범위는 가장 간단하게 흩어짐을 보여 주고, 편차는 각 값이 평균에서 얼마나 떨어졌는지 알려 주며, 분산과 표준편차는 전체 데이터의 변동성을 수치로 표현합니다. 컴퓨터과학은 파이썬을 통해 이러한 계산을 빠르고 정확하게 수행하게 해 주고, 수학은 흩어짐을 공식과 논리로 설명합니다. 과학에서는 실험 결과가 안정적인지 판단할 때 변동성 측정이 중요합니다. 데이터 과학과 머신러닝에서도 흩어짐을 이해해야 데이터의 신뢰성과 예측 가능성을 올바르게 판단할 수 있습니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬 반복문, 함수, 통계 라이브러리를 활용해 분산과 표준편차를 자동 계산합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>편차, 제곱, 평균, 제곱근을 이용하여 데이터의 흩어짐을 정량적으로 표현합니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>실험 측정값의 변동성을 확인하여 실험 결과의 안정성과 신뢰성을 판단합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>데이터의 흩어짐과 이상치를 이해하면 모델 학습 전 데이터 정제와 특성 분석에 도움이 됩니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계 · 데이터의 흩어짐 측정 수업자료</div>
+</div></body></html>

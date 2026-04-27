@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터를 대표하는 값 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"CENTER";position:absolute;right:-36px;bottom:-70px;font-size:145px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계</div><h1>데이터 탐색 ①<br>데이터를 대표하는 값</h1><p>평균, 중앙값, 최빈값, 사분위수처럼 많은 데이터를 하나의 값으로 요약하는 방법을 배우고, 대표값의 장점과 한계를 파이썬으로 탐구하는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 1. 데이터 과학을 위한 통계 → (1) 데이터 탐색 → 1) 데이터를 대표하는 값</td></tr>
+<tr><th>핵심 개념</th><td>데이터 탐색, 대표값, 평균, 중앙값, 최빈값, 가중평균, 사분위수, 이상치, 분포, 대표값의 한계, 데이터 기반 의사결정</td></tr>
+<tr><th>수업 목표</th><td>① 대표값의 의미와 필요성을 설명할 수 있다.<br>② 평균, 중앙값, 최빈값을 구하고 차이를 비교할 수 있다.<br>③ 이상치가 평균과 중앙값에 미치는 영향을 설명할 수 있다.<br>④ 파이썬으로 대표값을 계산하고 데이터의 특징을 해석할 수 있다.<br>⑤ 상황에 맞는 대표값을 선택하여 의사결정에 활용할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“많은 데이터를 하나의 값으로 요약해도 괜찮을까?”<br>“평균은 언제 좋은 대표값이고, 언제 오해를 만들 수 있을까?”<br>“데이터에 이상치가 있을 때 어떤 대표값을 선택해야 할까?”</td></tr>
+<tr><th>성취 기준</th><td>데이터의 중심 경향을 나타내는 대표값의 의미를 이해하고, 평균·중앙값·최빈값을 계산하여 자료의 특징을 설명하며, 데이터의 맥락에 적절한 대표값을 선택한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 평균 키·평균 점수·평균 사용 시간 사례 제시 → 전개: 평균·중앙값·최빈값 개념 학습 → 실습: 파이썬으로 대표값 계산 → 적용: 이상치가 있는 실생활 데이터 분석 → 정리: 컴퓨터과학·수학·과학과 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 대표값 계산 활동, 코드 실행 결과 예측, 실생활 데이터 해석 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>평균, 중앙값, 최빈값, 사분위수, 이상치, 대표값의 한계를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 대표값을 계산하고, 이상치가 있는 데이터에서 적절한 대표값을 선택한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>대표값 하나만 보고 성급하게 결론을 내리지 않고, 데이터의 분포와 맥락을 함께 살핀다.</p></div>
+</div>
+<div class="flow"><span>데이터 수집</span><span class="arrow">→</span><span>정렬·확인</span><span class="arrow">→</span><span>대표값 계산</span><span class="arrow">→</span><span>이상치 점검</span><span class="arrow">→</span><span>해석</span><span class="arrow">→</span><span>의사결정</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">여러분은 “우리 반 평균 점수”, “한국인의 평균 수면 시간”, “한 달 평균 스마트폰 사용 시간”이라는 표현을 자주 듣습니다. 평균은 많은 데이터를 한눈에 이해하게 도와주지만, 항상 모든 사람의 실제 모습을 정확히 보여 주지는 않습니다. 예를 들어 대부분 학생이 70~80점인데 한 명이 0점 또는 100점을 받으면 평균은 크게 달라질 수 있습니다. 오늘은 데이터를 대표하는 값이 무엇인지, 언제 평균을 쓰고 언제 중앙값이나 최빈값을 써야 하는지 배워 보겠습니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 대표값</h3><p>대표값은 많은 데이터를 하나의 값으로 요약하여 데이터의 중심적인 특징을 보여 주는 값입니다. 대표값은 자료 전체를 빠르게 이해하게 해 주지만, 데이터의 모든 정보를 담지는 못합니다.</p></div>
+<div class="card"><h3>개념 2. 평균</h3><p>평균은 모든 값을 더한 뒤 자료의 개수로 나눈 값입니다. 모든 데이터를 계산에 반영하므로 널리 사용되지만, 매우 큰 값이나 작은 값인 이상치에 민감합니다.</p><p>\[ \text{평균} = \frac{\text{자료의 총합}}{\text{자료의 개수}} \]</p></div>
+<div class="card"><h3>개념 3. 중앙값</h3><p>중앙값은 데이터를 크기순으로 정렬했을 때 가운데에 위치한 값입니다. 이상치가 있어도 평균보다 덜 흔들리므로 소득, 집값, 대기 시간처럼 극단값이 있는 자료에서 유용합니다.</p></div>
+<div class="card"><h3>개념 4. 최빈값</h3><p>최빈값은 데이터에서 가장 자주 나타나는 값입니다. 숫자뿐 아니라 좋아하는 과목, 교통수단, 혈액형처럼 범주형 데이터에서도 사용할 수 있습니다.</p></div>
+<div class="card"><h3>개념 5. 가중평균</h3><p>가중평균은 값마다 중요도나 비중이 다를 때 사용하는 평균입니다. 예를 들어 수행평가 40%, 지필평가 60%처럼 평가 비율이 다르면 단순 평균보다 가중평균이 더 적절합니다.</p><p>\[ \text{가중평균} = \frac{\sum x_i w_i}{\sum w_i} \]</p></div>
+<div class="card"><h3>개념 6. 사분위수</h3><p>사분위수는 데이터를 네 부분으로 나누는 기준값입니다. 제1사분위수(Q1), 중앙값(Q2), 제3사분위수(Q3)를 통해 데이터가 어떻게 퍼져 있는지 알 수 있습니다.</p></div>
+<div class="card warning"><h3>개념 7. 이상치</h3><p>이상치는 다른 값들과 크게 떨어져 있는 값입니다. 이상치는 입력 오류일 수도 있고 특별한 사건의 결과일 수도 있습니다. 이상치가 있으면 평균이 실제 중심보다 크게 또는 작게 왜곡될 수 있습니다.</p></div>
+<div class="card"><h3>개념 8. 대표값의 선택</h3><p>자료가 고르게 분포하면 평균이 적절할 수 있습니다. 극단값이 있으면 중앙값이 더 적절할 수 있습니다. 가장 흔한 선택이나 유형을 알고 싶을 때는 최빈값이 적절합니다.</p></div>
+<div class="card deep"><h3>개념 9. 데이터 탐색에서 대표값의 역할</h3><p>대표값은 데이터 탐색의 출발점입니다. 그러나 대표값만으로는 분포, 산포도, 이상치, 편향을 모두 알 수 없으므로 그래프와 함께 해석하는 것이 좋습니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 평균 구하기</h3><pre class="codebox"><code>scores = [80, 90, 75, 85, 100]
+
+average = sum(scores) / len(scores)
+
+print("평균:", average)</code></pre><p><strong>설명:</strong> 모든 점수를 더한 뒤 개수로 나누어 평균을 구합니다.</p>
+
+<h3>코드 2. 중앙값 구하기</h3><pre class="codebox"><code>data = [100, 70, 80, 90, 60]
+
+data.sort()
+middle = len(data) // 2
+median = data[middle]
+
+print("정렬된 데이터:", data)
+print("중앙값:", median)</code></pre><p><strong>설명:</strong> 데이터를 정렬한 뒤 가운데 위치의 값을 선택합니다.</p>
+
+<h3>코드 3. 자료 개수가 짝수일 때 중앙값</h3><pre class="codebox"><code>data = [60, 70, 80, 90]
+
+data.sort()
+n = len(data)
+median = (data[n//2 - 1] + data[n//2]) / 2
+
+print("중앙값:", median)</code></pre><p><strong>설명:</strong> 자료 개수가 짝수이면 가운데 두 값의 평균을 중앙값으로 사용합니다.</p>
+
+<h3>코드 4. 최빈값 구하기</h3><pre class="codebox"><code>from collections import Counter
+
+transport = ["버스", "도보", "버스", "지하철", "버스", "자전거"]
+
+counts = Counter(transport)
+mode = counts.most_common(1)[0]
+
+print("최빈값:", mode[0])
+print("빈도:", mode[1])</code></pre><p><strong>설명:</strong> 최빈값은 가장 자주 등장하는 값입니다. 범주형 데이터에도 사용할 수 있습니다.</p>
+
+<h3>코드 5. 이상치가 평균에 미치는 영향</h3><pre class="codebox"><code>normal_scores = [70, 72, 75, 78, 80]
+with_outlier = [70, 72, 75, 78, 200]
+
+print("이상치 없는 평균:", sum(normal_scores) / len(normal_scores))
+print("이상치 있는 평균:", sum(with_outlier) / len(with_outlier))</code></pre><p><strong>설명:</strong> 200이라는 극단값이 포함되면 평균이 크게 올라갑니다.</p>
+
+<h3>코드 6. 가중평균 구하기</h3><pre class="codebox"><code>performance = 85
+written = 92
+
+weighted_average = performance * 0.4 + written * 0.6
+
+print("가중평균:", weighted_average)</code></pre><p><strong>설명:</strong> 수행평가 40%, 지필평가 60%처럼 비중이 다를 때 가중평균을 사용합니다.</p>
+
+<h3>코드 7. 평균·중앙값·최빈값 한 번에 비교하기</h3><pre class="codebox"><code>from statistics import mean, median, mode
+
+data = [70, 75, 75, 80, 85, 100]
+
+print("평균:", mean(data))
+print("중앙값:", median(data))
+print("최빈값:", mode(data))</code></pre><p><strong>설명:</strong> 같은 데이터라도 대표값의 종류에 따라 다른 특징을 보여 줍니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 대표값은 많은 데이터를 하나의 값으로 요약하는 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">대표값은 데이터의 중심적 특징을 간단히 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">2. 평균은 모든 값을 더한 뒤 자료의 개수로 나눈 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">평균의 기본 정의입니다.</div></div>
+<div class="q"><p class="q-title">3. 평균은 이상치의 영향을 전혀 받지 않는다. (O/X)</p><div class="answer">정답: X</div><div class="explain">평균은 모든 값을 반영하므로 극단적인 값에 크게 영향을 받을 수 있습니다.</div></div>
+<div class="q"><p class="q-title">4. 중앙값은 데이터를 정렬했을 때 가운데 있는 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">자료를 크기순으로 정렬한 뒤 중앙에 있는 값이 중앙값입니다.</div></div>
+<div class="q"><p class="q-title">5. 자료 개수가 짝수일 때 중앙값은 가운데 두 값의 평균으로 구할 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">가운데가 하나로 정해지지 않으므로 가운데 두 값의 평균을 사용합니다.</div></div>
+<div class="q"><p class="q-title">6. 최빈값은 가장 자주 나타나는 값이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">빈도가 가장 높은 값이 최빈값입니다.</div></div>
+<div class="q"><p class="q-title">7. 최빈값은 범주형 데이터에는 사용할 수 없다. (O/X)</p><div class="answer">정답: X</div><div class="explain">최빈값은 교통수단, 혈액형, 선호 과목 같은 범주형 데이터에 매우 유용합니다.</div></div>
+<div class="q"><p class="q-title">8. 가중평균은 모든 값의 중요도가 같을 때만 사용한다. (O/X)</p><div class="answer">정답: X</div><div class="explain">가중평균은 값마다 중요도나 비중이 다를 때 사용합니다.</div></div>
+<div class="q"><p class="q-title">9. 대표값만 보면 데이터의 모든 특징을 완벽하게 알 수 있다. (O/X)</p><div class="answer">정답: X</div><div class="explain">대표값은 중심을 보여 주지만 분포, 산포도, 이상치까지 모두 보여 주지는 못합니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 탐색에서는 대표값과 함께 그래프도 함께 보는 것이 좋다. (O/X)</p><div class="answer">정답: O</div><div class="explain">그래프는 분포와 이상치를 시각적으로 확인하는 데 도움을 줍니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 평균을 구하는 방법으로 옳은 것은?</p><ul class="choice"><li>① 최댓값에서 최솟값을 뺀다.</li><li>② 모든 값을 더한 뒤 자료의 개수로 나눈다.</li><li>③ 가장 자주 나온 값을 고른다.</li><li>④ 가장 작은 값만 고른다.</li><li>⑤ 가운데 값을 무조건 고른다.</li></ul><div class="answer">정답: ②</div><div class="explain">평균은 총합을 개수로 나누어 구합니다.</div></div>
+<div class="q"><p class="q-title">2. 데이터 [10, 20, 30, 40, 100]의 중앙값은?</p><ul class="choice"><li>① 10</li><li>② 20</li><li>③ 30</li><li>④ 40</li><li>⑤ 100</li></ul><div class="answer">정답: ③</div><div class="explain">정렬된 데이터에서 가운데 값은 30입니다.</div></div>
+<div class="q"><p class="q-title">3. 데이터 [1, 2, 2, 3, 4]의 최빈값은?</p><ul class="choice"><li>① 1</li><li>② 2</li><li>③ 3</li><li>④ 4</li><li>⑤ 5</li></ul><div class="answer">정답: ②</div><div class="explain">2가 두 번 등장하여 가장 자주 나타납니다.</div></div>
+<div class="q"><p class="q-title">4. 이상치의 영향을 가장 크게 받는 대표값은?</p><ul class="choice"><li>① 평균</li><li>② 중앙값</li><li>③ 최빈값</li><li>④ 범주명</li><li>⑤ 자료 개수</li></ul><div class="answer">정답: ①</div><div class="explain">평균은 모든 값을 반영하므로 이상치에 민감합니다.</div></div>
+<div class="q"><p class="q-title">5. 소득 자료처럼 극단적으로 큰 값이 포함될 수 있는 자료에 비교적 적절한 대표값은?</p><ul class="choice"><li>① 중앙값</li><li>② 항상 평균만</li><li>③ 파일명</li><li>④ 그래프 제목</li><li>⑤ 인덱스</li></ul><div class="answer">정답: ①</div><div class="explain">중앙값은 이상치에 덜 영향을 받기 때문에 소득 자료에서 자주 사용됩니다.</div></div>
+<div class="q"><p class="q-title">6. 좋아하는 교통수단 조사에서 가장 적절한 대표값은?</p><ul class="choice"><li>① 평균</li><li>② 최빈값</li><li>③ 소수점</li><li>④ 최솟값</li><li>⑤ 제곱근</li></ul><div class="answer">정답: ②</div><div class="explain">교통수단은 범주형 데이터이므로 가장 많이 선택된 최빈값이 적절합니다.</div></div>
+<div class="q"><p class="q-title">7. 수행평가 40%, 지필평가 60%를 반영할 때 가장 적절한 계산은?</p><ul class="choice"><li>① 단순 덧셈</li><li>② 가중평균</li><li>③ 최빈값</li><li>④ 문자열 연결</li><li>⑤ 무작위 선택</li></ul><div class="answer">정답: ②</div><div class="explain">비중이 다르므로 가중평균을 사용해야 합니다.</div></div>
+<div class="q"><p class="q-title">8. 파이썬에서 리스트 data의 평균을 구하는 식은?</p><ul class="choice"><li>① sum(data) / len(data)</li><li>② max(data) - min(data)</li><li>③ type(data)</li><li>④ print = data</li><li>⑤ data + str</li></ul><div class="answer">정답: ①</div><div class="explain">합계를 개수로 나누면 평균입니다.</div></div>
+<div class="q"><p class="q-title">9. 대표값을 해석할 때 주의할 점은?</p><ul class="choice"><li>① 대표값 하나만 보고 무조건 결론을 낸다.</li><li>② 이상치와 분포를 함께 확인한다.</li><li>③ 데이터 개수를 숨긴다.</li><li>④ 그래프를 절대 보지 않는다.</li><li>⑤ 값을 모두 삭제한다.</li></ul><div class="answer">정답: ②</div><div class="explain">대표값은 분포와 이상치까지 함께 봐야 올바르게 해석할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 대표값의 가장 중요한 역할은?</p><ul class="choice"><li>① 데이터를 완전히 없앤다.</li><li>② 데이터의 중심적 특징을 요약한다.</li><li>③ 오류를 일부러 만든다.</li><li>④ 모든 값을 비밀로 한다.</li><li>⑤ 그래프를 금지한다.</li></ul><div class="answer">정답: ②</div><div class="explain">대표값은 많은 데이터를 간단히 요약해 중심 경향을 보여 줍니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 학급 평균 점수 구하기</h3><pre class="codebox"><code>scores = [82, 91, 75, 88, 96]
+
+average = sum(scores) / len(scores)
+
+print("학급 평균 점수:", round(average, 2))</code></pre><p><span class="tag">교육 데이터</span>여러 학생의 점수를 평균으로 요약하면 학급의 전체적인 성취 수준을 빠르게 파악할 수 있습니다.</p>
+
+<h3>예제 2. 스마트폰 사용 시간의 중앙값</h3><pre class="codebox"><code>hours = [2.1, 2.5, 3.0, 3.2, 9.5]
+
+hours.sort()
+median = hours[len(hours)//2]
+
+print("중앙값:", median)</code></pre><p><span class="tag">생활 습관 데이터</span>9.5시간처럼 극단적으로 긴 사용 시간이 있을 때 평균보다 중앙값이 일반적인 사용 시간을 더 잘 나타낼 수 있습니다.</p>
+
+<h3>예제 3. 가장 많이 이용한 교통수단</h3><pre class="codebox"><code>from collections import Counter
+
+transport = ["버스", "지하철", "버스", "도보", "버스", "자전거"]
+
+mode = Counter(transport).most_common(1)[0]
+
+print("가장 많이 이용한 교통수단:", mode[0])</code></pre><p><span class="tag">범주형 데이터</span>교통수단처럼 숫자가 아닌 데이터는 평균보다 최빈값으로 대표하는 것이 적절합니다.</p>
+
+<h3>예제 4. 수행평가와 지필평가 가중평균</h3><pre class="codebox"><code>performance = 88
+written = 94
+
+final_score = performance * 0.4 + written * 0.6
+
+print("최종 점수:", final_score)</code></pre><p><span class="tag">평가 데이터</span>평가 비율이 다르면 단순 평균이 아니라 가중평균을 사용해야 실제 반영 비율을 정확히 표현할 수 있습니다.</p>
+
+<h3>예제 5. 이상치가 평균을 바꾸는 효과</h3><pre class="codebox"><code>prices = [3000, 3200, 3500, 3300, 20000]
+
+average = sum(prices) / len(prices)
+sorted_prices = sorted(prices)
+median = sorted_prices[len(sorted_prices)//2]
+
+print("평균 가격:", average)
+print("중앙값 가격:", median)</code></pre><p><span class="tag">소비 데이터</span>대부분 가격이 3000원대인데 20000원 상품이 있으면 평균이 크게 올라갑니다. 이럴 때 중앙값도 함께 확인해야 합니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 많은 데이터를 하나의 값으로 요약하는 대표값을 배웠습니다. 평균은 모든 데이터를 반영하지만 이상치에 민감하고, 중앙값은 극단값이 있을 때 안정적이며, 최빈값은 가장 흔한 선택이나 유형을 보여 줍니다. 컴퓨터과학은 파이썬으로 대표값을 빠르게 계산하게 해 주고, 수학은 평균·중앙값·최빈값의 원리를 설명합니다. 과학은 관찰과 측정으로 얻은 데이터를 대표값으로 요약하여 현상을 비교하고 판단하게 합니다. 데이터 과학과 머신러닝에서는 대표값을 통해 데이터의 첫인상을 파악하고 더 깊은 분석으로 나아갑니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬 리스트, 함수, 라이브러리를 활용해 대표값을 자동 계산하고 데이터 탐색을 수행합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>평균, 중앙값, 최빈값, 가중평균은 통계적 사고와 수리적 계산의 핵심입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>실험 결과와 관찰 자료를 대표값으로 요약해 집단의 특성과 경향을 설명합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>모델 학습 전 데이터 탐색 단계에서 대표값은 데이터의 중심 경향과 이상치를 파악하는 출발점입니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계 · 데이터를 대표하는 값 수업자료</div>
+</div></body></html>
