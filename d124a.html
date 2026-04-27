@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터 시각화 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--cyan:#06b6d4;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--card:#fff;--text:#1f2937;--line:#dbe4f0;}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0891b2);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"VISUAL";position:absolute;right:-30px;bottom:-64px;font-size:150px;font-weight:900;color:rgba(255,255,255,.055);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:43px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:940px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}h4{font-size:18px;color:#0f766e;margin-bottom:8px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+@media print{header{padding:34px 20px}section{break-inside:avoid;box-shadow:none}}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 1. 데이터 프로그래밍</div><h1>데이터 분석 프로그램 ④<br>데이터 시각화</h1><p>데이터를 그래프와 차트로 표현하여 패턴, 변화, 비교, 관계를 직관적으로 해석하는 개념기반 목표지향 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 1. 데이터 프로그래밍 → (2) 데이터 분석 프로그램 → 4) 데이터 시각화</td></tr>
+<tr><th>핵심 개념</th><td>데이터 시각화, 그래프 선택, 막대그래프, 선그래프, 원그래프, 히스토그램, 산점도, 축과 범례, 색상과 강조, 왜곡 없는 표현, 데이터 스토리텔링</td></tr>
+<tr><th>수업 목표</th><td>① 데이터 시각화의 의미와 필요성을 설명할 수 있다.<br>② 데이터 목적에 맞는 그래프 유형을 선택할 수 있다.<br>③ 파이썬 matplotlib을 활용해 막대그래프, 선그래프, 히스토그램, 산점도를 만들 수 있다.<br>④ 그래프의 제목, 축, 범례를 바르게 해석할 수 있다.<br>⑤ 그래프가 데이터를 왜곡할 수 있음을 알고 비판적으로 해석할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“숫자만 볼 때보다 그래프를 보면 왜 더 빨리 이해할 수 있을까?”<br>“어떤 데이터에는 어떤 그래프가 가장 적절할까?”<br>“그래프는 진실을 보여 주기도 하지만 왜곡할 수도 있을까?”</td></tr>
+<tr><th>성취 기준</th><td>데이터의 특성과 분석 목적에 맞는 시각화 방법을 선택하고, 그래프를 생성·해석하며, 시각화 결과를 바탕으로 합리적인 결론을 설명한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 생활 속 그래프 사례 제시 → 전개: 그래프 종류와 선택 기준 학습 → 실습: 파이썬 그래프 작성 → 적용: 실생활 데이터 시각화 → 정리: 시각화와 컴퓨터과학·수학·과학 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 그래프 유형 선택 활동, 파이썬 코드 실행 결과 해석, 실생활 데이터 시각화 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>그래프의 종류, 축, 단위, 범례, 분포, 관계, 왜곡 가능성의 의미를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 막대그래프, 선그래프, 히스토그램, 산점도를 만들고 해석한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>시각화 결과를 무조건 믿지 않고 축, 단위, 표본, 강조 방식의 적절성을 비판적으로 살핀다.</p></div>
+</div>
+<div class="flow"><span>데이터</span><span class="arrow">→</span><span>그래프 선택</span><span class="arrow">→</span><span>시각화</span><span class="arrow">→</span><span>해석</span><span class="arrow">→</span><span>스토리텔링</span><span class="arrow">→</span><span>의사결정</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">여러분은 날씨 앱, 주식 차트, 게임 랭킹, 유튜브 조회수 그래프, 학교 성적표의 막대그래프를 본 적이 있을 것입니다. 같은 데이터라도 숫자로 길게 나열하면 이해하기 어렵지만, 그래프로 표현하면 변화와 차이가 한눈에 보입니다. 오늘 수업에서는 데이터를 보기 좋게 꾸미는 것을 넘어, <strong>정확하게 보여 주고 올바르게 해석하는 방법</strong>을 배웁니다.</div>
+</section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 데이터 시각화</h3><p>데이터 시각화는 숫자, 표, 기록으로 된 데이터를 그래프나 차트로 표현하여 패턴과 관계를 쉽게 이해하도록 만드는 과정입니다. 시각화는 분석 결과를 전달하는 언어이며, 복잡한 데이터를 빠르게 파악하게 해 줍니다.</p></div>
+<div class="card"><h3>개념 2. 그래프 선택</h3><p>좋은 시각화는 예쁜 그래프가 아니라 목적에 맞는 그래프입니다. 항목 비교는 막대그래프, 시간 변화는 선그래프, 분포는 히스토그램, 두 변수의 관계는 산점도가 적절합니다.</p></div>
+<div class="card"><h3>개념 3. 막대그래프</h3><p>막대그래프는 여러 항목의 크기를 비교할 때 사용합니다. 예를 들어 과목별 평균 점수, 상품별 판매량, 지역별 인구를 비교할 수 있습니다.</p></div>
+<div class="card"><h3>개념 4. 선그래프</h3><p>선그래프는 시간에 따른 변화를 보여 줄 때 유용합니다. 기온 변화, 주가 변화, 월별 매출, 일별 걸음 수처럼 순서가 있는 데이터에 적합합니다.</p></div>
+<div class="card"><h3>개념 5. 히스토그램</h3><p>히스토그램은 수치형 데이터가 어떤 구간에 얼마나 많이 모여 있는지를 보여 줍니다. 시험 점수 분포, 키 분포, 대기 시간 분포를 분석할 때 사용합니다.</p></div>
+<div class="card"><h3>개념 6. 산점도</h3><p>산점도는 두 변수 사이의 관계를 점으로 나타냅니다. 공부 시간과 점수, 기온과 아이스크림 판매량, 운동 시간과 심박수의 관계를 볼 수 있습니다.</p></div>
+<div class="card"><h3>개념 7. 축, 단위, 범례</h3><p>그래프를 해석할 때는 제목, x축, y축, 단위, 범례를 확인해야 합니다. 축의 범위가 과도하게 좁거나 넓으면 차이가 실제보다 크게 또는 작게 보일 수 있습니다.</p></div>
+<div class="card warning"><h3>개념 8. 그래프 왜곡</h3><p>그래프는 데이터를 쉽게 보여 주지만 잘못 만들면 오해를 만들 수 있습니다. y축을 0이 아닌 값에서 시작하거나, 단위를 숨기거나, 일부 데이터만 선택하면 왜곡된 결론이 나올 수 있습니다.</p></div>
+<div class="card"><h3>개념 9. 데이터 스토리텔링</h3><p>데이터 스토리텔링은 그래프를 이용해 데이터가 말하는 핵심 메시지를 전달하는 과정입니다. 단순히 그래프를 만드는 것이 아니라 “그래서 무엇을 알 수 있는가?”를 설명해야 합니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+<h3>코드 1. 막대그래프: 항목별 비교</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+items = ["물", "주스", "빵", "우유"]
+sales = [35, 28, 42, 19]
+
+plt.bar(items, sales)
+plt.title("매점 상품별 판매량")
+plt.xlabel("상품")
+plt.ylabel("판매량")
+plt.show()</code></pre><p><strong>설명:</strong> 막대그래프는 상품별 판매량처럼 항목 간 크기를 비교할 때 적합합니다.</p>
+
+<h3>코드 2. 선그래프: 시간에 따른 변화</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+days = ["월", "화", "수", "목", "금"]
+temperature = [22, 24, 26, 25, 28]
+
+plt.plot(days, temperature, marker="o")
+plt.title("요일별 기온 변화")
+plt.xlabel("요일")
+plt.ylabel("기온")
+plt.show()</code></pre><p><strong>설명:</strong> 선그래프는 요일별 기온처럼 시간이나 순서에 따른 변화를 표현합니다.</p>
+
+<h3>코드 3. 히스토그램: 분포 확인</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+scores = [55, 60, 62, 70, 75, 78, 80, 83, 88, 90, 95, 100]
+
+plt.hist(scores, bins=5)
+plt.title("학급 점수 분포")
+plt.xlabel("점수 구간")
+plt.ylabel("학생 수")
+plt.show()</code></pre><p><strong>설명:</strong> 히스토그램은 점수가 어느 구간에 많이 모여 있는지 보여 줍니다.</p>
+
+<h3>코드 4. 산점도: 두 변수의 관계</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+study_hours = [1, 2, 3, 4, 5, 6]
+scores = [55, 62, 70, 78, 86, 92]
+
+plt.scatter(study_hours, scores)
+plt.title("공부 시간과 시험 점수")
+plt.xlabel("공부 시간")
+plt.ylabel("시험 점수")
+plt.show()</code></pre><p><strong>설명:</strong> 산점도는 공부 시간이 늘어날수록 점수가 어떻게 변하는지 관계를 확인할 때 사용합니다.</p>
+
+<h3>코드 5. 원그래프: 전체에서 차지하는 비율</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+labels = ["수면", "학교", "공부", "여가"]
+hours = [8, 7, 4, 5]
+
+plt.pie(hours, labels=labels, autopct="%1.1f%%")
+plt.title("하루 시간 사용 비율")
+plt.show()</code></pre><p><strong>설명:</strong> 원그래프는 전체 중 각 항목이 차지하는 비율을 보여 줄 때 사용합니다.</p>
+
+<h3>코드 6. 제목·축·범례 넣기</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+months = ["3월", "4월", "5월", "6월"]
+class_a = [75, 78, 82, 85]
+class_b = [72, 76, 79, 83]
+
+plt.plot(months, class_a, label="A반")
+plt.plot(months, class_b, label="B반")
+plt.title("월별 평균 점수 변화")
+plt.xlabel("월")
+plt.ylabel("평균 점수")
+plt.legend()
+plt.show()</code></pre><p><strong>설명:</strong> 범례는 여러 데이터가 한 그래프에 있을 때 각각이 무엇을 의미하는지 알려 줍니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 데이터 시각화는 데이터를 그래프나 차트로 표현하는 과정이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">시각화는 데이터를 더 쉽게 이해하도록 그림과 그래프로 표현합니다.</div></div>
+<div class="q"><p class="q-title">2. 모든 데이터에는 항상 원그래프가 가장 적절하다. (O/X)</p><div class="answer">정답: X</div><div class="explain">데이터 목적에 따라 막대그래프, 선그래프, 히스토그램, 산점도 등을 선택해야 합니다.</div></div>
+<div class="q"><p class="q-title">3. 막대그래프는 항목별 크기를 비교할 때 유용하다. (O/X)</p><div class="answer">정답: O</div><div class="explain">상품별 판매량이나 과목별 점수 비교에 적합합니다.</div></div>
+<div class="q"><p class="q-title">4. 선그래프는 시간에 따른 변화를 나타내는 데 적절하다. (O/X)</p><div class="answer">정답: O</div><div class="explain">기온 변화, 월별 매출처럼 시간 순서가 있는 데이터에 적합합니다.</div></div>
+<div class="q"><p class="q-title">5. 히스토그램은 두 변수의 관계만을 보여 주는 그래프이다. (O/X)</p><div class="answer">정답: X</div><div class="explain">히스토그램은 수치형 데이터의 분포를 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">6. 산점도는 두 변수 사이의 관계를 확인하는 데 사용된다. (O/X)</p><div class="answer">정답: O</div><div class="explain">공부 시간과 점수처럼 두 변수의 관계를 점으로 나타냅니다.</div></div>
+<div class="q"><p class="q-title">7. 그래프의 축과 단위는 해석에 중요하지 않다. (O/X)</p><div class="answer">정답: X</div><div class="explain">축과 단위를 잘못 읽으면 그래프의 의미를 잘못 해석할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">8. y축 범위를 조정하면 차이가 실제보다 커 보일 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">축 범위 설정은 그래프 인상에 큰 영향을 줍니다.</div></div>
+<div class="q"><p class="q-title">9. 범례는 여러 데이터가 있을 때 각 선이나 막대가 무엇을 뜻하는지 알려 준다. (O/X)</p><div class="answer">정답: O</div><div class="explain">범례는 그래프 해석을 돕는 중요한 요소입니다.</div></div>
+<div class="q"><p class="q-title">10. 좋은 시각화는 데이터의 핵심 메시지를 정확하게 전달해야 한다. (O/X)</p><div class="answer">정답: O</div><div class="explain">시각화는 보기 좋을 뿐 아니라 정확하고 설득력 있게 정보를 전달해야 합니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 데이터 시각화의 가장 적절한 설명은?</p><ul class="choice"><li>① 데이터를 모두 삭제하는 과정</li><li>② 데이터를 그래프나 차트로 표현하는 과정</li><li>③ 데이터를 무조건 암호화하는 과정</li><li>④ 데이터를 저장하지 않는 과정</li><li>⑤ 데이터를 문자로만 바꾸는 과정</li></ul><div class="answer">정답: ②</div><div class="explain">시각화는 데이터를 그래프나 차트로 표현해 이해를 돕습니다.</div></div>
+<div class="q"><p class="q-title">2. 상품별 판매량 비교에 가장 적절한 그래프는?</p><ul class="choice"><li>① 막대그래프</li><li>② 선그래프</li><li>③ 히스토그램</li><li>④ 산점도</li><li>⑤ 코드 주석</li></ul><div class="answer">정답: ①</div><div class="explain">항목별 비교에는 막대그래프가 적합합니다.</div></div>
+<div class="q"><p class="q-title">3. 시간에 따른 기온 변화를 나타내기에 가장 적절한 그래프는?</p><ul class="choice"><li>① 선그래프</li><li>② 원그래프</li><li>③ 표지 그림</li><li>④ 순서 없는 목록</li><li>⑤ 딕셔너리</li></ul><div class="answer">정답: ①</div><div class="explain">시간 변화는 선그래프로 흐름을 파악하기 쉽습니다.</div></div>
+<div class="q"><p class="q-title">4. 점수 분포를 확인하기에 적절한 그래프는?</p><ul class="choice"><li>① 히스토그램</li><li>② 코드 블록</li><li>③ 원고지</li><li>④ 범례만</li><li>⑤ 제목만</li></ul><div class="answer">정답: ①</div><div class="explain">히스토그램은 구간별 데이터 개수를 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">5. 두 변수의 관계를 확인하기에 적절한 그래프는?</p><ul class="choice"><li>① 산점도</li><li>② 목차</li><li>③ 제목</li><li>④ 표지만</li><li>⑤ 파일명</li></ul><div class="answer">정답: ①</div><div class="explain">산점도는 두 변수의 관계를 점으로 나타냅니다.</div></div>
+<div class="q"><p class="q-title">6. 전체 중 각 항목의 비율을 나타낼 때 자주 쓰는 그래프는?</p><ul class="choice"><li>① 원그래프</li><li>② 산점도</li><li>③ 히스토그램</li><li>④ 선그래프만</li><li>⑤ 코드 실행창</li></ul><div class="answer">정답: ①</div><div class="explain">원그래프는 전체에서 차지하는 비율을 보여 줄 때 사용합니다.</div></div>
+<div class="q"><p class="q-title">7. 그래프 해석에서 반드시 확인해야 할 요소가 아닌 것은?</p><ul class="choice"><li>① 제목</li><li>② x축</li><li>③ y축</li><li>④ 단위</li><li>⑤ 작성자의 생일</li></ul><div class="answer">정답: ⑤</div><div class="explain">제목, 축, 단위는 그래프 해석에 중요하지만 작성자의 생일은 관련이 없습니다.</div></div>
+<div class="q"><p class="q-title">8. 그래프 왜곡의 예로 적절한 것은?</p><ul class="choice"><li>① 축 단위를 명확히 표시한다.</li><li>② 제목을 정확히 쓴다.</li><li>③ y축 범위를 과도하게 조정해 차이를 크게 보이게 한다.</li><li>④ 범례를 넣는다.</li><li>⑤ 출처를 밝힌다.</li></ul><div class="answer">정답: ③</div><div class="explain">축 범위를 부적절하게 조정하면 차이가 과장될 수 있습니다.</div></div>
+<div class="q"><p class="q-title">9. 파이썬에서 그래프를 그릴 때 자주 사용하는 라이브러리는?</p><ul class="choice"><li>① matplotlib</li><li>② random only</li><li>③ turtle only</li><li>④ time only</li><li>⑤ keyword</li></ul><div class="answer">정답: ①</div><div class="explain">matplotlib은 파이썬에서 기본적인 데이터 시각화에 자주 사용됩니다.</div></div>
+<div class="q"><p class="q-title">10. 좋은 데이터 시각화의 조건으로 가장 적절한 것은?</p><ul class="choice"><li>① 화려하기만 하면 된다.</li><li>② 데이터의 핵심을 정확하고 이해하기 쉽게 전달한다.</li><li>③ 축과 단위를 숨긴다.</li><li>④ 일부 데이터만 골라 항상 과장한다.</li><li>⑤ 제목을 쓰지 않는다.</li></ul><div class="answer">정답: ②</div><div class="explain">좋은 시각화는 정확성, 명확성, 목적 적합성이 중요합니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 요일별 걸음 수 막대그래프</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+days = ["월", "화", "수", "목", "금"]
+steps = [5200, 6100, 7300, 6900, 8100]
+
+plt.bar(days, steps)
+plt.title("요일별 걸음 수")
+plt.xlabel("요일")
+plt.ylabel("걸음 수")
+plt.show()</code></pre><p><span class="tag">건강 데이터</span>요일별 활동량을 비교하여 어느 날 활동이 많은지 확인할 수 있습니다.</p>
+
+<h3>예제 2. 월별 전기 사용량 선그래프</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+months = ["3월", "4월", "5월", "6월", "7월"]
+electricity = [210, 190, 200, 260, 340]
+
+plt.plot(months, electricity, marker="o")
+plt.title("월별 전기 사용량")
+plt.xlabel("월")
+plt.ylabel("사용량(kWh)")
+plt.show()</code></pre><p><span class="tag">에너지 데이터</span>시간에 따른 사용량 증가와 감소를 확인하여 에너지 절약 계획을 세울 수 있습니다.</p>
+
+<h3>예제 3. 학급 점수 분포 히스토그램</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+scores = [55, 62, 68, 70, 72, 75, 78, 80, 84, 88, 91, 95]
+
+plt.hist(scores, bins=5)
+plt.title("학급 점수 분포")
+plt.xlabel("점수 구간")
+plt.ylabel("학생 수")
+plt.show()</code></pre><p><span class="tag">교육 데이터</span>점수가 어느 구간에 많이 모여 있는지 파악하면 보충학습 계획을 세우는 데 도움이 됩니다.</p>
+
+<h3>예제 4. 공부 시간과 점수 산점도</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+study = [1, 2, 3, 4, 5, 6, 7]
+score = [55, 60, 68, 75, 82, 88, 93]
+
+plt.scatter(study, score)
+plt.title("공부 시간과 시험 점수")
+plt.xlabel("공부 시간")
+plt.ylabel("시험 점수")
+plt.show()</code></pre><p><span class="tag">관계 분석</span>공부 시간이 늘어날수록 점수가 오르는 경향이 있는지 확인할 수 있습니다.</p>
+
+<h3>예제 5. 하루 시간 사용 비율 원그래프</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+labels = ["수면", "학교", "공부", "여가"]
+hours = [8, 7, 4, 5]
+
+plt.pie(hours, labels=labels, autopct="%1.1f%%")
+plt.title("하루 시간 사용 비율")
+plt.show()</code></pre><p><span class="tag">생활 관리 데이터</span>하루 24시간 중 각 활동이 차지하는 비율을 확인하여 시간 관리 습관을 점검할 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 데이터 시각화가 단순히 그래프를 예쁘게 만드는 활동이 아니라, 데이터를 정확하게 이해하고 설득력 있게 전달하는 과정임을 배웠습니다. 컴퓨터과학은 파이썬과 시각화 라이브러리를 통해 그래프를 자동으로 만들게 해 주고, 수학은 축, 비율, 분포, 관계를 해석하는 기준을 제공합니다. 과학은 관찰과 측정으로 얻은 데이터를 그래프로 표현하여 가설을 검증하게 해 줍니다. 좋은 시각화는 데이터 과학과 머신러닝에서 문제를 발견하고, 패턴을 이해하며, 결과를 설명하는 핵심 도구입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬, matplotlib, 데이터 구조를 활용하여 그래프를 자동 생성하고 결과를 표현합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>비율, 변화율, 분포, 좌표평면, 상관관계를 통해 그래프의 의미를 해석합니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>실험과 관찰 데이터를 그래프로 표현하여 현상을 설명하고 가설을 검증합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>시각화는 모델 학습 전 데이터의 패턴, 이상치, 분포를 확인하는 중요한 준비 단계입니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 프로그래밍 · 데이터 시각화 수업자료</div>
+</div>
+</body>
+</html>
