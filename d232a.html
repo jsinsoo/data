@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>평가 방법 이해 적용하기 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"EVALUATION";position:absolute;right:-80px;bottom:-70px;font-size:116px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 모델 평가</div><h1>모델 평가 ②<br>평가 방법 이해 적용하기</h1><p>모델을 공정하게 평가하기 위해 데이터를 나누고, 과적합을 점검하며, 문제 상황에 맞는 평가 방법을 선택·적용하는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (3) 모델 평가 → 2) 평가 방법 이해 적용하기</td></tr>
+<tr><th>핵심 개념</th><td>모델 평가, 학습 데이터, 검증 데이터, 테스트 데이터, 데이터 분할, 일반화, 과적합, 과소적합, 교차검증, 데이터 누수, 평가 지표 선택, 분류 평가, 회귀 평가, 공정한 평가</td></tr>
+<tr><th>수업 목표</th><td>① 모델 평가가 필요한 이유를 설명할 수 있다.<br>② 학습·검증·테스트 데이터의 역할을 구분할 수 있다.<br>③ 과적합과 과소적합의 의미를 사례로 설명할 수 있다.<br>④ 파이썬으로 데이터를 나누고 간단한 모델 평가를 수행할 수 있다.<br>⑤ 문제 유형에 맞는 평가 방법과 지표를 선택할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“모델이 학습 데이터에서 잘 맞는다고 실제로도 좋은 모델일까?”<br>“왜 모델을 평가할 때 학습에 사용하지 않은 데이터가 필요할까?”<br>“문제 상황에 따라 평가 방법은 어떻게 달라져야 할까?”</td></tr>
+<tr><th>성취 기준</th><td>머신러닝 모델의 성능을 공정하게 평가하기 위해 데이터를 적절히 분할하고, 과적합과 과소적합을 점검하며, 문제 상황에 맞는 평가 방법을 선택하여 적용한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 시험 문제를 미리 보고 공부한 학생 사례 → 전개: 데이터 분할·일반화·과적합 개념 학습 → 실습: 파이썬으로 train/test 분할과 평가 → 적용: 분류·회귀 문제별 평가 방법 선택 → 정리: 평가 윤리와 머신러닝 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 데이터 분할 실습, 과적합 사례 분석, 코드 실행 결과 해석, 평가 방법 선택 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>학습·검증·테스트 데이터, 일반화, 과적합, 과소적합, 교차검증, 데이터 누수의 의미를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 데이터를 분할하고, 학습 데이터와 테스트 데이터의 성능 차이를 비교한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>높은 성능 수치를 무조건 믿지 않고, 평가 방법이 공정했는지 비판적으로 확인한다.</p></div>
+</div>
+<div class="flow"><span>데이터 준비</span><span class="arrow">→</span><span>학습/테스트 분할</span><span class="arrow">→</span><span>모델 학습</span><span class="arrow">→</span><span>성능 평가</span><span class="arrow">→</span><span>과적합 점검</span><span class="arrow">→</span><span>개선</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">시험을 보기 전에 정답이 적힌 문제지만 반복해서 외운 학생이 있다고 생각해 봅시다. 그 학생은 같은 문제에서는 100점을 받을 수 있지만, 처음 보는 비슷한 문제를 풀 수 있을까요? 머신러닝 모델도 마찬가지입니다. 학습한 데이터만 잘 맞히는 모델이 아니라, 처음 보는 데이터에서도 잘 작동하는 모델이 좋은 모델입니다. 오늘은 모델을 공정하게 평가하기 위해 데이터를 나누고, 과적합을 확인하며, 평가 방법을 실제로 적용하는 방법을 배웁니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 모델 평가</h3><p>모델 평가는 학습된 머신러닝 모델이 실제 문제를 얼마나 잘 해결하는지 확인하는 과정입니다. 단순히 학습 데이터에서 높은 점수를 얻는 것보다 새로운 데이터에서 잘 작동하는지가 중요합니다.</p></div>
+<div class="card"><h3>개념 2. 학습 데이터</h3><p>학습 데이터는 모델이 규칙과 패턴을 배우는 데 사용하는 데이터입니다. 학생이 교과서와 문제집으로 공부하는 과정에 비유할 수 있습니다.</p></div>
+<div class="card"><h3>개념 3. 테스트 데이터</h3><p>테스트 데이터는 모델이 학습하지 않은 데이터로, 최종 성능을 확인하는 데 사용합니다. 처음 보는 시험 문제와 비슷합니다.</p></div>
+<div class="card"><h3>개념 4. 검증 데이터</h3><p>검증 데이터는 여러 모델이나 설정을 비교하고 조정할 때 사용하는 데이터입니다. 학습 중간에 모델을 선택하는 기준이 됩니다.</p></div>
+<div class="card"><h3>개념 5. 일반화</h3><p>일반화는 모델이 학습한 데이터뿐 아니라 새로운 데이터에서도 잘 작동하는 능력입니다. 머신러닝의 핵심 목표는 좋은 일반화 성능을 얻는 것입니다.</p></div>
+<div class="card warning"><h3>개념 6. 과적합</h3><p>과적합은 모델이 학습 데이터의 세부사항이나 잡음까지 외워서, 새로운 데이터에서는 성능이 낮아지는 현상입니다. 학습 성능은 매우 높지만 테스트 성능이 낮다면 과적합을 의심할 수 있습니다.</p></div>
+<div class="card"><h3>개념 7. 과소적합</h3><p>과소적합은 모델이 데이터의 기본 패턴조차 충분히 배우지 못한 상태입니다. 학습 데이터와 테스트 데이터 모두에서 성능이 낮게 나타납니다.</p></div>
+<div class="card"><h3>개념 8. 교차검증</h3><p>교차검증은 데이터를 여러 부분으로 나누어 학습과 평가를 반복하는 방법입니다. 한 번의 데이터 분할에 성능이 우연히 좌우되는 문제를 줄일 수 있습니다.</p></div>
+<div class="card warning"><h3>개념 9. 데이터 누수</h3><p>데이터 누수는 테스트 데이터의 정보가 학습 과정에 섞이는 문제입니다. 이렇게 되면 평가 성능이 실제보다 좋게 보일 수 있으므로 반드시 피해야 합니다.</p></div>
+<div class="card deep"><h3>개념 10. 평가 방법 선택</h3><p>분류 문제에서는 정확도, 정밀도, 재현율, F1-score 등을 사용하고, 회귀 문제에서는 MAE, MSE, RMSE 등을 사용합니다. 문제의 목적과 위험에 따라 적절한 지표를 선택해야 합니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 데이터를 학습용과 테스트용으로 나누기</h3><pre class="codebox"><code>data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+train = data[:7]
+test = data[7:]
+
+print("학습 데이터:", train)
+print("테스트 데이터:", test)</code></pre><p><strong>설명:</strong> 모델이 배울 데이터와 최종 평가에 사용할 데이터를 분리합니다.</p>
+
+<h3>코드 2. 무작위로 데이터 섞고 분할하기</h3><pre class="codebox"><code>import random
+
+data = list(range(1, 21))
+random.shuffle(data)
+
+train = data[:14]
+test = data[14:]
+
+print("학습 데이터:", train)
+print("테스트 데이터:", test)</code></pre><p><strong>설명:</strong> 데이터를 무작위로 섞으면 특정 순서에 의한 편향을 줄일 수 있습니다.</p>
+
+<h3>코드 3. 간단한 분류 정확도 평가</h3><pre class="codebox"><code>y_true = [1, 0, 1, 1, 0, 0]
+y_pred = [1, 0, 1, 0, 0, 1]
+
+correct = sum(a == b for a, b in zip(y_true, y_pred))
+accuracy = correct / len(y_true)
+
+print("정확도:", accuracy)</code></pre><p><strong>설명:</strong> 분류 모델은 실제 범주와 예측 범주가 얼마나 일치하는지 평가할 수 있습니다.</p>
+
+<h3>코드 4. 회귀 오차 평가</h3><pre class="codebox"><code>y_true = [80, 90, 75, 100]
+y_pred = [82, 88, 78, 95]
+
+mae = sum(abs(a - b) for a, b in zip(y_true, y_pred)) / len(y_true)
+
+print("MAE:", mae)</code></pre><p><strong>설명:</strong> 회귀 모델은 실제 숫자와 예측 숫자의 차이를 이용해 평가합니다.</p>
+
+<h3>코드 5. 학습 성능과 테스트 성능 비교</h3><pre class="codebox"><code>train_accuracy = 0.99
+test_accuracy = 0.70
+
+if train_accuracy - test_accuracy > 0.2:
+    print("과적합 의심")
+else:
+    print("성능 차이가 크지 않음")</code></pre><p><strong>설명:</strong> 학습 성능은 매우 높은데 테스트 성능이 낮으면 과적합을 의심할 수 있습니다.</p>
+
+<h3>코드 6. 과소적합 판단 예시</h3><pre class="codebox"><code>train_accuracy = 0.55
+test_accuracy = 0.53
+
+if train_accuracy < 0.6 and test_accuracy < 0.6:
+    print("과소적합 의심")
+else:
+    print("추가 분석 필요")</code></pre><p><strong>설명:</strong> 학습과 테스트 모두 낮은 성능이면 모델이 패턴을 충분히 배우지 못했을 수 있습니다.</p>
+
+<h3>코드 7. 간단한 5-fold 교차검증 구조</h3><pre class="codebox"><code>data = list(range(1, 21))
+k = 5
+fold_size = len(data) // k
+
+for i in range(k):
+    test = data[i*fold_size:(i+1)*fold_size]
+    train = data[:i*fold_size] + data[(i+1)*fold_size:]
+    print(i+1, "번째 검증")
+    print("학습:", train)
+    print("검증:", test)</code></pre><p><strong>설명:</strong> 교차검증은 데이터를 여러 조각으로 나누어 학습과 검증을 반복합니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모델 평가는 모델이 새로운 데이터에서 잘 작동하는지 확인하는 과정이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">좋은 모델은 학습 데이터뿐 아니라 처음 보는 데이터에서도 잘 작동해야 합니다.</div></div>
+<div class="q"><p class="q-title">2. 테스트 데이터는 모델 학습에 반드시 먼저 사용해야 한다. (O/X)</p><div class="answer">정답: X</div><div class="explain">테스트 데이터는 최종 평가를 위해 학습 과정에서 분리해 두어야 합니다.</div></div>
+<div class="q"><p class="q-title">3. 학습 데이터는 모델이 패턴을 배우는 데 사용된다. (O/X)</p><div class="answer">정답: O</div><div class="explain">모델은 학습 데이터를 통해 규칙과 패턴을 찾습니다.</div></div>
+<div class="q"><p class="q-title">4. 일반화는 새로운 데이터에서도 잘 작동하는 능력이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">머신러닝의 핵심 목표는 좋은 일반화 성능입니다.</div></div>
+<div class="q"><p class="q-title">5. 과적합은 학습 데이터만 지나치게 잘 맞추고 새로운 데이터 성능이 낮아지는 현상이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">학습 데이터를 외워버린 모델은 테스트 데이터에서 약할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">6. 과소적합은 모델이 데이터의 기본 패턴조차 충분히 배우지 못한 상태이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">학습 성능과 테스트 성능이 모두 낮으면 과소적합을 의심할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">7. 교차검증은 데이터를 여러 부분으로 나누어 학습과 평가를 반복하는 방법이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">교차검증은 한 번의 분할에 의존하는 문제를 줄입니다.</div></div>
+<div class="q"><p class="q-title">8. 데이터 누수는 평가 성능을 실제보다 좋게 보이게 만들 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">테스트 정보가 학습에 섞이면 공정한 평가가 어렵습니다.</div></div>
+<div class="q"><p class="q-title">9. 분류와 회귀는 문제 유형이 다르므로 평가 지표도 달라질 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">분류는 정확도, 정밀도 등을 사용하고 회귀는 MAE, RMSE 등을 사용합니다.</div></div>
+<div class="q"><p class="q-title">10. 높은 성능 수치가 나오면 평가 방법을 확인할 필요가 전혀 없다. (O/X)</p><div class="answer">정답: X</div><div class="explain">높은 성능도 데이터 누수, 불균형, 잘못된 분할 때문일 수 있으므로 평가 방법을 확인해야 합니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모델 평가의 목적은?</p><ul class="choice"><li>① 모델이 새로운 데이터에서도 잘 작동하는지 확인하기</li><li>② 데이터를 무조건 삭제하기</li><li>③ 그래프 색만 고르기</li><li>④ 파일명을 바꾸기</li><li>⑤ 코드를 숨기기</li></ul><div class="answer">정답: ①</div><div class="explain">모델 평가는 일반화 성능을 확인하는 과정입니다.</div></div>
+<div class="q"><p class="q-title">2. 모델이 패턴을 배우는 데 사용하는 데이터는?</p><ul class="choice"><li>① 학습 데이터</li><li>② 테스트 데이터</li><li>③ 최종 보고서</li><li>④ 파일명</li><li>⑤ 그래프 제목</li></ul><div class="answer">정답: ①</div><div class="explain">학습 데이터는 모델 훈련에 사용됩니다.</div></div>
+<div class="q"><p class="q-title">3. 최종 성능 확인에 사용하는 데이터는?</p><ul class="choice"><li>① 테스트 데이터</li><li>② 학습 데이터만</li><li>③ 코드 주석</li><li>④ 변수 이름</li><li>⑤ 색상표</li></ul><div class="answer">정답: ①</div><div class="explain">테스트 데이터는 학습에 사용하지 않고 최종 평가에 사용합니다.</div></div>
+<div class="q"><p class="q-title">4. 과적합의 설명으로 옳은 것은?</p><ul class="choice"><li>① 학습 데이터에 지나치게 맞춰져 새로운 데이터 성능이 낮아지는 현상</li><li>② 모델이 아무것도 배우지 않는 현상만</li><li>③ 테스트 데이터가 없는 상태</li><li>④ 데이터가 항상 완벽한 상태</li><li>⑤ 평가 지표가 필요 없는 상태</li></ul><div class="answer">정답: ①</div><div class="explain">과적합은 학습 데이터에 너무 맞춰져 일반화가 약해지는 현상입니다.</div></div>
+<div class="q"><p class="q-title">5. 과소적합의 특징은?</p><ul class="choice"><li>① 학습 성능과 테스트 성능이 모두 낮을 수 있다.</li><li>② 학습 성능이 항상 100%이다.</li><li>③ 테스트 성능만 항상 100%이다.</li><li>④ 데이터 누수와 항상 같다.</li><li>⑤ 모델 평가와 무관하다.</li></ul><div class="answer">정답: ①</div><div class="explain">과소적합은 모델이 기본 패턴을 충분히 배우지 못한 상태입니다.</div></div>
+<div class="q"><p class="q-title">6. 교차검증의 장점은?</p><ul class="choice"><li>① 여러 분할로 반복 평가하여 성능 추정의 안정성을 높인다.</li><li>② 테스트 데이터를 학습에 섞는다.</li><li>③ 평가를 하지 않는다.</li><li>④ 데이터를 모두 삭제한다.</li><li>⑤ 모델을 무조건 복잡하게 만든다.</li></ul><div class="answer">정답: ①</div><div class="explain">교차검증은 한 번의 분할에 따른 우연성을 줄입니다.</div></div>
+<div class="q"><p class="q-title">7. 데이터 누수의 설명으로 옳은 것은?</p><ul class="choice"><li>① 테스트 정보가 학습 과정에 섞이는 문제</li><li>② 데이터가 물리적으로 젖는 현상</li><li>③ 모델이 너무 단순한 현상</li><li>④ 정확도가 낮은 모든 현상</li><li>⑤ 그래프가 안 보이는 현상</li></ul><div class="answer">정답: ①</div><div class="explain">데이터 누수는 평가를 실제보다 좋게 보이게 만들 수 있습니다.</div></div>
+<div class="q"><p class="q-title">8. 분류 문제 평가 지표로 적절한 것은?</p><ul class="choice"><li>① 정확도</li><li>② MAE만</li><li>③ RMSE만</li><li>④ 평균 가격</li><li>⑤ 절편</li></ul><div class="answer">정답: ①</div><div class="explain">분류 문제에는 정확도, 정밀도, 재현율, F1-score 등을 사용할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">9. 회귀 문제 평가 지표로 적절한 것은?</p><ul class="choice"><li>① MAE</li><li>② 정밀도만</li><li>③ 재현율만</li><li>④ 혼동행렬만</li><li>⑤ TP</li></ul><div class="answer">정답: ①</div><div class="explain">회귀 문제는 숫자 예측 오차를 평가하므로 MAE, MSE, RMSE 등을 사용합니다.</div></div>
+<div class="q"><p class="q-title">10. 공정한 모델 평가 태도로 가장 적절한 것은?</p><ul class="choice"><li>① 데이터 분할, 지표 선택, 누수 여부를 함께 확인한다.</li><li>② 가장 높은 숫자만 보고 끝낸다.</li><li>③ 테스트 데이터를 학습에 사용한다.</li><li>④ 낮은 성능은 숨긴다.</li><li>⑤ 문제 유형과 관계없이 같은 지표만 쓴다.</li></ul><div class="answer">정답: ①</div><div class="explain">평가 방법 자체가 공정한지 확인해야 모델 성능을 신뢰할 수 있습니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 스팸 메일 분류 모델 평가</h3><pre class="codebox"><code>real = [1, 0, 1, 0, 1, 0]
+pred = [1, 0, 0, 0, 1, 1]
+
+accuracy = sum(a == b for a, b in zip(real, pred)) / len(real)
+
+print("스팸 분류 정확도:", accuracy)</code></pre><p><span class="tag">메일 필터링</span>스팸 메일을 얼마나 잘 분류했는지 실제값과 예측값을 비교해 확인할 수 있습니다.</p>
+
+<h3>예제 2. 질병 진단 모델의 재현율 점검</h3><pre class="codebox"><code>TP = 48
+FN = 2
+
+recall = TP / (TP + FN)
+
+print("재현율:", recall)</code></pre><p><span class="tag">의료 데이터</span>질병 진단에서는 실제 환자를 놓치지 않는 것이 중요하므로 재현율을 꼭 확인해야 합니다.</p>
+
+<h3>예제 3. 집값 예측 모델의 MAE</h3><pre class="codebox"><code>real_price = [3.2, 4.0, 5.5, 6.1]
+pred_price = [3.0, 4.3, 5.1, 6.5]
+
+mae = sum(abs(a - b) for a, b in zip(real_price, pred_price)) / len(real_price)
+
+print("집값 예측 MAE:", mae)</code></pre><p><span class="tag">부동산 예측</span>예측 가격이 실제 가격과 평균적으로 얼마나 차이 나는지 알 수 있습니다.</p>
+
+<h3>예제 4. 학습 성능과 테스트 성능 비교</h3><pre class="codebox"><code>train_score = 0.98
+test_score = 0.72
+
+if train_score - test_score > 0.2:
+    print("과적합 가능성이 있습니다.")
+else:
+    print("성능 차이가 비교적 작습니다.")</code></pre><p><span class="tag">과적합 점검</span>학습 성능과 테스트 성능의 차이가 크면 새로운 데이터에 약한 모델일 수 있습니다.</p>
+
+<h3>예제 5. 교차검증 결과 평균 성능</h3><pre class="codebox"><code>cv_scores = [0.82, 0.79, 0.85, 0.81, 0.83]
+
+average_score = sum(cv_scores) / len(cv_scores)
+
+print("교차검증 평균 성능:", round(average_score, 3))</code></pre><p><span class="tag">평가 안정성</span>여러 번 나누어 평가한 결과의 평균을 보면 한 번의 분할에 의존하는 문제를 줄일 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 모델을 제대로 평가하기 위해 데이터를 어떻게 나누고, 어떤 기준으로 성능을 확인해야 하는지 배웠습니다. 학습 데이터에서만 높은 성능을 보이는 모델은 실제 문제에서 약할 수 있으므로 테스트 데이터와 교차검증이 필요합니다. 컴퓨터과학은 파이썬으로 데이터를 나누고 성능을 반복 계산하게 해 주며, 수학은 평균, 비율, 오차를 통해 모델 평가를 수치화합니다. 과학은 검증 가능한 방법으로 결과를 확인하고 한계를 정직하게 제시하는 태도를 요구합니다. 머신러닝에서 좋은 평가는 좋은 모델을 만드는 출발점입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>데이터 분할, 모델 학습, 성능 계산을 코드로 자동화하여 공정한 평가 과정을 구현합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>비율, 평균, 오차, 반복 측정은 모델 평가 결과를 해석하는 핵심 수학 개념입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>모델의 주장을 검증 데이터로 확인하고, 결과의 신뢰성과 한계를 함께 제시합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>평가 방법을 이해해야 과적합을 줄이고 새로운 데이터에 잘 작동하는 모델을 선택할 수 있습니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 모델 평가 · 평가 방법 이해 적용하기 수업자료</div>
+</div></body></html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>성능 나타내기 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"METRICS";position:absolute;right:-44px;bottom:-70px;font-size:145px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 모델 평가</div><h1>모델 평가 ②<br>성능 나타내기</h1><p>머신러닝 모델의 예측 결과를 정확도, 정밀도, 재현율, F1-score, 혼동행렬, MAE, MSE, RMSE로 해석하는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (3) 모델 평가 → 2) 성능 나타내기</td></tr>
+<tr><th>핵심 개념</th><td>모델 성능, 평가 지표, 실제값, 예측값, 분류 모델, 회귀 모델, 혼동행렬, 정확도, 정밀도, 재현율, F1-score, 오차, MAE, MSE, RMSE, 과대평가, 데이터 불균형</td></tr>
+<tr><th>수업 목표</th><td>① 모델 성능을 수치로 나타내야 하는 이유를 설명할 수 있다.<br>② 분류 모델의 혼동행렬, 정확도, 정밀도, 재현율, F1-score를 해석할 수 있다.<br>③ 회귀 모델의 MAE, MSE, RMSE 의미를 설명할 수 있다.<br>④ 파이썬으로 모델 평가 지표를 계산할 수 있다.<br>⑤ 문제 상황에 맞는 성능 지표를 선택할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“모델이 잘 맞힌다는 것은 정확히 무엇을 의미할까?”<br>“정확도가 높으면 항상 좋은 모델이라고 말할 수 있을까?”<br>“질병 진단 모델에서는 정밀도와 재현율 중 무엇이 더 중요할까?”</td></tr>
+<tr><th>성취 기준</th><td>모델의 예측 결과를 실제값과 비교하여 분류 및 회귀 성능 지표를 계산하고, 데이터의 특성과 문제 상황에 맞게 성능을 해석한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 스팸 메일 분류와 질병 진단 사례 제시 → 전개: 혼동행렬과 분류 성능 지표 학습 → 실습: 파이썬으로 정확도·정밀도·재현율·F1 계산 → 적용: 회귀 오차 지표 계산 → 정리: 모델 평가의 윤리와 한계</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 혼동행렬 해석 활동, 코드 실행 결과 예측, 실생활 모델 평가 지표 선택 보고서</td></tr>
+</table></div>
+<div class="grid"><div class="card goal"><h3>지식 목표</h3><p>정확도, 정밀도, 재현율, F1-score, 혼동행렬, MAE, MSE, RMSE의 의미를 이해한다.</p></div><div class="card concept"><h3>기능 목표</h3><p>파이썬으로 실제값과 예측값을 비교하여 분류·회귀 모델의 성능 지표를 계산한다.</p></div><div class="card finish"><h3>태도 목표</h3><p>정확도 하나만으로 모델을 판단하지 않고, 문제 상황과 데이터 불균형을 함께 고려한다.</p></div></div>
+<div class="flow"><span>실제값 준비</span><span class="arrow">→</span><span>예측값 생성</span><span class="arrow">→</span><span>오차 비교</span><span class="arrow">→</span><span>성능 지표 계산</span><span class="arrow">→</span><span>모델 해석</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">스마트폰이 사진 속 얼굴을 인식하거나, 이메일 앱이 스팸 메일을 걸러내거나, 병원 AI가 질병 가능성을 판단한다고 생각해 봅시다. 이 모델이 “잘한다”는 말은 무엇을 뜻할까요? 100개 중 90개를 맞히면 좋은 모델일까요? 질병 환자를 놓치면 큰 문제가 되는 상황이라면 단순한 정확도보다 재현율이 더 중요할 수 있습니다. 오늘은 모델의 성능을 숫자로 표현하고 상황에 맞게 해석하는 방법을 배웁니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 모델 성능</h3><p>모델 성능은 머신러닝 모델이 실제값을 얼마나 잘 예측하는지를 나타내는 정도입니다. 모델의 성능은 느낌이 아니라 실제값과 예측값을 비교한 수치로 평가해야 합니다.</p></div>
+<div class="card"><h3>개념 2. 분류 모델과 회귀 모델</h3><p>분류 모델은 스팸/정상, 합격/불합격처럼 범주를 예측합니다. 회귀 모델은 집값, 점수, 기온처럼 연속적인 숫자를 예측합니다. 모델 종류에 따라 성능 지표도 달라집니다.</p></div>
+<div class="card"><h3>개념 3. 혼동행렬</h3><p>혼동행렬은 분류 모델의 예측 결과를 실제값과 비교하여 맞힌 경우와 틀린 경우를 표로 정리한 것입니다. TP, TN, FP, FN 네 가지 요소로 구성됩니다.</p><div class="table-wrap"><table><tr><th></th><th>예측 양성</th><th>예측 음성</th></tr><tr><th>실제 양성</th><td>TP</td><td>FN</td></tr><tr><th>실제 음성</th><td>FP</td><td>TN</td></tr></table></div></div>
+<div class="card"><h3>개념 4. 정확도</h3><p>정확도는 전체 예측 중 맞힌 비율입니다. 직관적이지만 데이터가 불균형할 때는 모델 성능을 과대평가할 수 있습니다.</p><p>\[ \text{정확도} = \frac{TP+TN}{TP+TN+FP+FN} \]</p></div>
+<div class="card"><h3>개념 5. 정밀도</h3><p>정밀도는 모델이 양성이라고 예측한 것 중 실제 양성의 비율입니다.</p><p>\[ \text{정밀도} = \frac{TP}{TP+FP} \]</p></div>
+<div class="card"><h3>개념 6. 재현율</h3><p>재현율은 실제 양성 중 모델이 양성으로 잘 찾아낸 비율입니다. 질병 진단처럼 실제 환자를 놓치지 않는 것이 중요한 경우 재현율이 중요합니다.</p><p>\[ \text{재현율} = \frac{TP}{TP+FN} \]</p></div>
+<div class="card"><h3>개념 7. F1-score</h3><p>F1-score는 정밀도와 재현율의 조화평균입니다. 정밀도와 재현율을 균형 있게 고려할 때 사용합니다.</p><p>\[ F1 = 2 \cdot \frac{\text{정밀도}\cdot\text{재현율}}{\text{정밀도}+\text{재현율}} \]</p></div>
+<div class="card"><h3>개념 8. 회귀 모델의 오차</h3><p>회귀 모델은 숫자를 예측하므로 실제값과 예측값의 차이, 즉 오차를 계산합니다. 오차가 작을수록 예측이 실제값에 가깝습니다.</p></div>
+<div class="card"><h3>개념 9. MAE, MSE, RMSE</h3><p>MAE는 절대오차의 평균, MSE는 제곱오차의 평균, RMSE는 MSE의 제곱근입니다. RMSE는 큰 오차에 더 민감합니다.</p><p>\[ MAE=\frac{1}{n}\sum |y_i-\hat{y_i}| \]</p><p>\[ MSE=\frac{1}{n}\sum (y_i-\hat{y_i})^2 \]</p></div>
+<div class="card warning"><h3>개념 10. 데이터 불균형과 지표 선택</h3><p>데이터가 한쪽 범주에 매우 치우쳐 있으면 정확도만으로 모델을 평가하기 어렵습니다. 실제 환자가 1%뿐인 데이터에서 모두 “정상”이라고 예측해도 정확도는 99%가 될 수 있지만 좋은 진단 모델은 아닙니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+<h3>코드 1. 실제값과 예측값 비교</h3><pre class="codebox"><code>y_true = [1, 0, 1, 1, 0, 0, 1]
+y_pred = [1, 0, 1, 0, 0, 1, 1]
+
+for real, pred in zip(y_true, y_pred):
+    print("실제값:", real, "예측값:", pred)</code></pre><p><strong>설명:</strong> 모델 성능 평가는 실제값과 예측값을 비교하는 것에서 시작합니다.</p>
+<h3>코드 2. 혼동행렬 요소 계산</h3><pre class="codebox"><code>y_true = [1, 0, 1, 1, 0, 0, 1]
+y_pred = [1, 0, 1, 0, 0, 1, 1]
+
+TP = TN = FP = FN = 0
+
+for real, pred in zip(y_true, y_pred):
+    if real == 1 and pred == 1:
+        TP += 1
+    elif real == 0 and pred == 0:
+        TN += 1
+    elif real == 0 and pred == 1:
+        FP += 1
+    elif real == 1 and pred == 0:
+        FN += 1
+
+print("TP:", TP, "TN:", TN, "FP:", FP, "FN:", FN)</code></pre><p><strong>설명:</strong> TP, TN, FP, FN을 계산하면 정확도, 정밀도, 재현율을 구할 수 있습니다.</p>
+<h3>코드 3. 정확도 계산</h3><pre class="codebox"><code>TP, TN, FP, FN = 3, 2, 1, 1
+
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+print("정확도:", accuracy)</code></pre><p><strong>설명:</strong> 전체 예측 중 맞힌 비율을 계산합니다.</p>
+<h3>코드 4. 정밀도와 재현율 계산</h3><pre class="codebox"><code>TP, TN, FP, FN = 3, 2, 1, 1
+
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+print("정밀도:", precision)
+print("재현율:", recall)</code></pre><p><strong>설명:</strong> 정밀도는 예측 양성의 정확성, 재현율은 실제 양성을 찾아낸 비율입니다.</p>
+<h3>코드 5. F1-score 계산</h3><pre class="codebox"><code>precision = 0.75
+recall = 0.75
+
+f1 = 2 * precision * recall / (precision + recall)
+
+print("F1-score:", f1)</code></pre><p><strong>설명:</strong> F1-score는 정밀도와 재현율을 균형 있게 반영합니다.</p>
+<h3>코드 6. 회귀 모델 오차 계산</h3><pre class="codebox"><code>y_true = [80, 90, 75, 100]
+y_pred = [82, 88, 78, 95]
+
+errors = [real - pred for real, pred in zip(y_true, y_pred)]
+
+print("오차:", errors)</code></pre><p><strong>설명:</strong> 회귀 모델에서는 실제값과 예측값의 차이를 오차로 계산합니다.</p>
+<h3>코드 7. MAE, MSE, RMSE 계산</h3><pre class="codebox"><code>y_true = [80, 90, 75, 100]
+y_pred = [82, 88, 78, 95]
+
+errors = [real - pred for real, pred in zip(y_true, y_pred)]
+
+mae = sum(abs(e) for e in errors) / len(errors)
+mse = sum(e ** 2 for e in errors) / len(errors)
+rmse = mse ** 0.5
+
+print("MAE:", mae)
+print("MSE:", mse)
+print("RMSE:", rmse)</code></pre><p><strong>설명:</strong> MAE는 평균적인 오차 크기, MSE와 RMSE는 큰 오차에 더 민감한 지표입니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모델 성능은 실제값과 예측값을 비교하여 나타낼 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">모델이 얼마나 잘 예측했는지는 실제 결과와 비교해 평가합니다.</div></div>
+<div class="q"><p class="q-title">2. 분류 모델과 회귀 모델은 항상 같은 성능 지표를 사용한다. (O/X)</p><div class="answer">정답: X</div><div class="explain">분류는 정확도, 정밀도, 재현율 등을 사용하고 회귀는 MAE, MSE, RMSE 등을 사용합니다.</div></div>
+<div class="q"><p class="q-title">3. 혼동행렬은 분류 모델의 예측 결과를 정리하는 표이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">TP, TN, FP, FN을 표로 정리해 분류 성능을 분석합니다.</div></div>
+<div class="q"><p class="q-title">4. 정확도는 전체 예측 중 맞힌 비율이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">정확도는 전체 중 정답을 맞힌 비율입니다.</div></div>
+<div class="q"><p class="q-title">5. 데이터가 불균형해도 정확도만 보면 항상 충분하다. (O/X)</p><div class="answer">정답: X</div><div class="explain">데이터 불균형 상황에서는 정확도가 모델 성능을 과대평가할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">6. 정밀도는 예측 양성 중 실제 양성의 비율이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">정밀도는 모델이 양성이라고 한 것 중 얼마나 맞았는지를 나타냅니다.</div></div>
+<div class="q"><p class="q-title">7. 재현율은 실제 양성 중 모델이 찾아낸 비율이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">재현율은 실제 양성을 놓치지 않는 능력을 나타냅니다.</div></div>
+<div class="q"><p class="q-title">8. F1-score는 정밀도와 재현율을 함께 고려한다. (O/X)</p><div class="answer">정답: O</div><div class="explain">F1-score는 정밀도와 재현율의 조화평균입니다.</div></div>
+<div class="q"><p class="q-title">9. MAE는 절대오차의 평균이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">MAE는 실제값과 예측값 차이의 절댓값을 평균낸 것입니다.</div></div>
+<div class="q"><p class="q-title">10. RMSE는 큰 오차에 민감한 회귀 성능 지표이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">오차를 제곱하기 때문에 큰 오차가 지표에 더 크게 반영됩니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모델 성능 평가의 기본은 무엇인가?</p><ul class="choice"><li>① 실제값과 예측값 비교</li><li>② 파일 이름 바꾸기</li><li>③ 그래프 색 고르기</li><li>④ 데이터 무조건 삭제</li><li>⑤ 코드 줄 수 세기</li></ul><div class="answer">정답: ①</div><div class="explain">모델 평가의 출발점은 실제값과 예측값 비교입니다.</div></div>
+<div class="q"><p class="q-title">2. 분류 모델 평가에 주로 쓰이는 표는?</p><ul class="choice"><li>① 혼동행렬</li><li>② 시간표</li><li>③ 좌석표</li><li>④ 달력</li><li>⑤ 파일 목록</li></ul><div class="answer">정답: ①</div><div class="explain">혼동행렬은 분류 결과를 TP, TN, FP, FN으로 정리합니다.</div></div>
+<div class="q"><p class="q-title">3. 전체 예측 중 맞힌 비율은?</p><ul class="choice"><li>① 정확도</li><li>② 정밀도</li><li>③ 재현율</li><li>④ RMSE</li><li>⑤ MSE</li></ul><div class="answer">정답: ①</div><div class="explain">정확도는 전체 중 맞힌 비율입니다.</div></div>
+<div class="q"><p class="q-title">4. 예측 양성 중 실제 양성의 비율은?</p><ul class="choice"><li>① 정밀도</li><li>② 재현율</li><li>③ MAE</li><li>④ MSE</li><li>⑤ 절편</li></ul><div class="answer">정답: ①</div><div class="explain">정밀도는 양성이라고 예측한 것의 정확성을 나타냅니다.</div></div>
+<div class="q"><p class="q-title">5. 실제 양성 중 모델이 찾아낸 비율은?</p><ul class="choice"><li>① 재현율</li><li>② 정밀도</li><li>③ RMSE</li><li>④ MSE</li><li>⑤ 기울기</li></ul><div class="answer">정답: ①</div><div class="explain">재현율은 실제 양성을 놓치지 않는 능력을 나타냅니다.</div></div>
+<div class="q"><p class="q-title">6. 정밀도와 재현율을 균형 있게 고려하는 지표는?</p><ul class="choice"><li>① F1-score</li><li>② 평균</li><li>③ 중앙값</li><li>④ 범위</li><li>⑤ 파일명</li></ul><div class="answer">정답: ①</div><div class="explain">F1-score는 정밀도와 재현율의 조화평균입니다.</div></div>
+<div class="q"><p class="q-title">7. 회귀 모델 평가 지표가 아닌 것은?</p><ul class="choice"><li>① F1-score</li><li>② MAE</li><li>③ MSE</li><li>④ RMSE</li><li>⑤ 평균제곱오차</li></ul><div class="answer">정답: ①</div><div class="explain">F1-score는 주로 분류 모델 평가에 사용됩니다.</div></div>
+<div class="q"><p class="q-title">8. MAE의 의미는?</p><ul class="choice"><li>① 절대오차의 평균</li><li>② 정확도의 다른 이름</li><li>③ 양성 예측 비율</li><li>④ 혼동행렬의 행 개수</li><li>⑤ 데이터 개수만</li></ul><div class="answer">정답: ①</div><div class="explain">MAE는 실제값과 예측값 차이의 절댓값 평균입니다.</div></div>
+<div class="q"><p class="q-title">9. 데이터 불균형 상황에서 주의할 점은?</p><ul class="choice"><li>① 정확도만으로 좋은 모델이라 단정하지 않는다.</li><li>② 정확도만 보면 항상 충분하다.</li><li>③ 재현율은 절대 보지 않는다.</li><li>④ 혼동행렬은 필요 없다.</li><li>⑤ 실제값을 숨긴다.</li></ul><div class="answer">정답: ①</div><div class="explain">불균형 데이터에서는 정밀도, 재현율, F1-score도 함께 확인해야 합니다.</div></div>
+<div class="q"><p class="q-title">10. 질병 진단 모델에서 환자를 놓치지 않는 능력과 가장 관련 깊은 지표는?</p><ul class="choice"><li>① 재현율</li><li>② 파일명</li><li>③ 그래프 색상</li><li>④ 코드 줄 수</li><li>⑤ 절편</li></ul><div class="answer">정답: ①</div><div class="explain">재현율은 실제 환자 중 모델이 환자로 찾아낸 비율입니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 스팸 메일 분류 정확도</h3><pre class="codebox"><code>y_true = [1, 0, 1, 0, 1, 0]
+y_pred = [1, 0, 0, 0, 1, 1]
+
+correct = sum(real == pred for real, pred in zip(y_true, y_pred))
+accuracy = correct / len(y_true)
+
+print("정확도:", accuracy)</code></pre><p><span class="tag">스팸 분류</span>스팸과 정상 메일을 얼마나 맞혔는지 전체 정확도로 확인할 수 있습니다.</p>
+<h3>예제 2. 질병 진단 재현율</h3><pre class="codebox"><code>TP = 45
+FN = 5
+
+recall = TP / (TP + FN)
+
+print("재현율:", recall)</code></pre><p><span class="tag">의료 데이터</span>실제 환자 중 모델이 환자로 찾아낸 비율입니다. 질병 진단에서는 재현율이 매우 중요할 수 있습니다.</p>
+<h3>예제 3. 스팸 판정 정밀도</h3><pre class="codebox"><code>TP = 30
+FP = 10
+
+precision = TP / (TP + FP)
+
+print("정밀도:", precision)</code></pre><p><span class="tag">메일 필터링</span>스팸이라고 예측한 메일 중 실제 스팸의 비율입니다.</p>
+<h3>예제 4. 집값 예측 MAE</h3><pre class="codebox"><code>real_price = [3.0, 4.2, 5.1, 6.0]
+pred_price = [3.2, 4.0, 4.8, 6.5]
+
+mae = sum(abs(r - p) for r, p in zip(real_price, pred_price)) / len(real_price)
+
+print("MAE:", mae)</code></pre><p><span class="tag">부동산 예측</span>예측 가격이 실제 가격과 평균적으로 얼마나 차이 나는지 확인할 수 있습니다.</p>
+<h3>예제 5. 시험 점수 예측 RMSE</h3><pre class="codebox"><code>real = [80, 90, 75, 100]
+pred = [82, 88, 78, 95]
+
+mse = sum((r - p) ** 2 for r, p in zip(real, pred)) / len(real)
+rmse = mse ** 0.5
+
+print("RMSE:", rmse)</code></pre><p><span class="tag">교육 예측</span>RMSE는 큰 예측 오차를 더 크게 반영하므로 예측이 크게 빗나간 경우를 확인하는 데 유용합니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 머신러닝 모델의 성능을 어떻게 수치로 나타내는지 배웠습니다. 분류 모델에서는 혼동행렬을 바탕으로 정확도, 정밀도, 재현율, F1-score를 계산하고, 회귀 모델에서는 실제값과 예측값의 차이를 이용해 MAE, MSE, RMSE를 계산합니다. 컴퓨터과학은 파이썬으로 많은 예측 결과를 빠르게 비교하게 해 주고, 수학은 비율, 평균, 제곱, 제곱근을 통해 성능 지표의 의미를 설명합니다. 과학은 모델의 예측을 검증하고 한계를 정직하게 드러내는 태도를 요구합니다. 데이터 과학과 머신러닝에서 좋은 모델이란 단순히 숫자가 높은 모델이 아니라, 문제 상황에 맞는 지표로 신중하게 평가된 모델입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬으로 실제값과 예측값을 비교하고 모델 성능 지표를 자동 계산합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>비율, 평균, 절댓값, 제곱, 제곱근은 정확도와 오차 지표를 구성하는 핵심 계산입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>모델의 예측 결과를 검증하고, 오차와 한계를 함께 제시하는 과학적 태도가 필요합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>모델 평가 지표는 여러 모델을 비교하고 최적의 모델을 선택하는 기준이 됩니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 모델 평가 · 성능 나타내기 수업자료</div>
+</div></body></html>
