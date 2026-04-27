@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터 프로그래밍 - 데이터 과학과 진로 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+
+:root{
+  --bg:#f4f7fb;
+  --navy:#16213e;
+  --blue:#2563eb;
+  --cyan:#06b6d4;
+  --mint:#10b981;
+  --purple:#7c3aed;
+  --orange:#f97316;
+  --red:#ef4444;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#64748b;
+  --line:#dbe4f0;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Noto Sans KR',sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(37,99,235,.18), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(16,185,129,.18), transparent 25%),
+    linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);
+  color:var(--text);
+  line-height:1.75;
+}
+
+header{
+  padding:56px 24px 42px;
+  background:linear-gradient(135deg,#111827,#1e3a8a 55%,#0891b2);
+  color:white;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+header:before{
+  content:"";
+  position:absolute;
+  inset:-80px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+  background-size:38px 38px;
+  transform:rotate(-6deg);
+}
+header .inner{position:relative;z-index:2;}
+.badge{
+  display:inline-block;
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  font-size:14px;
+  margin-bottom:16px;
+}
+h1{
+  margin:0;
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+header p{
+  max-width:900px;
+  margin:18px auto 0;
+  color:#dbeafe;
+  font-size:18px;
+}
+
+.container{
+  width:min(1180px, calc(100% - 32px));
+  margin:28px auto 80px;
+}
+
+.toc{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 18px 45px rgba(15,23,42,.08);
+  margin-bottom:28px;
+}
+.toc h2{margin-top:0;}
+.toc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;
+}
+.toc a{
+  display:block;
+  text-decoration:none;
+  color:#0f172a;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#f1f5f9;
+  border:1px solid #e2e8f0;
+  font-weight:700;
+}
+.toc a:hover{background:#dbeafe;color:#1d4ed8;}
+
+section{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  margin:24px 0;
+  padding:28px;
+  box-shadow:0 14px 35px rgba(15,23,42,.07);
+}
+h2{
+  font-size:28px;
+  color:var(--navy);
+  margin:0 0 18px;
+  letter-spacing:-.6px;
+}
+h3{
+  font-size:21px;
+  color:#1d4ed8;
+  margin-top:24px;
+}
+h4{
+  font-size:18px;
+  color:#0f766e;
+  margin-bottom:8px;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+.card{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+  padding:18px;
+}
+.card strong{color:#0f172a;}
+.goal{
+  border-left:6px solid var(--blue);
+  background:#eff6ff;
+}
+.concept{
+  border-left:6px solid var(--mint);
+  background:#ecfdf5;
+}
+.warning{
+  border-left:6px solid var(--orange);
+  background:#fff7ed;
+}
+.finish{
+  border-left:6px solid var(--purple);
+  background:#f5f3ff;
+}
+.codebox{
+  background:#0f172a;
+  color:#e5e7eb;
+  border-radius:18px;
+  padding:18px;
+  overflow:auto;
+  font-size:14px;
+  line-height:1.6;
+  border:1px solid #1e293b;
+}
+.codebox code{font-family:Consolas, Monaco, monospace;}
+.table-wrap{overflow-x:auto;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:14px 0;
+  background:white;
+}
+th,td{
+  border:1px solid #dbe4f0;
+  padding:12px 14px;
+  vertical-align:top;
+}
+th{
+  background:#eaf2ff;
+  color:#173b7a;
+}
+.quiz{
+  counter-reset:item;
+}
+.q{
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+  padding:18px;
+  background:#ffffff;
+  margin:16px 0;
+}
+.q-title{
+  font-weight:900;
+  color:#111827;
+}
+.answer{
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#f0fdf4;
+  border:1px solid #bbf7d0;
+}
+.explain{
+  margin-top:8px;
+  color:#334155;
+}
+.tag{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:999px;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-weight:800;
+  font-size:12px;
+  margin-right:6px;
+}
+.ment{
+  font-size:18px;
+  padding:18px 20px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#eff6ff,#ecfeff);
+  border:1px solid #bfdbfe;
+}
+.footer{
+  text-align:center;
+  color:#64748b;
+  padding:40px 0;
+}
+mjx-container[jax="SVG"]:not([display="true"]) { font-size: 0.92em !important; }
+</style>
+</head>
+
+<body>
+<header>
+  <div class="inner">
+    <div class="badge">고등학교 데이터 프로그래밍 · 데이터 과학의 이해</div>
+    <h1>데이터 과학과 진로<br>개념기반 목표지향 수업지도안</h1>
+    <p>
+      데이터가 어떻게 문제를 발견하고, 설명하고, 예측하며, 다양한 진로와 연결되는지
+      파이썬 코드와 평가 문항을 통해 학습하는 수업자료
+    </p>
+  </div>
+</header>
+
+<div class="container">
+
+<nav class="toc">
+  <h2>차례</h2>
+  <div class="toc-grid">
+    <a href="#plan">1. 수업지도안</a>
+    <a href="#opening">2. 수업을 여는 멘트</a>
+    <a href="#concepts">3. 핵심 개념 상세 설명</a>
+    <a href="#codes">4. 개념 관련 파이썬 코드</a>
+    <a href="#diagnosis">5. 진단평가 OX 10문항</a>
+    <a href="#formative">6. 형성평가 5지선다 10문항</a>
+    <a href="#life">7. 실생활 코드 예제 5개</a>
+    <a href="#closing">8. 수업 마무리 멘트</a>
+  </div>
+</nav>
+
+<section id="plan">
+  <div class="kicker">Lesson Design</div>
+  <h2>1. 개념기반 목표지향 수업지도안</h2>
+
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>영역</th>
+        <td>1. 데이터 프로그래밍 → (1) 데이터 과학의 이해 → 1) 데이터 과학과 진로</td>
+      </tr>
+      <tr>
+        <th>핵심 개념</th>
+        <td>데이터, 정보, 패턴, 분석, 예측, 의사결정, 진로 연결</td>
+      </tr>
+      <tr>
+        <th>수업 목표</th>
+        <td>
+          ① 데이터 과학의 의미를 설명할 수 있다.<br>
+          ② 데이터 과학이 다양한 직업과 연결되는 방식을 말할 수 있다.<br>
+          ③ 간단한 파이썬 코드로 데이터를 정리하고 분석할 수 있다.<br>
+          ④ 데이터 기반 의사결정의 장점과 한계를 이해할 수 있다.
+        </td>
+      </tr>
+      <tr>
+        <th>핵심 질문</th>
+        <td>
+          “데이터는 어떻게 진로 선택과 사회 문제 해결에 도움을 줄 수 있을까?”<br>
+          “숫자와 코드가 현실 세계의 의사결정을 바꿀 수 있을까?”
+        </td>
+      </tr>
+      <tr>
+        <th>성취 기준</th>
+        <td>
+          데이터의 의미를 이해하고, 자료를 분석하여 정보를 도출하며,
+          데이터 과학 관련 직업과 사회적 활용 사례를 설명한다.
+        </td>
+      </tr>
+      <tr>
+        <th>수업 흐름</th>
+        <td>
+          도입: 실생활 데이터 사례 제시 → 전개: 개념 설명 및 파이썬 실습 →
+          적용: 실생활 코드 예제 분석 → 정리: 진로와 컴퓨터과학·수학·과학 연결
+        </td>
+      </tr>
+      <tr>
+        <th>평가 방법</th>
+        <td>진단평가 OX, 형성평가 5지선다, 코드 실행 결과 해석, 실생활 문제 해결 활동</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid">
+    <div class="card goal">
+      <h3>지식 목표</h3>
+      <p>데이터 과학의 정의, 데이터와 정보의 차이, 데이터 분석 절차, 관련 진로를 이해한다.</p>
+    </div>
+    <div class="card concept">
+      <h3>기능 목표</h3>
+      <p>파이썬을 활용하여 데이터를 저장, 계산, 비교, 시각화하는 기초 기능을 익힌다.</p>
+    </div>
+    <div class="card finish">
+      <h3>태도 목표</h3>
+      <p>데이터를 비판적으로 해석하고, 자신의 진로와 사회 문제 해결에 연결하려는 태도를 기른다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="opening">
+  <div class="kicker">Opening Talk</div>
+  <h2>2. 수업을 여는 멘트</h2>
+  <div class="ment">
+    여러분은 오늘 아침에 휴대폰을 몇 번 확인했나요? 날씨 앱은 비가 올지 알려 주고,
+    영상 플랫폼은 내가 좋아할 만한 영상을 추천해 줍니다. 쇼핑몰은 내가 관심 가질 상품을 보여 주고,
+    지도 앱은 가장 빠른 길을 찾아 줍니다. 이 모든 과정의 공통점은 바로 <strong>데이터</strong>입니다.
+    오늘 수업에서는 단순한 숫자와 기록이 어떻게 의미 있는 정보가 되고,
+    또 그것이 의사결정과 진로 선택까지 연결되는지 배워 보겠습니다.
+  </div>
+</section>
+
+<section id="concepts">
+  <div class="kicker">Core Concepts</div>
+  <h2>3. 각각의 개념에 대한 상세 설명</h2>
+
+  <div class="card">
+    <h3>개념 1. 데이터(Data)</h3>
+    <p>
+      데이터는 관찰, 측정, 기록을 통해 얻은 값입니다. 예를 들어 학생의 키, 시험 점수,
+      하루 걸음 수, 기온, 미세먼지 농도, 검색 기록, 사진, 음성 등이 모두 데이터가 될 수 있습니다.
+      데이터는 그 자체로는 단순한 값이지만, 분석 과정을 거치면 의미 있는 정보가 됩니다.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 2. 정보(Information)</h3>
+    <p>
+      정보는 데이터를 목적에 맞게 정리하고 해석하여 의미를 부여한 결과입니다.
+      예를 들어 “기온 31도”는 데이터이고, “오늘은 매우 더우므로 야외 활동 시 물을 충분히 마셔야 한다”는 정보입니다.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 3. 데이터 과학(Data Science)</h3>
+    <p>
+      데이터 과학은 데이터를 수집, 정제, 분석, 시각화하고 이를 바탕으로 문제를 해결하거나 예측하는 학문입니다.
+      컴퓨터과학의 프로그래밍, 수학의 통계와 확률, 과학의 탐구 방법이 함께 사용됩니다.
+    </p>
+    <p>
+      데이터 과학의 일반적인 흐름은 다음과 같습니다.
+    </p>
+    <p>
+      \[
+      \text{문제 정의} \rightarrow \text{데이터 수집} \rightarrow \text{데이터 정제} \rightarrow
+      \text{분석} \rightarrow \text{시각화} \rightarrow \text{의사결정}
+      \]
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 4. 데이터 분석</h3>
+    <p>
+      데이터 분석은 데이터 속에서 패턴, 관계, 차이, 변화 경향을 찾아내는 과정입니다.
+      예를 들어 월별 전기 사용량을 분석하면 어느 계절에 전력 사용이 증가하는지 알 수 있습니다.
+      이를 통해 에너지 절약 계획을 세울 수 있습니다.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 5. 데이터 시각화</h3>
+    <p>
+      데이터 시각화는 숫자로 된 데이터를 그래프나 차트로 표현하여 한눈에 이해하기 쉽게 만드는 방법입니다.
+      막대그래프는 항목 간 비교에, 선그래프는 시간에 따른 변화에, 산점도는 두 변수 사이의 관계를 볼 때 유용합니다.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 6. 데이터 기반 의사결정</h3>
+    <p>
+      데이터 기반 의사결정은 감이나 추측이 아니라 실제 자료를 근거로 판단하는 방식입니다.
+      예를 들어 학교 매점에서 가장 많이 팔리는 음료 데이터를 분석하면 재고를 더 효율적으로 준비할 수 있습니다.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>개념 7. 데이터 과학과 진로</h3>
+    <p>
+      데이터 과학은 다양한 직업과 연결됩니다. 데이터 분석가, 인공지능 개발자, 생명정보학자,
+      금융 분석가, 마케팅 분석가, 스포츠 데이터 분석가, 기후 데이터 연구자 등이 대표적입니다.
+      중요한 점은 데이터 과학이 특정 직업 하나가 아니라 거의 모든 분야에서 필요한 문제 해결 도구라는 것입니다.
+    </p>
+  </div>
+</section>
+
+<section id="codes">
+  <div class="kicker">Python Codes</div>
+  <h2>4. 각각의 개념과 관련된 파이썬 코드</h2>
+
+  <h3>코드 1. 데이터와 정보 구분하기</h3>
+  <pre class="codebox"><code># 데이터: 단순히 기록된 값
+temperature = 31
+
+# 정보: 데이터를 해석하여 의미를 부여한 결과
+if temperature >= 30:
+    print("오늘은 덥습니다. 물을 충분히 마시세요.")
+else:
+    print("활동하기 비교적 좋은 날씨입니다.")</code></pre>
+  <p><strong>설명:</strong> 31이라는 숫자는 데이터이고, 조건문을 통해 “덥다”라는 의미를 부여하면 정보가 됩니다.</p>
+
+  <h3>코드 2. 평균을 이용한 데이터 분석</h3>
+  <pre class="codebox"><code>scores = [82, 91, 75, 88, 96]
+
+average = sum(scores) / len(scores)
+
+print("점수 목록:", scores)
+print("평균 점수:", average)</code></pre>
+  <p><strong>설명:</strong> 여러 점수 데이터를 평균으로 요약하면 전체적인 학습 수준을 파악할 수 있습니다.</p>
+
+  <h3>코드 3. 최댓값과 최솟값 찾기</h3>
+  <pre class="codebox"><code>temperatures = [24, 27, 30, 29, 26, 31, 28]
+
+print("가장 높은 기온:", max(temperatures))
+print("가장 낮은 기온:", min(temperatures))</code></pre>
+  <p><strong>설명:</strong> 최댓값과 최솟값은 데이터의 범위를 이해하는 데 도움을 줍니다.</p>
+
+  <h3>코드 4. 간단한 데이터 시각화</h3>
+  <pre class="codebox"><code>import matplotlib.pyplot as plt
+
+days = ["월", "화", "수", "목", "금"]
+steps = [5200, 6100, 7300, 6900, 8100]
+
+plt.bar(days, steps)
+plt.title("요일별 걸음 수")
+plt.xlabel("요일")
+plt.ylabel("걸음 수")
+plt.show()</code></pre>
+  <p><strong>설명:</strong> 막대그래프를 사용하면 요일별 걸음 수 차이를 쉽게 비교할 수 있습니다.</p>
+
+  <h3>코드 5. 진로 추천을 위한 간단한 규칙 기반 프로그램</h3>
+  <pre class="codebox"><code>interest = input("관심 분야를 입력하세요(수학/코딩/생명/경제/스포츠): ")
+
+if interest == "수학":
+    print("추천 진로: 데이터 분석가, 통계학자")
+elif interest == "코딩":
+    print("추천 진로: 인공지능 개발자, 데이터 엔지니어")
+elif interest == "생명":
+    print("추천 진로: 생명정보학자, 의료 데이터 분석가")
+elif interest == "경제":
+    print("추천 진로: 금융 데이터 분석가, 마케팅 분석가")
+elif interest == "스포츠":
+    print("추천 진로: 스포츠 데이터 분석가")
+else:
+    print("다양한 분야에서 데이터 과학을 활용할 수 있습니다.")</code></pre>
+  <p><strong>설명:</strong> 실제 인공지능은 더 복잡한 데이터를 사용하지만, 이 예제는 입력값에 따라 진로를 추천하는 기본 원리를 보여 줍니다.</p>
+</section>
+
+<section id="diagnosis">
+  <div class="kicker">Diagnostic Assessment</div>
+  <h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+
+  <div class="quiz">
+    <div class="q">
+      <p class="q-title">1. 데이터는 관찰하거나 측정하여 얻은 값이다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">데이터는 기온, 점수, 키, 클릭 수처럼 관찰·측정·기록된 값을 의미합니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">2. 정보는 아무 해석이 없는 숫자 그 자체만을 뜻한다. (O/X)</p>
+      <div class="answer">정답: X</div>
+      <div class="explain">정보는 데이터를 목적에 맞게 정리하고 해석하여 의미를 부여한 결과입니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">3. 데이터 과학은 컴퓨터과학, 수학, 과학적 탐구 방법과 관련이 있다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">데이터 과학은 프로그래밍, 통계, 확률, 실험과 관찰을 함께 활용합니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">4. 데이터 분석은 데이터 속에서 패턴과 관계를 찾는 과정이다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">예를 들어 기온과 아이스크림 판매량의 관계를 찾는 것이 데이터 분석입니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">5. 데이터 시각화는 데이터를 더 어렵게 만들기 위한 과정이다. (O/X)</p>
+      <div class="answer">정답: X</div>
+      <div class="explain">시각화는 그래프와 차트를 이용해 데이터를 더 쉽게 이해하도록 돕습니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">6. 데이터 기반 의사결정은 감이나 추측보다 실제 자료를 중시한다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">데이터 기반 의사결정은 근거 있는 판단을 가능하게 합니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">7. 데이터 과학은 오직 컴퓨터 관련 직업에서만 사용된다. (O/X)</p>
+      <div class="answer">정답: X</div>
+      <div class="explain">의료, 금융, 교육, 스포츠, 환경, 예술 등 다양한 분야에서 활용됩니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">8. 평균은 여러 데이터를 하나의 대표값으로 요약하는 방법 중 하나이다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">평균은 전체 데이터를 대표하는 값으로 자주 사용됩니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">9. 데이터가 많으면 무조건 올바른 결론을 얻을 수 있다. (O/X)</p>
+      <div class="answer">정답: X</div>
+      <div class="explain">데이터가 많아도 편향, 오류, 잘못된 해석이 있으면 잘못된 결론이 나올 수 있습니다.</div>
+    </div>
+
+    <div class="q">
+      <p class="q-title">10. 데이터 과학자는 문제를 정의하고 데이터를 분석하여 해결 방안을 찾는다. (O/X)</p>
+      <div class="answer">정답: O</div>
+      <div class="explain">데이터 과학자는 단순히 코딩만 하는 것이 아니라 문제 해결 전체 과정을 다룹니다.</div>
+    </div>
+  </div>
+</section>
+
+<section id="formative">
+  <div class="kicker">Formative Assessment</div>
+  <h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+
+  <div class="q">
+    <p class="q-title">1. 다음 중 데이터의 예로 가장 적절한 것은?</p>
+    <p>① 느낌 ② 기온 30도 ③ 행복 ④ 상상 ⑤ 의견만 있는 주장</p>
+    <div class="answer">정답: ②</div>
+    <div class="explain">기온 30도는 측정된 값이므로 데이터입니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">2. 데이터 과학의 일반적인 과정으로 가장 적절한 것은?</p>
+    <p>① 결론 → 수집 → 문제 정의 ② 문제 정의 → 수집 → 분석 → 의사결정 ③ 시각화 → 삭제 → 추측 ④ 코딩 → 암기 → 종료 ⑤ 감정 → 판단 → 기록</p>
+    <div class="answer">정답: ②</div>
+    <div class="explain">데이터 과학은 문제를 정하고, 데이터를 수집·정제·분석한 뒤 의사결정으로 연결합니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">3. 데이터 시각화에 대한 설명으로 옳은 것은?</p>
+    <p>① 데이터를 숨긴다 ② 데이터를 삭제한다 ③ 데이터를 그래프 등으로 표현한다 ④ 데이터를 무작위로 바꾼다 ⑤ 데이터를 모두 문자로만 바꾼다</p>
+    <div class="answer">정답: ③</div>
+    <div class="explain">시각화는 그래프, 차트 등을 사용해 데이터를 이해하기 쉽게 표현하는 과정입니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">4. 시간에 따른 기온 변화를 나타내기에 가장 적절한 그래프는?</p>
+    <p>① 원그래프 ② 선그래프 ③ 표지만 ④ 그림일기 ⑤ 순서 없는 목록</p>
+    <div class="answer">정답: ②</div>
+    <div class="explain">시간에 따른 변화는 선그래프로 표현하면 흐름을 파악하기 쉽습니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">5. 데이터 기반 의사결정의 장점으로 가장 적절한 것은?</p>
+    <p>① 근거 없는 판단 증가 ② 감정만 사용 ③ 실제 자료를 근거로 판단 ④ 결과를 숨김 ⑤ 분석을 피함</p>
+    <div class="answer">정답: ③</div>
+    <div class="explain">데이터 기반 의사결정은 실제 자료에 근거하므로 더 객관적인 판단을 도와줍니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">6. 다음 중 데이터 과학과 관련된 진로가 아닌 것은?</p>
+    <p>① 데이터 분석가 ② 인공지능 개발자 ③ 생명정보학자 ④ 스포츠 데이터 분석가 ⑤ 데이터와 전혀 관련 없는 무작위 선택가</p>
+    <div class="answer">정답: ⑤</div>
+    <div class="explain">①~④는 모두 데이터 과학과 관련된 대표적인 진로입니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">7. 파이썬 코드 <code>sum(scores) / len(scores)</code>가 구하는 값은?</p>
+    <p>① 최댓값 ② 최솟값 ③ 평균 ④ 문자열 ⑤ 그래프 제목</p>
+    <div class="answer">정답: ③</div>
+    <div class="explain"><code>sum()</code>은 합계, <code>len()</code>은 개수이므로 합계를 개수로 나누면 평균입니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">8. 데이터 정제가 필요한 이유로 가장 적절한 것은?</p>
+    <p>① 오류와 결측값을 줄이기 위해 ② 데이터를 무조건 삭제하기 위해 ③ 그래프를 없애기 위해 ④ 컴퓨터를 끄기 위해 ⑤ 문제를 만들지 않기 위해</p>
+    <div class="answer">정답: ①</div>
+    <div class="explain">데이터에 오류나 빈 값이 있으면 분석 결과가 왜곡될 수 있으므로 정제가 필요합니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">9. 데이터 과학을 배울 때 수학이 필요한 이유로 가장 적절한 것은?</p>
+    <p>① 색칠만 하기 위해 ② 통계와 확률을 이해하기 위해 ③ 키보드를 고치기 위해 ④ 인터넷 속도를 높이기 위해 ⑤ 파일 이름을 꾸미기 위해</p>
+    <div class="answer">정답: ②</div>
+    <div class="explain">평균, 분산, 확률, 상관관계 등은 데이터 분석의 중요한 수학적 기초입니다.</div>
+  </div>
+
+  <div class="q">
+    <p class="q-title">10. 데이터 과학 학습 태도로 가장 바람직한 것은?</p>
+    <p>① 결과를 무조건 믿는다 ② 데이터를 비판적으로 해석한다 ③ 오류를 확인하지 않는다 ④ 출처를 보지 않는다 ⑤ 그래프를 보지 않는다</p>
+    <div class="answer">정답: ②</div>
+    <div class="explain">데이터는 오류나 편향을 포함할 수 있으므로 비판적으로 해석해야 합니다.</div>
+  </div>
+</section>
+
+<section id="life">
+  <div class="kicker">Real Life Coding</div>
+  <h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+
+  <h3>예제 1. 일주일 걸음 수 분석</h3>
+  <pre class="codebox"><code>steps = [5200, 6100, 7300, 6900, 8100, 9000, 7600]
+
+average = sum(steps) / len(steps)
+best = max(steps)
+
+print("평균 걸음 수:", average)
+print("가장 많이 걸은 날의 걸음 수:", best)</code></pre>
+  <p>
+    <span class="tag">건강 데이터</span>
+    스마트워치나 휴대폰에서 수집한 걸음 수 데이터를 이용하면 자신의 활동량을 파악할 수 있습니다.
+    평균과 최댓값을 통해 생활 습관을 점검할 수 있습니다.
+  </p>
+
+  <h3>예제 2. 하루 공부 시간 분석</h3>
+  <pre class="codebox"><code>study_hours = [2, 3, 1, 4, 2, 5, 3]
+
+total = sum(study_hours)
+average = total / len(study_hours)
+
+print("일주일 총 공부 시간:", total)
+print("하루 평균 공부 시간:", average)</code></pre>
+  <p>
+    <span class="tag">학습 데이터</span>
+    공부 시간 데이터를 기록하면 자신의 학습 패턴을 파악할 수 있습니다.
+    단순한 감이 아니라 실제 기록을 바탕으로 학습 계획을 조정할 수 있습니다.
+  </p>
+
+  <h3>예제 3. 매점 인기 상품 찾기</h3>
+  <pre class="codebox"><code>sales = {
+    "물": 35,
+    "주스": 28,
+    "빵": 42,
+    "우유": 19,
+    "과자": 31
+}
+
+popular = max(sales, key=sales.get)
+
+print("가장 많이 팔린 상품:", popular)
+print("판매 개수:", sales[popular])</code></pre>
+  <p>
+    <span class="tag">경영 데이터</span>
+    상품별 판매량을 분석하면 어떤 상품을 더 많이 준비해야 하는지 판단할 수 있습니다.
+    이것이 데이터 기반 의사결정의 좋은 예입니다.
+  </p>
+
+  <h3>예제 4. 미세먼지 상태 판단</h3>
+  <pre class="codebox"><code>dust = 82
+
+if dust <= 30:
+    print("미세먼지 좋음")
+elif dust <= 80:
+    print("미세먼지 보통")
+elif dust <= 150:
+    print("미세먼지 나쁨")
+else:
+    print("미세먼지 매우 나쁨")</code></pre>
+  <p>
+    <span class="tag">환경 데이터</span>
+    미세먼지 수치를 기준에 따라 해석하면 외출 여부나 마스크 착용 여부를 결정할 수 있습니다.
+    숫자 데이터가 생활 정보로 바뀌는 과정입니다.
+  </p>
+
+  <h3>예제 5. 관심 분야에 따른 진로 추천</h3>
+  <pre class="codebox"><code>interests = ["코딩", "수학", "생명"]
+
+if "코딩" in interests and "수학" in interests:
+    print("추천 진로: 인공지능 개발자 또는 데이터 과학자")
+elif "생명" in interests:
+    print("추천 진로: 생명정보학자")
+else:
+    print("추천 진로: 데이터 활용 분야를 더 탐색해 보세요.")</code></pre>
+  <p>
+    <span class="tag">진로 데이터</span>
+    학생의 관심 분야를 데이터로 보고 조건에 따라 진로를 추천할 수 있습니다.
+    실제 진로 추천 시스템은 더 많은 데이터와 알고리즘을 사용합니다.
+  </p>
+</section>
+
+<section id="closing">
+  <div class="kicker">Closing Talk</div>
+  <h2>8. 수업을 마무리하는 멘트</h2>
+
+  <div class="ment">
+    오늘 우리는 데이터가 단순한 숫자가 아니라 세상을 이해하는 도구라는 것을 배웠습니다.
+    컴퓨터과학은 데이터를 처리하는 방법을 제공하고, 수학은 데이터를 분석하는 논리를 제공하며,
+    과학은 데이터를 통해 가설을 검증하는 태도를 제공합니다. 데이터 과학은 이 세 영역이 만나는 지점에 있습니다.
+    앞으로 여러분이 의사가 되든, 과학자가 되든, 교사가 되든, 개발자가 되든, 예술가가 되든
+    데이터는 문제를 발견하고 해결하는 중요한 언어가 될 것입니다.
+  </div>
+
+  <div class="grid" style="margin-top:18px;">
+    <div class="card">
+      <h3>컴퓨터과학과의 연결</h3>
+      <p>파이썬, 알고리즘, 데이터 구조를 활용하여 많은 데이터를 빠르게 처리합니다.</p>
+    </div>
+    <div class="card">
+      <h3>수학과의 연결</h3>
+      <p>평균, 분산, 확률, 함수, 상관관계를 사용해 데이터의 의미를 해석합니다.</p>
+    </div>
+    <div class="card">
+      <h3>과학과의 연결</h3>
+      <p>관찰, 측정, 가설 검증 과정을 통해 데이터를 근거로 자연과 사회 현상을 설명합니다.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  고등학교 데이터 프로그래밍 · 데이터 과학과 진로 수업자료
+</div>
+
+</div>
+</body>
+</html>
