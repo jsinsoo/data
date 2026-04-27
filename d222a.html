@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>상관 관계 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"CORRELATION";position:absolute;right:-72px;bottom:-70px;font-size:116px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계</div><h1>데이터 분석과 예측 ②<br>상관 관계</h1><p>두 변수 사이의 함께 변하는 경향을 산점도와 상관계수로 탐색하고, 상관과 인과를 구별하는 비판적 데이터 해석 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (2) 데이터 분석과 예측 → 2) 상관 관계</td></tr>
+<tr><th>핵심 개념</th><td>상관 관계, 양의 상관, 음의 상관, 무상관, 산점도, 상관계수, 피어슨 상관계수, 선형 관계, 비선형 관계, 이상치, 상관과 인과, 데이터 기반 예측</td></tr>
+<tr><th>수업 목표</th><td>① 상관 관계의 의미를 설명할 수 있다.<br>② 양의 상관, 음의 상관, 무상관을 산점도로 구별할 수 있다.<br>③ 상관계수의 범위와 해석 방법을 이해할 수 있다.<br>④ 파이썬으로 산점도와 상관계수를 계산할 수 있다.<br>⑤ 상관 관계가 인과 관계를 의미하지 않음을 사례로 설명할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“두 변수가 함께 변한다는 것은 어떤 의미일까?”<br>“상관계수가 1에 가까우면 무엇을 알 수 있을까?”<br>“상관 관계가 있다고 해서 반드시 원인과 결과라고 말할 수 있을까?”</td></tr>
+<tr><th>성취 기준</th><td>두 변수 사이의 관계를 산점도와 상관계수로 탐색하고, 상관의 방향과 강도를 해석하며, 상관과 인과를 구별하여 데이터 기반 예측의 한계를 설명한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 기온과 아이스크림 판매량 사례 제시 → 전개: 상관 관계와 산점도 개념 학습 → 실습: 파이썬으로 산점도·상관계수 계산 → 적용: 실생활 데이터 관계 분석 → 정리: 상관과 인과 구별 및 머신러닝 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 산점도 해석, 코드 실행 결과 예측, 상관계수 계산 활동, 실생활 상관 사례 분석 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>상관 관계, 산점도, 상관계수, 양의 상관, 음의 상관, 무상관, 상관과 인과의 차이를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 두 변수의 산점도를 그리고 상관계수를 계산하여 관계의 방향과 강도를 해석한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>두 변수가 함께 변한다고 해서 원인과 결과로 단정하지 않고, 숨은 변수와 맥락을 함께 고려한다.</p></div>
+</div>
+<div class="flow"><span>두 변수 선택</span><span class="arrow">→</span><span>산점도 확인</span><span class="arrow">→</span><span>상관계수 계산</span><span class="arrow">→</span><span>방향·강도 해석</span><span class="arrow">→</span><span>인과 여부 검토</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">여름이 되면 아이스크림 판매량이 늘어납니다. 또 공부 시간이 늘어나면 시험 점수가 오를 가능성도 있습니다. 이처럼 한 변수가 커질 때 다른 변수도 함께 커지거나 작아지는 경향을 우리는 상관 관계라고 부릅니다. 하지만 “기온이 오르면 아이스크림 판매량이 오른다”는 말과 “아이스크림을 많이 팔았기 때문에 기온이 올랐다”는 말은 전혀 다릅니다. 오늘은 데이터를 보고 두 변수의 관계를 찾되, 성급하게 원인과 결과로 단정하지 않는 방법을 배웁니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 상관 관계</h3><p>상관 관계는 두 변수가 함께 변하는 경향을 말합니다. 한 변수가 증가할 때 다른 변수도 증가하거나 감소하는 경향이 있는지 살펴봅니다.</p></div>
+<div class="card"><h3>개념 2. 양의 상관</h3><p>양의 상관은 한 변수가 증가할 때 다른 변수도 증가하는 경향입니다. 예를 들어 기온이 높아질수록 아이스크림 판매량이 증가할 수 있습니다.</p></div>
+<div class="card"><h3>개념 3. 음의 상관</h3><p>음의 상관은 한 변수가 증가할 때 다른 변수는 감소하는 경향입니다. 예를 들어 운동 시간이 늘수록 특정 조건에서 체지방률이 감소하는 경향이 나타날 수 있습니다.</p></div>
+<div class="card"><h3>개념 4. 무상관</h3><p>무상관은 두 변수 사이에 뚜렷한 함께 변하는 경향이 보이지 않는 경우입니다. 산점도에서 점들이 특별한 방향 없이 흩어져 보입니다.</p></div>
+<div class="card"><h3>개념 5. 산점도</h3><p>산점도는 두 변수의 값을 좌표평면 위의 점으로 나타낸 그래프입니다. x축에는 한 변수, y축에는 다른 변수를 놓고 점들의 방향과 밀집 정도를 관찰합니다.</p></div>
+<div class="card"><h3>개념 6. 상관계수</h3><p>상관계수는 두 변수의 선형 관계의 방향과 강도를 수치로 나타낸 값입니다. 보통 -1에서 1 사이의 값을 가지며, 1에 가까우면 강한 양의 상관, -1에 가까우면 강한 음의 상관, 0에 가까우면 선형 관계가 약하다고 해석합니다.</p><p>\[ -1 \le r \le 1 \]</p></div>
+<div class="card"><h3>개념 7. 피어슨 상관계수</h3><p>피어슨 상관계수는 두 수치형 변수 사이의 선형 관계를 측정하는 대표적인 방법입니다. 직선적인 관계에는 유용하지만 곡선 형태의 관계를 항상 잘 포착하지는 못합니다.</p></div>
+<div class="card"><h3>개념 8. 이상치의 영향</h3><p>이상치는 상관계수와 산점도 해석에 큰 영향을 줄 수 있습니다. 한두 개의 극단적인 점 때문에 상관이 강해 보이거나 약해 보일 수 있습니다.</p></div>
+<div class="card warning"><h3>개념 9. 상관은 인과가 아니다</h3><p>상관 관계가 있다는 것은 두 변수가 함께 변하는 경향이 있다는 뜻이지, 한 변수가 다른 변수의 원인이라는 뜻은 아닙니다. 숨은 변수나 우연한 관계가 있을 수 있습니다.</p></div>
+<div class="card deep"><h3>개념 10. 예측과 상관 관계</h3><p>상관 관계는 데이터 기반 예측의 출발점입니다. 두 변수 사이에 강한 관련성이 있으면 하나의 변수로 다른 변수의 경향을 예측하는 모델을 만들 수 있습니다. 그러나 예측은 항상 불확실성을 포함합니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 양의 상관 데이터 확인</h3><pre class="codebox"><code>temperature = [20, 22, 25, 27, 30, 32]
+icecream = [30, 35, 42, 50, 65, 72]
+
+for x, y in zip(temperature, icecream):
+    print("기온:", x, "판매량:", y)</code></pre><p><strong>설명:</strong> 기온이 높아질수록 아이스크림 판매량도 증가하는 경향이 있습니다.</p>
+
+<h3>코드 2. 산점도 그리기</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+temperature = [20, 22, 25, 27, 30, 32]
+icecream = [30, 35, 42, 50, 65, 72]
+
+plt.scatter(temperature, icecream)
+plt.title("기온과 아이스크림 판매량")
+plt.xlabel("기온")
+plt.ylabel("판매량")
+plt.show()</code></pre><p><strong>설명:</strong> 산점도는 두 변수의 관계를 눈으로 확인하는 기본 그래프입니다.</p>
+
+<h3>코드 3. 상관계수 직접 계산하기</h3><pre class="codebox"><code>x = [1, 2, 3, 4, 5]
+y = [2, 4, 5, 8, 10]
+
+mean_x = sum(x) / len(x)
+mean_y = sum(y) / len(y)
+
+num = sum((a - mean_x) * (b - mean_y) for a, b in zip(x, y))
+den_x = sum((a - mean_x) ** 2 for a in x) ** 0.5
+den_y = sum((b - mean_y) ** 2 for b in y) ** 0.5
+
+r = num / (den_x * den_y)
+print("상관계수:", r)</code></pre><p><strong>설명:</strong> 두 변수의 편차가 함께 움직이는 정도를 이용해 상관계수를 계산합니다.</p>
+
+<h3>코드 4. numpy로 상관계수 구하기</h3><pre class="codebox"><code>import numpy as np
+
+study_hours = [1, 2, 3, 4, 5, 6]
+scores = [55, 62, 70, 78, 86, 92]
+
+corr = np.corrcoef(study_hours, scores)[0, 1]
+
+print("공부 시간과 점수의 상관계수:", corr)</code></pre><p><strong>설명:</strong> <code>numpy</code>의 <code>corrcoef</code>를 사용하면 상관계수를 간단히 구할 수 있습니다.</p>
+
+<h3>코드 5. 음의 상관 산점도</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+exercise = [1, 2, 3, 4, 5, 6]
+fat_rate = [30, 28, 25, 23, 21, 19]
+
+plt.scatter(exercise, fat_rate)
+plt.title("운동 시간과 체지방률")
+plt.xlabel("운동 시간")
+plt.ylabel("체지방률")
+plt.show()</code></pre><p><strong>설명:</strong> 운동 시간이 늘어날수록 체지방률이 감소하는 경향은 음의 상관으로 볼 수 있습니다.</p>
+
+<h3>코드 6. 이상치가 상관계수에 미치는 영향</h3><pre class="codebox"><code>import numpy as np
+
+x1 = [1, 2, 3, 4, 5]
+y1 = [2, 4, 6, 8, 10]
+
+x2 = [1, 2, 3, 4, 5, 20]
+y2 = [2, 4, 6, 8, 10, 1]
+
+print("이상치 없음:", np.corrcoef(x1, y1)[0, 1])
+print("이상치 있음:", np.corrcoef(x2, y2)[0, 1])</code></pre><p><strong>설명:</strong> 하나의 극단적인 값이 상관계수를 크게 바꿀 수 있습니다.</p>
+
+<h3>코드 7. 상관과 인과 주의 메시지</h3><pre class="codebox"><code>corr = 0.92
+
+if abs(corr) >= 0.8:
+    print("강한 상관 관계가 있습니다.")
+    print("하지만 이것만으로 인과 관계를 단정할 수는 없습니다.")
+else:
+    print("상관 관계가 약하거나 뚜렷하지 않습니다.")</code></pre><p><strong>설명:</strong> 상관계수가 높아도 원인과 결과 관계를 증명하려면 추가적인 근거가 필요합니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 상관 관계는 두 변수가 함께 변하는 경향을 말한다. (O/X)</p><div class="answer">정답: O</div><div class="explain">한 변수가 변할 때 다른 변수도 일정한 경향을 보이면 상관 관계를 생각할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">2. 양의 상관은 한 변수가 증가할 때 다른 변수도 증가하는 경향이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">기온과 아이스크림 판매량이 함께 증가하는 경우가 예입니다.</div></div>
+<div class="q"><p class="q-title">3. 음의 상관은 두 변수가 항상 같은 방향으로 증가하는 관계이다. (O/X)</p><div class="answer">정답: X</div><div class="explain">음의 상관은 한 변수가 증가할 때 다른 변수가 감소하는 경향입니다.</div></div>
+<div class="q"><p class="q-title">4. 산점도는 두 변수의 관계를 시각적으로 확인하는 데 유용하다. (O/X)</p><div class="answer">정답: O</div><div class="explain">산점도는 점들의 방향과 밀집 정도로 관계를 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">5. 상관계수는 보통 -1에서 1 사이의 값을 가진다. (O/X)</p><div class="answer">정답: O</div><div class="explain">1에 가까울수록 양의 상관, -1에 가까울수록 음의 상관이 강합니다.</div></div>
+<div class="q"><p class="q-title">6. 상관계수가 0에 가까우면 선형 관계가 약하다고 볼 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">0에 가까운 값은 직선적인 관계가 뚜렷하지 않다는 뜻입니다.</div></div>
+<div class="q"><p class="q-title">7. 상관 관계가 있으면 반드시 인과 관계도 있다. (O/X)</p><div class="answer">정답: X</div><div class="explain">상관은 함께 변한다는 뜻이지 원인과 결과를 증명하지 않습니다.</div></div>
+<div class="q"><p class="q-title">8. 이상치는 상관계수에 영향을 줄 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">극단적인 값은 상관계수를 크게 바꾸거나 산점도 해석을 왜곡할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">9. 상관계수가 1에 가까우면 강한 양의 선형 관계로 해석할 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">점들이 오른쪽 위 방향의 직선에 가깝게 모이는 경우입니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 기반 예측에서 상관 관계는 중요한 출발점이 될 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">변수 사이 관계를 이해하면 예측 모델을 만드는 기초가 됩니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 상관 관계의 설명으로 가장 적절한 것은?</p><ul class="choice"><li>① 두 변수가 함께 변하는 경향</li><li>② 데이터 파일의 이름</li><li>③ 그래프의 색상</li><li>④ 값을 모두 삭제하는 과정</li><li>⑤ 코드를 저장하는 과정</li></ul><div class="answer">정답: ①</div><div class="explain">상관 관계는 두 변수의 함께 변하는 경향을 뜻합니다.</div></div>
+<div class="q"><p class="q-title">2. 양의 상관에 해당하는 예는?</p><ul class="choice"><li>① 공부 시간이 늘수록 점수가 증가하는 경향</li><li>② 운동 시간이 늘수록 체지방률이 감소하는 경향</li><li>③ 두 변수가 아무 관계 없음</li><li>④ 파일 용량이 줄어드는 현상</li><li>⑤ 코드 줄 수와 날씨가 무관한 경우</li></ul><div class="answer">정답: ①</div><div class="explain">두 변수가 함께 증가하면 양의 상관입니다.</div></div>
+<div class="q"><p class="q-title">3. 음의 상관에 해당하는 예는?</p><ul class="choice"><li>① 운동 시간이 늘수록 체지방률이 감소하는 경향</li><li>② 기온이 높을수록 아이스크림 판매량 증가</li><li>③ 공부 시간이 늘수록 점수 증가</li><li>④ 키와 이름의 관계</li><li>⑤ 동전 던지기 결과와 날짜</li></ul><div class="answer">정답: ①</div><div class="explain">한 변수가 증가할 때 다른 변수가 감소하면 음의 상관입니다.</div></div>
+<div class="q"><p class="q-title">4. 두 변수의 관계를 점으로 나타내는 그래프는?</p><ul class="choice"><li>① 산점도</li><li>② 원그래프</li><li>③ 글머리표</li><li>④ 표지 그림</li><li>⑤ 파일명</li></ul><div class="answer">정답: ①</div><div class="explain">산점도는 x축과 y축에 두 변수를 놓고 점으로 표현합니다.</div></div>
+<div class="q"><p class="q-title">5. 상관계수 r의 범위로 옳은 것은?</p><ul class="choice"><li>① -1에서 1 사이</li><li>② 0에서 100 사이만</li><li>③ 항상 10 이상</li><li>④ 항상 음수</li><li>⑤ 단위가 kg</li></ul><div class="answer">정답: ①</div><div class="explain">상관계수는 일반적으로 -1 이상 1 이하입니다.</div></div>
+<div class="q"><p class="q-title">6. 상관계수 r이 -0.9일 때 가장 적절한 해석은?</p><ul class="choice"><li>① 강한 음의 상관</li><li>② 강한 양의 상관</li><li>③ 무조건 인과 관계</li><li>④ 관계 없음만 의미</li><li>⑤ 평균값</li></ul><div class="answer">정답: ①</div><div class="explain">-1에 가까우므로 강한 음의 선형 관계로 볼 수 있습니다.</div></div>
+<div class="q"><p class="q-title">7. 상관계수가 높을 때 주의해야 할 점은?</p><ul class="choice"><li>① 인과 관계를 바로 단정하지 않는다.</li><li>② 무조건 원인이라고 말한다.</li><li>③ 데이터를 모두 삭제한다.</li><li>④ 그래프를 보지 않는다.</li><li>⑤ 이상치를 숨긴다.</li></ul><div class="answer">정답: ①</div><div class="explain">상관은 인과를 증명하지 않으므로 추가 근거가 필요합니다.</div></div>
+<div class="q"><p class="q-title">8. 이상치가 상관 분석에 미치는 영향으로 옳은 것은?</p><ul class="choice"><li>① 상관계수와 산점도 해석을 왜곡할 수 있다.</li><li>② 아무 영향도 줄 수 없다.</li><li>③ 항상 정확도를 높인다.</li><li>④ 그래프에서 절대 보이지 않는다.</li><li>⑤ 데이터 개수를 0으로 만든다.</li></ul><div class="answer">정답: ①</div><div class="explain">극단적인 값은 관계의 방향과 강도를 다르게 보이게 할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">9. 무상관에 가까운 상황은?</p><ul class="choice"><li>① 점들이 특별한 방향 없이 흩어져 있다.</li><li>② 점들이 완벽한 직선 위에 있다.</li><li>③ x가 커질수록 y가 반드시 증가한다.</li><li>④ x가 커질수록 y가 반드시 감소한다.</li><li>⑤ r이 1이다.</li></ul><div class="answer">정답: ①</div><div class="explain">점들이 방향성 없이 흩어져 있으면 선형 상관이 약하다고 볼 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 상관 관계를 활용하는 데이터 과학 활동으로 가장 적절한 것은?</p><ul class="choice"><li>① 변수 사이 관계를 바탕으로 예측 모델의 단서를 찾는다.</li><li>② 데이터를 무조건 삭제한다.</li><li>③ 표본을 모두 숨긴다.</li><li>④ 그래프 축을 없앤다.</li><li>⑤ 평균 계산을 금지한다.</li></ul><div class="answer">정답: ①</div><div class="explain">상관 관계는 예측에 사용할 변수 관계를 탐색하는 중요한 출발점입니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 공부 시간과 시험 점수</h3><pre class="codebox"><code>import numpy as np
+
+study = [1, 2, 3, 4, 5, 6]
+score = [55, 62, 70, 78, 86, 92]
+
+r = np.corrcoef(study, score)[0, 1]
+print("상관계수:", r)</code></pre><p><span class="tag">교육 데이터</span>공부 시간과 점수 사이에 양의 상관이 있는지 확인하여 학습 습관 분석에 활용할 수 있습니다.</p>
+
+<h3>예제 2. 기온과 아이스크림 판매량 산점도</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+temp = [20, 22, 25, 27, 30, 32]
+sales = [30, 35, 42, 50, 65, 72]
+
+plt.scatter(temp, sales)
+plt.title("기온과 아이스크림 판매량")
+plt.xlabel("기온")
+plt.ylabel("판매량")
+plt.show()</code></pre><p><span class="tag">판매 데이터</span>기온이 오를수록 판매량이 증가하는 경향이 있는지 시각적으로 확인할 수 있습니다.</p>
+
+<h3>예제 3. 운동 시간과 체지방률</h3><pre class="codebox"><code>import numpy as np
+
+exercise = [1, 2, 3, 4, 5, 6]
+fat = [30, 28, 25, 23, 21, 19]
+
+r = np.corrcoef(exercise, fat)[0, 1]
+print("상관계수:", r)</code></pre><p><span class="tag">건강 데이터</span>운동 시간이 늘수록 체지방률이 감소하는 경향이 있다면 음의 상관을 생각할 수 있습니다.</p>
+
+<h3>예제 4. 수면 시간과 집중도</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+import numpy as np
+
+sleep = [4, 5, 6, 7, 8, 9]
+focus = [50, 60, 72, 80, 83, 84]
+
+print("상관계수:", np.corrcoef(sleep, focus)[0, 1])
+
+plt.scatter(sleep, focus)
+plt.title("수면 시간과 집중도")
+plt.xlabel("수면 시간")
+plt.ylabel("집중도")
+plt.show()</code></pre><p><span class="tag">생활 데이터</span>수면 시간이 늘어날수록 집중도가 높아지는 경향이 있는지 탐색할 수 있습니다.</p>
+
+<h3>예제 5. 이상치 포함 전후 비교</h3><pre class="codebox"><code>import numpy as np
+
+x_normal = [1, 2, 3, 4, 5]
+y_normal = [2, 4, 6, 8, 10]
+
+x_outlier = [1, 2, 3, 4, 5, 10]
+y_outlier = [2, 4, 6, 8, 10, 1]
+
+print("이상치 없음:", np.corrcoef(x_normal, y_normal)[0, 1])
+print("이상치 있음:", np.corrcoef(x_outlier, y_outlier)[0, 1])</code></pre><p><span class="tag">데이터 품질</span>상관 분석 전에 이상치를 확인해야 관계 해석이 왜곡되는 것을 줄일 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 두 변수 사이의 관계를 상관 관계라는 개념으로 살펴보았습니다. 산점도는 관계를 눈으로 확인하게 해 주고, 상관계수는 관계의 방향과 강도를 수치로 표현합니다. 그러나 상관 관계는 인과 관계를 자동으로 증명하지 않습니다. 컴퓨터과학은 파이썬으로 산점도와 상관계수를 빠르게 계산하게 해 주고, 수학은 좌표평면과 상관계수의 원리를 설명합니다. 과학은 변수 사이 관계를 가설로 세우고 실험과 검증을 통해 원인과 결과를 조심스럽게 판단하게 합니다. 데이터 과학과 머신러닝에서 상관 관계는 예측에 사용할 중요한 변수 관계를 찾는 출발점입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬, numpy, matplotlib을 활용해 변수 관계를 계산하고 시각화합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>좌표평면, 편차, 공분산, 상관계수는 두 변수의 관계를 수치로 표현하는 수학적 도구입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>상관 관계는 가설을 세우는 단서가 되지만, 인과 관계는 실험과 통제를 통해 검증해야 합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>상관 관계 분석은 예측 모델에서 사용할 입력 변수를 선택하고 데이터 패턴을 이해하는 데 도움을 줍니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계 · 상관 관계 수업자료</div>
+</div></body></html>

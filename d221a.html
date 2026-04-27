@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>통계적 추정 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"ESTIMATE";position:absolute;right:-58px;bottom:-70px;font-size:135px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계</div><h1>데이터 분석과 예측 ①<br>통계적 추정</h1><p>모집단 전체를 조사하지 않고 표본을 이용해 전체의 특성을 추정하는 원리와 신뢰구간, 오차범위, 표본추출의 중요성을 배우는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (2) 데이터 분석과 예측 → 1) 통계적 추정</td></tr>
+<tr><th>핵심 개념</th><td>모집단, 표본, 표본추출, 모수, 통계량, 점추정, 구간추정, 표본평균, 표본비율, 표준오차, 오차범위, 신뢰수준, 신뢰구간, 표본추출 편향</td></tr>
+<tr><th>수업 목표</th><td>① 모집단과 표본의 차이를 설명할 수 있다.<br>② 모수와 통계량의 의미를 구분할 수 있다.<br>③ 표본평균과 표본비율을 이용해 전체의 특성을 추정할 수 있다.<br>④ 신뢰구간과 오차범위의 의미를 생활 사례와 연결해 설명할 수 있다.<br>⑤ 파이썬으로 표본을 추출하고 추정값과 신뢰구간을 계산할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“전체를 모두 조사하지 않고도 전체를 알 수 있을까?”<br>“표본이 달라지면 왜 추정 결과도 달라질까?”<br>“여론조사에서 ±3%p 오차범위는 어떤 의미일까?”</td></tr>
+<tr><th>성취 기준</th><td>표본 자료를 이용하여 모집단의 평균이나 비율을 추정하고, 추정 결과의 불확실성을 오차범위와 신뢰구간으로 해석한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 여론조사와 상품 만족도 조사 사례 제시 → 전개: 모집단·표본·추정·신뢰구간 개념 학습 → 실습: 파이썬 표본추출과 신뢰구간 계산 → 적용: 실생활 추정 사례 분석 → 정리: 컴퓨터과학·수학·과학과 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 표본추출 실습, 코드 실행 결과 해석, 신뢰구간 해석 활동, 실생활 조사 설계 활동</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>모집단, 표본, 모수, 통계량, 점추정, 구간추정, 신뢰구간, 오차범위의 의미를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 표본을 추출하고 표본평균, 표준오차, 신뢰구간을 계산한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>추정 결과를 절대적 진실로 받아들이지 않고 표본의 크기, 대표성, 오차 가능성을 함께 고려한다.</p></div>
+</div>
+<div class="flow"><span>모집단 설정</span><span class="arrow">→</span><span>표본추출</span><span class="arrow">→</span><span>통계량 계산</span><span class="arrow">→</span><span>추정</span><span class="arrow">→</span><span>오차 해석</span><span class="arrow">→</span><span>의사결정</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">뉴스에서 “전국 성인 1,000명을 대상으로 조사한 결과 찬성 52%, 오차범위 ±3.1%p”라는 표현을 본 적이 있을 것입니다. 전국 모든 사람에게 물어보지 않았는데 어떻게 전체 의견을 말할 수 있을까요? 핵심은 표본입니다. 전체를 모두 조사하기 어렵기 때문에 일부를 뽑아 전체를 추정합니다. 오늘은 표본을 이용해 전체를 추정하는 통계적 추정의 원리를 배우고, 그 결과가 얼마나 불확실한지도 함께 해석해 보겠습니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 모집단</h3><p>모집단은 우리가 알고 싶은 전체 대상입니다. 예를 들어 “우리 학교 전체 학생의 평균 수면 시간”을 알고 싶다면 우리 학교 전체 학생이 모집단입니다.</p></div>
+<div class="card"><h3>개념 2. 표본</h3><p>표본은 모집단에서 실제로 조사한 일부 대상입니다. 전체를 모두 조사하기 어렵거나 시간이 많이 걸릴 때 표본을 사용합니다.</p></div>
+<div class="card"><h3>개념 3. 표본추출</h3><p>표본추출은 모집단에서 표본을 뽑는 과정입니다. 표본이 한쪽으로 치우치면 전체를 잘 대표하지 못하므로 무작위 추출과 대표성이 중요합니다.</p></div>
+<div class="card"><h3>개념 4. 모수와 통계량</h3><p>모수는 모집단 전체의 특성값이고, 통계량은 표본에서 계산한 값입니다. 모집단 평균은 모수이고, 표본평균은 통계량입니다.</p></div>
+<div class="card"><h3>개념 5. 점추정</h3><p>점추정은 하나의 값으로 모집단의 특성을 추정하는 방법입니다. 예를 들어 표본평균 7.2시간으로 전체 학생의 평균 수면 시간을 추정하는 것입니다.</p></div>
+<div class="card"><h3>개념 6. 구간추정</h3><p>구간추정은 하나의 값이 아니라 범위로 추정하는 방법입니다. 예를 들어 “전체 평균 수면 시간은 6.9시간에서 7.5시간 사이일 것으로 추정된다”라고 말하는 방식입니다.</p></div>
+<div class="card"><h3>개념 7. 표준오차</h3><p>표준오차는 표본통계량이 표본마다 얼마나 흔들릴 수 있는지를 나타내는 값입니다. 표본의 크기가 커질수록 표준오차는 일반적으로 작아집니다.</p><p>\[ SE = \frac{s}{\sqrt{n}} \]</p></div>
+<div class="card"><h3>개념 8. 오차범위</h3><p>오차범위는 추정값 주변에 어느 정도의 불확실성이 있는지를 나타냅니다. 여론조사에서 ±3%p라고 하면 실제 비율이 조사 결과보다 약간 높거나 낮을 수 있음을 뜻합니다.</p></div>
+<div class="card"><h3>개념 9. 신뢰구간</h3><p>신뢰구간은 추정값과 오차범위를 이용해 만든 추정 범위입니다. 고등학교 수준에서는 보통 “추정값 ± 오차범위” 형태로 이해할 수 있습니다.</p><p>\[ \text{신뢰구간} = \text{추정값} \pm \text{오차범위} \]</p></div>
+<div class="card warning"><h3>개념 10. 표본추출 편향</h3><p>표본추출 편향은 표본이 모집단을 고르게 대표하지 못할 때 생깁니다. 예를 들어 온라인 설문만 하면 인터넷을 자주 쓰지 않는 사람들의 의견이 빠질 수 있습니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 모집단에서 표본 뽑기</h3><pre class="codebox"><code>import random
+
+population = [160, 165, 170, 172, 168, 174, 169, 171, 166, 175]
+sample = random.sample(population, 4)
+
+print("모집단:", population)
+print("표본:", sample)</code></pre><p><strong>설명:</strong> 전체 학생 키 데이터에서 일부 표본을 무작위로 뽑는 예제입니다.</p>
+
+<h3>코드 2. 표본평균으로 모집단 평균 추정하기</h3><pre class="codebox"><code>sample = [165, 170, 172, 168]
+
+sample_mean = sum(sample) / len(sample)
+
+print("표본평균:", sample_mean)
+print("모집단 평균의 추정값:", sample_mean)</code></pre><p><strong>설명:</strong> 표본평균은 모집단 평균을 추정하는 대표적인 통계량입니다.</p>
+
+<h3>코드 3. 표본이 달라지면 추정값도 달라짐</h3><pre class="codebox"><code>import random
+
+population = [160, 165, 170, 172, 168, 174, 169, 171, 166, 175]
+
+for i in range(5):
+    sample = random.sample(population, 4)
+    mean = sum(sample) / len(sample)
+    print(i+1, "번째 표본:", sample, "표본평균:", mean)</code></pre><p><strong>설명:</strong> 표본을 어떻게 뽑느냐에 따라 표본평균이 조금씩 달라질 수 있습니다.</p>
+
+<h3>코드 4. 표준오차 계산하기</h3><pre class="codebox"><code>sample = [165, 170, 172, 168, 171]
+
+mean = sum(sample) / len(sample)
+variance = sum((x - mean) ** 2 for x in sample) / (len(sample) - 1)
+sample_std = variance ** 0.5
+standard_error = sample_std / (len(sample) ** 0.5)
+
+print("표본평균:", mean)
+print("표본표준편차:", sample_std)
+print("표준오차:", standard_error)</code></pre><p><strong>설명:</strong> 표준오차는 표본평균이 표본마다 얼마나 흔들릴 수 있는지 나타냅니다.</p>
+
+<h3>코드 5. 95% 신뢰구간 간단 계산</h3><pre class="codebox"><code>sample_mean = 169.2
+standard_error = 1.2
+
+margin_error = 1.96 * standard_error
+lower = sample_mean - margin_error
+upper = sample_mean + margin_error
+
+print("오차범위:", margin_error)
+print("95% 신뢰구간:", lower, "~", upper)</code></pre><p><strong>설명:</strong> 95% 신뢰구간은 표본평균 주변에 오차범위를 더하고 빼서 구할 수 있습니다.</p>
+
+<h3>코드 6. 표본 크기와 표준오차 비교</h3><pre class="codebox"><code>sample_std = 10
+
+for n in [25, 100, 400]:
+    se = sample_std / (n ** 0.5)
+    print("표본 크기:", n, "표준오차:", se)</code></pre><p><strong>설명:</strong> 표본 크기 \(n\)이 커질수록 표준오차는 작아지는 경향이 있습니다.</p>
+
+<h3>코드 7. 표본비율 추정</h3><pre class="codebox"><code>responses = ["찬성", "반대", "찬성", "찬성", "반대", "찬성"]
+
+agree_count = responses.count("찬성")
+sample_ratio = agree_count / len(responses)
+
+print("찬성 표본비율:", sample_ratio)</code></pre><p><strong>설명:</strong> 표본에서 찬성한 비율을 이용해 모집단의 찬성 비율을 추정할 수 있습니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모집단은 우리가 알고 싶은 전체 대상이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">전체 학생, 전체 유권자, 전체 고객처럼 관심 있는 전체 집단이 모집단입니다.</div></div>
+<div class="q"><p class="q-title">2. 표본은 모집단 전체를 항상 모두 조사한 것이다. (O/X)</p><div class="answer">정답: X</div><div class="explain">표본은 모집단에서 실제로 조사한 일부 대상입니다.</div></div>
+<div class="q"><p class="q-title">3. 표본평균은 모집단 평균을 추정하는 데 사용할 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">표본평균은 모집단 평균을 추정하는 대표적인 통계량입니다.</div></div>
+<div class="q"><p class="q-title">4. 표본이 달라지면 표본평균도 달라질 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">표본은 모집단의 일부이므로 뽑힌 대상에 따라 추정값이 달라질 수 있습니다.</div></div>
+<div class="q"><p class="q-title">5. 점추정은 하나의 값으로 모집단 특성을 추정하는 방법이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">표본평균 7.2시간처럼 하나의 값으로 추정하는 것이 점추정입니다.</div></div>
+<div class="q"><p class="q-title">6. 구간추정은 추정값을 범위로 제시하는 방법이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">신뢰구간처럼 어느 범위 안에 있을 것으로 추정하는 방식입니다.</div></div>
+<div class="q"><p class="q-title">7. 표본 크기가 커질수록 표준오차는 일반적으로 커진다. (O/X)</p><div class="answer">정답: X</div><div class="explain">다른 조건이 같다면 표본 크기가 커질수록 표준오차는 작아지는 경향이 있습니다.</div></div>
+<div class="q"><p class="q-title">8. 오차범위는 추정 결과의 불확실성을 나타낸다. (O/X)</p><div class="answer">정답: O</div><div class="explain">오차범위는 조사 결과가 실제 값과 어느 정도 차이 날 수 있는지를 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">9. 표본이 편향되어도 항상 정확한 추정이 가능하다. (O/X)</p><div class="answer">정답: X</div><div class="explain">표본이 모집단을 대표하지 못하면 추정 결과가 왜곡될 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 통계적 추정은 데이터 기반 예측과 의사결정에 활용될 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">여론조사, 품질검사, 만족도 조사, 실험 분석 등에 활용됩니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 모집단의 설명으로 옳은 것은?</p><ul class="choice"><li>① 관심 있는 전체 대상</li><li>② 항상 10명만 조사한 자료</li><li>③ 무작위 숫자 하나</li><li>④ 그래프 제목</li><li>⑤ 코드 파일명</li></ul><div class="answer">정답: ①</div><div class="explain">모집단은 알고 싶은 전체 대상입니다.</div></div>
+<div class="q"><p class="q-title">2. 표본의 설명으로 옳은 것은?</p><ul class="choice"><li>① 모집단에서 실제로 조사한 일부</li><li>② 항상 모집단 전체</li><li>③ 평균 공식</li><li>④ 그래프 색상</li><li>⑤ 변수 이름만</li></ul><div class="answer">정답: ①</div><div class="explain">표본은 모집단에서 뽑은 일부 대상입니다.</div></div>
+<div class="q"><p class="q-title">3. 모수에 해당하는 것은?</p><ul class="choice"><li>① 모집단 전체 평균</li><li>② 표본의 첫 번째 값</li><li>③ 코드 주석</li><li>④ 그래프 제목</li><li>⑤ 파일 확장자</li></ul><div class="answer">정답: ①</div><div class="explain">모수는 모집단의 특성값입니다.</div></div>
+<div class="q"><p class="q-title">4. 통계량에 해당하는 것은?</p><ul class="choice"><li>① 표본평균</li><li>② 모집단 전체 평균만</li><li>③ 키보드 입력</li><li>④ 데이터 삭제</li><li>⑤ 폴더 이름</li></ul><div class="answer">정답: ①</div><div class="explain">표본에서 계산한 평균, 비율, 표준편차 등이 통계량입니다.</div></div>
+<div class="q"><p class="q-title">5. 점추정의 예로 적절한 것은?</p><ul class="choice"><li>① 표본평균 7.2시간으로 전체 평균을 추정한다.</li><li>② 아무 값도 제시하지 않는다.</li><li>③ 그래프를 삭제한다.</li><li>④ 코드를 실행하지 않는다.</li><li>⑤ 표본을 의도적으로 편향시킨다.</li></ul><div class="answer">정답: ①</div><div class="explain">하나의 값으로 모집단의 특성을 추정하는 것이 점추정입니다.</div></div>
+<div class="q"><p class="q-title">6. 구간추정의 설명으로 옳은 것은?</p><ul class="choice"><li>① 추정값을 범위로 제시한다.</li><li>② 데이터 하나만 삭제한다.</li><li>③ 표본을 사용하지 않는다.</li><li>④ 오차를 무시한다.</li><li>⑤ 평균을 금지한다.</li></ul><div class="answer">정답: ①</div><div class="explain">구간추정은 신뢰구간처럼 범위로 추정하는 방법입니다.</div></div>
+<div class="q"><p class="q-title">7. 표준오차가 작아지는 일반적인 경우는?</p><ul class="choice"><li>① 표본 크기가 커질 때</li><li>② 표본 크기가 0일 때</li><li>③ 데이터를 모두 지울 때</li><li>④ 표본을 편향시킬 때</li><li>⑤ 결과를 숨길 때</li></ul><div class="answer">정답: ①</div><div class="explain">표본 크기가 커지면 표본평균의 변동성이 줄어드는 경향이 있습니다.</div></div>
+<div class="q"><p class="q-title">8. 오차범위의 의미로 가장 적절한 것은?</p><ul class="choice"><li>① 추정값 주변의 불확실성</li><li>② 데이터 파일 크기</li><li>③ 그래프 색상 차이</li><li>④ 코드 줄 수</li><li>⑤ 표본 이름</li></ul><div class="answer">정답: ①</div><div class="explain">오차범위는 실제 값이 추정값과 어느 정도 다를 수 있는지를 나타냅니다.</div></div>
+<div class="q"><p class="q-title">9. 표본추출 편향의 예로 적절한 것은?</p><ul class="choice"><li>① 특정 집단만 조사하여 전체 의견처럼 발표한다.</li><li>② 무작위로 표본을 뽑는다.</li><li>③ 표본 크기를 충분히 확보한다.</li><li>④ 조사 대상을 다양하게 포함한다.</li><li>⑤ 결과의 오차를 밝힌다.</li></ul><div class="answer">정답: ①</div><div class="explain">한쪽으로 치우친 표본은 모집단을 잘 대표하지 못합니다.</div></div>
+<div class="q"><p class="q-title">10. 통계적 추정 결과를 해석할 때 바람직한 태도는?</p><ul class="choice"><li>① 추정값을 절대적 진실로 믿는다.</li><li>② 표본 크기, 오차범위, 대표성을 함께 확인한다.</li><li>③ 오차범위를 숨긴다.</li><li>④ 표본이 어떻게 뽑혔는지 보지 않는다.</li><li>⑤ 편향 가능성을 무시한다.</li></ul><div class="answer">정답: ②</div><div class="explain">추정 결과는 항상 불확실성과 표본의 대표성을 함께 해석해야 합니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 학교 수면 시간 표본평균 추정</h3><pre class="codebox"><code>sleep_hours = [6.5, 7.0, 5.5, 8.0, 7.5, 6.0, 7.2]
+
+sample_mean = sum(sleep_hours) / len(sleep_hours)
+
+print("표본 평균 수면 시간:", round(sample_mean, 2))</code></pre><p><span class="tag">생활 데이터</span>일부 학생의 수면 시간을 조사하여 전체 학생의 평균 수면 시간을 추정할 수 있습니다.</p>
+
+<h3>예제 2. 만족도 조사 찬성 비율 추정</h3><pre class="codebox"><code>responses = ["만족", "만족", "보통", "만족", "불만", "만족"]
+
+satisfied = responses.count("만족")
+ratio = satisfied / len(responses)
+
+print("만족 표본비율:", round(ratio, 2))</code></pre><p><span class="tag">설문 데이터</span>표본에서 만족한 사람의 비율을 계산해 전체 만족 비율을 추정하는 출발점으로 사용할 수 있습니다.</p>
+
+<h3>예제 3. 무작위 표본추출 실습</h3><pre class="codebox"><code>import random
+
+population = list(range(1, 101))
+sample = random.sample(population, 10)
+
+print("100명 중 뽑힌 표본:", sample)</code></pre><p><span class="tag">표본추출</span>무작위 표본추출은 특정 대상만 선택되는 편향을 줄이는 데 도움이 됩니다.</p>
+
+<h3>예제 4. 신뢰구간 계산</h3><pre class="codebox"><code>sample_mean = 82
+standard_error = 2.5
+
+margin_error = 1.96 * standard_error
+lower = sample_mean - margin_error
+upper = sample_mean + margin_error
+
+print("95% 신뢰구간:", round(lower, 2), "~", round(upper, 2))</code></pre><p><span class="tag">성적 데이터</span>표본평균만 제시하는 것보다 신뢰구간을 함께 제시하면 추정의 불확실성을 표현할 수 있습니다.</p>
+
+<h3>예제 5. 표본 크기에 따른 오차 감소</h3><pre class="codebox"><code>sample_std = 12
+
+for n in [25, 50, 100, 400]:
+    se = sample_std / (n ** 0.5)
+    print("표본 크기:", n, "표준오차:", round(se, 2))</code></pre><p><span class="tag">조사 설계</span>표본 크기가 커질수록 표준오차가 작아지는 경향이 있어 더 안정적인 추정이 가능합니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 전체를 모두 조사하지 않고도 일부 표본을 통해 전체를 추정하는 통계적 추정을 배웠습니다. 표본평균과 표본비율은 모집단의 특성을 추정하는 중요한 도구이지만, 표본이 달라지면 결과도 달라질 수 있으므로 오차범위와 신뢰구간을 함께 해석해야 합니다. 컴퓨터과학은 파이썬으로 무작위 표본추출과 반복 계산을 가능하게 하고, 수학은 평균·표준오차·신뢰구간의 원리를 설명합니다. 과학은 표본을 통해 가설을 검증하고 불확실성을 정직하게 표현하는 태도를 요구합니다. 데이터 과학과 머신러닝에서도 통계적 추정은 제한된 데이터로 전체를 이해하고 미래를 예측하는 핵심 기초입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬의 무작위 추출, 반복 실행, 시뮬레이션을 통해 표본과 추정 과정을 실험할 수 있습니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>평균, 표준편차, 제곱근, 비율, 신뢰구간은 추정을 정량적으로 표현하는 수학적 도구입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>실험과 관찰에서 일부 자료를 바탕으로 전체 현상을 추정하고 불확실성을 함께 제시합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>머신러닝은 표본 데이터로 전체 패턴을 학습하므로 표본의 대표성과 편향을 이해하는 것이 중요합니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계 · 통계적 추정 수업자료</div>
+</div></body></html>

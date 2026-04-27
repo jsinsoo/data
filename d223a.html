@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회귀분석 수업지도안 - 데이터 과학과 머신러닝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--red:#ef4444;--text:#1f2937;--line:#dbe4f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0f766e);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"REGRESSION";position:absolute;right:-72px;bottom:-70px;font-size:118px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:980px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}.deep{border-left:6px solid var(--sky);background:#f0f9ff}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}
+.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계</div><h1>데이터 분석과 예측 ③<br>회귀분석</h1><p>두 변수 사이의 관계를 가장 잘 설명하는 직선을 찾고, 이를 이용해 새로운 값을 예측하는 회귀분석의 원리를 배우는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 2. 데이터 과학을 위한 통계 → (2) 데이터 분석과 예측 → 3) 회귀분석</td></tr>
+<tr><th>핵심 개념</th><td>회귀분석, 단순선형회귀, 독립변수, 종속변수, 회귀직선, 기울기, 절편, 예측값, 실제값, 잔차, 최소제곱법, 결정계수, 과적합, 예측의 한계</td></tr>
+<tr><th>수업 목표</th><td>① 회귀분석의 의미와 예측에서의 역할을 설명할 수 있다.<br>② 독립변수와 종속변수를 구분할 수 있다.<br>③ 회귀직선의 기울기와 절편을 해석할 수 있다.<br>④ 파이썬으로 단순선형회귀 모델을 만들고 예측값을 계산할 수 있다.<br>⑤ 잔차와 결정계수를 이용해 모델의 설명력을 해석할 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“과거 데이터를 이용해 미래 값을 예측할 수 있을까?”<br>“데이터 점들 사이를 가장 잘 설명하는 직선은 어떻게 찾을까?”<br>“예측값이 실제값과 다를 때 그 차이는 어떻게 해석해야 할까?”</td></tr>
+<tr><th>성취 기준</th><td>두 변수 사이의 관계를 회귀직선으로 모델링하고, 기울기·절편·잔차·결정계수를 해석하며, 파이썬을 활용해 간단한 예측을 수행한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 공부 시간으로 시험 점수 예측하기 → 전개: 독립변수·종속변수·회귀직선 개념 학습 → 실습: 파이썬 회귀분석 구현 → 적용: 실생활 예측 문제 해결 → 정리: 통계·컴퓨터과학·과학·머신러닝 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 회귀직선 해석, 코드 실행 결과 예측, 잔차 계산 활동, 실생활 예측 모델 보고서</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>회귀분석, 독립변수, 종속변수, 기울기, 절편, 잔차, 결정계수의 의미를 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬으로 산점도와 회귀직선을 그리고, 새로운 입력값에 대한 예측값을 계산한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>회귀모델의 예측 결과를 절대적 진실로 받아들이지 않고 데이터 범위, 잔차, 한계를 함께 고려한다.</p></div>
+</div>
+<div class="flow"><span>데이터 수집</span><span class="arrow">→</span><span>산점도 확인</span><span class="arrow">→</span><span>회귀직선 찾기</span><span class="arrow">→</span><span>예측</span><span class="arrow">→</span><span>잔차 확인</span><span class="arrow">→</span><span>모델 평가</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">여러분이 공부한 시간과 시험 점수 데이터를 모았다고 생각해 봅시다. 공부 시간이 늘어날수록 점수가 오르는 경향이 있다면, 아직 시험을 보지 않은 학생의 공부 시간만 보고 예상 점수를 추측할 수 있을까요? 회귀분석은 이런 질문에 답하기 위한 도구입니다. 데이터 점들 사이를 가장 잘 설명하는 선을 찾고, 그 선을 이용해 새로운 값을 예측합니다. 오늘은 데이터 과학과 머신러닝에서 매우 중요한 예측의 기초, 회귀분석을 배웁니다.</div></section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 회귀분석</h3><p>회귀분석은 하나 이상의 변수와 결과값 사이의 관계를 수학적 모델로 표현하고, 이를 이용해 결과를 예측하는 방법입니다. 고등학교 수준에서는 한 개의 입력 변수로 하나의 결과를 예측하는 단순선형회귀를 먼저 배웁니다.</p></div>
+<div class="card"><h3>개념 2. 독립변수</h3><p>독립변수는 예측에 사용하는 입력 변수입니다. 예를 들어 공부 시간으로 시험 점수를 예측한다면 공부 시간이 독립변수입니다.</p></div>
+<div class="card"><h3>개념 3. 종속변수</h3><p>종속변수는 예측하려는 결과 변수입니다. 공부 시간과 점수 예제에서는 시험 점수가 종속변수입니다.</p></div>
+<div class="card"><h3>개념 4. 회귀직선</h3><p>회귀직선은 데이터 점들의 경향을 가장 잘 나타내는 직선입니다. 단순선형회귀의 기본 식은 다음과 같습니다.</p><p>\[ \hat{y} = ax + b \]</p><p>여기서 \(a\)는 기울기, \(b\)는 절편, \(\hat{y}\)는 예측값입니다.</p></div>
+<div class="card"><h3>개념 5. 기울기</h3><p>기울기는 독립변수 \(x\)가 1 증가할 때 예측값 \(\hat{y}\)가 얼마나 변하는지를 나타냅니다. 예를 들어 기울기가 6이면 공부 시간이 1시간 늘 때 예상 점수가 약 6점 증가한다고 해석할 수 있습니다.</p></div>
+<div class="card"><h3>개념 6. 절편</h3><p>절편은 \(x=0\)일 때의 예측값입니다. 현실적으로 의미가 없을 수도 있으므로 무조건 해석하기보다 데이터 맥락을 고려해야 합니다.</p></div>
+<div class="card"><h3>개념 7. 잔차</h3><p>잔차는 실제값과 예측값의 차이입니다. 잔차가 작을수록 모델이 데이터를 잘 설명한다고 볼 수 있습니다.</p><p>\[ \text{잔차} = y - \hat{y} \]</p></div>
+<div class="card"><h3>개념 8. 최소제곱법</h3><p>최소제곱법은 잔차의 제곱합이 가장 작아지도록 회귀직선을 찾는 방법입니다. 잔차를 제곱하는 이유는 양수와 음수가 서로 상쇄되는 것을 막기 위해서입니다.</p></div>
+<div class="card"><h3>개념 9. 결정계수</h3><p>결정계수 \(R^2\)는 회귀모델이 종속변수의 변동을 얼마나 설명하는지 나타내는 값입니다. 보통 0에서 1 사이의 값을 가지며, 1에 가까울수록 모델의 설명력이 높다고 해석합니다.</p></div>
+<div class="card warning"><h3>개념 10. 회귀분석의 한계</h3><p>회귀분석은 데이터 범위 안에서의 경향을 바탕으로 예측합니다. 데이터 범위를 크게 벗어난 값을 예측하거나, 상관 관계를 인과 관계로 단정하면 잘못된 해석이 될 수 있습니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 공부 시간과 점수 데이터 확인</h3><pre class="codebox"><code>study_hours = [1, 2, 3, 4, 5, 6]
+scores = [55, 62, 70, 78, 86, 92]
+
+for x, y in zip(study_hours, scores):
+    print("공부 시간:", x, "점수:", y)</code></pre><p><strong>설명:</strong> 공부 시간은 독립변수, 시험 점수는 종속변수입니다.</p>
+
+<h3>코드 2. 산점도 그리기</h3><pre class="codebox"><code>import matplotlib.pyplot as plt
+
+study_hours = [1, 2, 3, 4, 5, 6]
+scores = [55, 62, 70, 78, 86, 92]
+
+plt.scatter(study_hours, scores)
+plt.title("공부 시간과 시험 점수")
+plt.xlabel("공부 시간")
+plt.ylabel("시험 점수")
+plt.show()</code></pre><p><strong>설명:</strong> 산점도를 통해 두 변수 사이의 선형 경향을 눈으로 확인합니다.</p>
+
+<h3>코드 3. numpy로 회귀직선 구하기</h3><pre class="codebox"><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(x, y, 1)
+
+print("기울기:", a)
+print("절편:", b)
+print("회귀식: y =", a, "* x +", b)</code></pre><p><strong>설명:</strong> <code>np.polyfit(x, y, 1)</code>은 데이터를 가장 잘 설명하는 1차식의 기울기와 절편을 구합니다.</p>
+
+<h3>코드 4. 회귀직선과 산점도 함께 그리기</h3><pre class="codebox"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(x, y, 1)
+y_pred = a * x + b
+
+plt.scatter(x, y, label="실제 데이터")
+plt.plot(x, y_pred, label="회귀직선")
+plt.title("단순선형회귀")
+plt.xlabel("공부 시간")
+plt.ylabel("시험 점수")
+plt.legend()
+plt.show()</code></pre><p><strong>설명:</strong> 산점도 위에 회귀직선을 그리면 모델이 데이터 경향을 얼마나 잘 따르는지 확인할 수 있습니다.</p>
+
+<h3>코드 5. 새로운 값 예측하기</h3><pre class="codebox"><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(x, y, 1)
+
+new_x = 7
+predicted_score = a * new_x + b
+
+print("7시간 공부했을 때 예상 점수:", predicted_score)</code></pre><p><strong>설명:</strong> 회귀식을 이용하면 새로운 공부 시간에 대한 예상 점수를 계산할 수 있습니다.</p>
+
+<h3>코드 6. 잔차 계산하기</h3><pre class="codebox"><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(x, y, 1)
+y_pred = a * x + b
+residuals = y - y_pred
+
+print("예측값:", y_pred)
+print("잔차:", residuals)</code></pre><p><strong>설명:</strong> 잔차는 실제 점수와 예측 점수의 차이입니다.</p>
+
+<h3>코드 7. 결정계수 R² 계산하기</h3><pre class="codebox"><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(x, y, 1)
+y_pred = a * x + b
+
+ss_res = sum((y - y_pred) ** 2)
+ss_tot = sum((y - y.mean()) ** 2)
+r2 = 1 - ss_res / ss_tot
+
+print("결정계수 R²:", r2)</code></pre><p><strong>설명:</strong> 결정계수는 회귀모델이 데이터 변동을 얼마나 설명하는지 보여 줍니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 회귀분석은 변수 사이 관계를 이용해 값을 예측하는 방법이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">회귀분석은 입력 변수와 결과 변수의 관계를 모델링하여 예측에 사용합니다.</div></div>
+<div class="q"><p class="q-title">2. 독립변수는 예측하려는 결과값이다. (O/X)</p><div class="answer">정답: X</div><div class="explain">독립변수는 예측에 사용하는 입력값이고, 예측하려는 결과값은 종속변수입니다.</div></div>
+<div class="q"><p class="q-title">3. 종속변수는 예측하려는 결과 변수이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">공부 시간으로 점수를 예측할 때 점수가 종속변수입니다.</div></div>
+<div class="q"><p class="q-title">4. 단순선형회귀의 기본 형태는 직선식으로 나타낼 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">단순선형회귀는 보통 \( \hat{y}=ax+b \) 형태로 표현합니다.</div></div>
+<div class="q"><p class="q-title">5. 기울기는 x가 1 증가할 때 예측값이 얼마나 변하는지 나타낸다. (O/X)</p><div class="answer">정답: O</div><div class="explain">기울기는 입력 변수 변화에 따른 예측값 변화량을 의미합니다.</div></div>
+<div class="q"><p class="q-title">6. 잔차는 실제값과 예측값의 차이이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">잔차는 \(y-\hat{y}\)로 계산합니다.</div></div>
+<div class="q"><p class="q-title">7. 잔차가 클수록 일반적으로 모델이 데이터를 더 잘 설명한다고 볼 수 있다. (O/X)</p><div class="answer">정답: X</div><div class="explain">잔차가 작을수록 예측값이 실제값에 가깝습니다.</div></div>
+<div class="q"><p class="q-title">8. 최소제곱법은 잔차 제곱합을 작게 하는 직선을 찾는 방법이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">회귀직선을 찾는 대표적인 방법입니다.</div></div>
+<div class="q"><p class="q-title">9. 결정계수 R²는 모델의 설명력을 나타낸다. (O/X)</p><div class="answer">정답: O</div><div class="explain">R²가 1에 가까울수록 모델이 데이터 변동을 더 잘 설명한다고 볼 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 회귀분석 결과는 항상 인과관계를 증명한다. (O/X)</p><div class="answer">정답: X</div><div class="explain">회귀분석은 관계와 예측을 보여 줄 수 있지만 인과관계를 자동으로 증명하지 않습니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 회귀분석의 가장 적절한 설명은?</p><ul class="choice"><li>① 변수 사이 관계를 이용해 값을 예측하는 방법</li><li>② 데이터를 무조건 삭제하는 방법</li><li>③ 그래프 제목을 정하는 방법</li><li>④ 파일을 압축하는 방법</li><li>⑤ 코드 색을 바꾸는 방법</li></ul><div class="answer">정답: ①</div><div class="explain">회귀분석은 관계 모델링과 예측에 사용됩니다.</div></div>
+<div class="q"><p class="q-title">2. 공부 시간으로 시험 점수를 예측할 때 독립변수는?</p><ul class="choice"><li>① 공부 시간</li><li>② 시험 점수</li><li>③ 학생 이름</li><li>④ 파일명</li><li>⑤ 그래프 색상</li></ul><div class="answer">정답: ①</div><div class="explain">예측에 사용하는 입력값이 독립변수입니다.</div></div>
+<div class="q"><p class="q-title">3. 공부 시간으로 시험 점수를 예측할 때 종속변수는?</p><ul class="choice"><li>① 시험 점수</li><li>② 공부 시간</li><li>③ 코드 줄 수</li><li>④ 날짜 이름</li><li>⑤ 저장 경로</li></ul><div class="answer">정답: ①</div><div class="explain">예측하려는 결과값이 종속변수입니다.</div></div>
+<div class="q"><p class="q-title">4. 단순선형회귀의 기본 식으로 적절한 것은?</p><ul class="choice"><li>① \( \hat{y}=ax+b \)</li><li>② \( x+y=0 \)만</li><li>③ \( y=ax^2+b \)만</li><li>④ \( y \)는 항상 0</li><li>⑤ \( x \)는 사용할 수 없음</li></ul><div class="answer">정답: ①</div><div class="explain">단순선형회귀는 직선식으로 표현됩니다.</div></div>
+<div class="q"><p class="q-title">5. 회귀식에서 기울기의 의미는?</p><ul class="choice"><li>① x가 1 증가할 때 예측값이 변하는 정도</li><li>② 데이터의 개수</li><li>③ 그래프 제목</li><li>④ 파일 크기</li><li>⑤ 코드 오류 수만</li></ul><div class="answer">정답: ①</div><div class="explain">기울기는 독립변수 변화에 따른 종속변수 예측값의 변화량입니다.</div></div>
+<div class="q"><p class="q-title">6. 잔차의 의미로 옳은 것은?</p><ul class="choice"><li>① 실제값과 예측값의 차이</li><li>② 데이터의 이름</li><li>③ 그래프 색상</li><li>④ 평균의 다른 이름</li><li>⑤ 코드 실행 버튼</li></ul><div class="answer">정답: ①</div><div class="explain">잔차는 \(y-\hat{y}\)입니다.</div></div>
+<div class="q"><p class="q-title">7. 최소제곱법의 목적은?</p><ul class="choice"><li>① 잔차 제곱합이 작아지는 직선을 찾는다.</li><li>② 모든 데이터를 삭제한다.</li><li>③ 항상 기울기를 0으로 만든다.</li><li>④ 표본을 숨긴다.</li><li>⑤ 그래프를 금지한다.</li></ul><div class="answer">정답: ①</div><div class="explain">최소제곱법은 예측 오차의 제곱합을 최소화합니다.</div></div>
+<div class="q"><p class="q-title">8. 결정계수 R²가 1에 가까울 때의 해석은?</p><ul class="choice"><li>① 모델의 설명력이 높다.</li><li>② 모델이 아무 설명도 하지 못한다.</li><li>③ 항상 인과관계가 증명된다.</li><li>④ 모든 잔차가 커진다.</li><li>⑤ 데이터가 사라진다.</li></ul><div class="answer">정답: ①</div><div class="explain">R²가 높을수록 모델이 데이터 변동을 잘 설명한다고 볼 수 있습니다.</div></div>
+<div class="q"><p class="q-title">9. 회귀분석에서 주의해야 할 점은?</p><ul class="choice"><li>① 데이터 범위를 크게 벗어난 예측은 위험할 수 있다.</li><li>② 항상 모든 미래를 정확히 맞힌다.</li><li>③ 잔차는 볼 필요가 없다.</li><li>④ 산점도는 절대 보지 않는다.</li><li>⑤ 이상치는 항상 좋은 데이터다.</li></ul><div class="answer">정답: ①</div><div class="explain">관찰한 데이터 범위 밖의 예측은 불확실성이 커질 수 있습니다.</div></div>
+<div class="q"><p class="q-title">10. 회귀분석과 머신러닝의 관계로 옳은 것은?</p><ul class="choice"><li>① 회귀분석은 예측 모델의 기초가 될 수 있다.</li><li>② 회귀분석은 머신러닝과 전혀 관련이 없다.</li><li>③ 회귀분석은 데이터 없이 가능하다.</li><li>④ 회귀분석은 그래프를 사용할 수 없다.</li><li>⑤ 회귀분석은 변수를 사용하지 않는다.</li></ul><div class="answer">정답: ①</div><div class="explain">선형회귀는 머신러닝의 기본적인 지도학습 예측 모델 중 하나입니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 공부 시간으로 시험 점수 예측</h3><pre class="codebox"><code>import numpy as np
+
+study = np.array([1, 2, 3, 4, 5, 6])
+score = np.array([55, 62, 70, 78, 86, 92])
+
+a, b = np.polyfit(study, score, 1)
+pred = a * 7 + b
+
+print("7시간 공부 예상 점수:", round(pred, 2))</code></pre><p><span class="tag">교육 데이터</span>공부 시간과 점수의 관계를 이용해 새로운 공부 시간에 대한 예상 점수를 계산할 수 있습니다.</p>
+
+<h3>예제 2. 광고비로 매출 예측</h3><pre class="codebox"><code>import numpy as np
+
+ad_cost = np.array([10, 20, 30, 40, 50])
+sales = np.array([100, 150, 210, 260, 320])
+
+a, b = np.polyfit(ad_cost, sales, 1)
+
+print("광고비 60일 때 예상 매출:", round(a * 60 + b, 2))</code></pre><p><span class="tag">마케팅 데이터</span>광고비와 매출 사이에 선형 경향이 있다면 회귀분석으로 매출을 예측할 수 있습니다.</p>
+
+<h3>예제 3. 기온으로 전력 사용량 예측</h3><pre class="codebox"><code>import numpy as np
+
+temperature = np.array([20, 22, 25, 28, 30, 32])
+electricity = np.array([210, 220, 250, 300, 340, 380])
+
+a, b = np.polyfit(temperature, electricity, 1)
+
+print("기온 35도 예상 전력 사용량:", round(a * 35 + b, 2))</code></pre><p><span class="tag">에너지 데이터</span>기온이 높아질수록 전력 사용량이 늘어나는 경향을 회귀직선으로 표현할 수 있습니다.</p>
+
+<h3>예제 4. 회귀직선과 실제 데이터 비교</h3><pre class="codebox"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([3, 5, 7, 10, 11])
+
+a, b = np.polyfit(x, y, 1)
+y_pred = a * x + b
+
+plt.scatter(x, y, label="실제값")
+plt.plot(x, y_pred, label="회귀직선")
+plt.legend()
+plt.show()</code></pre><p><span class="tag">시각화</span>산점도와 회귀직선을 함께 보면 모델이 데이터의 경향을 잘 설명하는지 확인할 수 있습니다.</p>
+
+<h3>예제 5. 잔차로 예측 오차 확인</h3><pre class="codebox"><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([3, 5, 7, 10, 11])
+
+a, b = np.polyfit(x, y, 1)
+y_pred = a * x + b
+residuals = y - y_pred
+
+for actual, pred, res in zip(y, y_pred, residuals):
+    print("실제:", actual, "예측:", round(pred, 2), "잔차:", round(res, 2))</code></pre><p><span class="tag">모델 평가</span>잔차를 확인하면 어떤 데이터에서 예측이 크게 빗나갔는지 살펴볼 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 회귀분석을 통해 데이터의 관계를 직선으로 표현하고 새로운 값을 예측하는 방법을 배웠습니다. 독립변수는 입력, 종속변수는 예측할 결과이며, 회귀직선의 기울기와 절편은 두 변수의 관계를 수학적으로 설명합니다. 컴퓨터과학은 파이썬으로 회귀모델을 빠르게 만들고 시각화하게 해 주며, 수학은 직선의 방정식과 최소제곱법의 원리를 제공합니다. 과학은 관찰 데이터로 가설을 세우고 예측을 검증하는 태도를 요구합니다. 데이터 과학과 머신러닝에서 회귀분석은 예측 모델의 가장 중요한 기초 중 하나입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>파이썬, numpy, matplotlib을 활용해 회귀직선을 계산하고 예측 결과를 시각화합니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>일차함수, 기울기, 절편, 잔차, 제곱합은 회귀분석의 수학적 핵심입니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>실험과 관찰 데이터를 바탕으로 변수 관계를 모델링하고 예측 결과를 검증합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>선형회귀는 지도학습에서 연속적인 값을 예측하는 대표적인 머신러닝 모델입니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 과학을 위한 통계 · 회귀분석 수업자료</div>
+</div></body></html>
