@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터 분석을 위한 파이썬 기초 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+:root{--navy:#16213e;--blue:#2563eb;--sky:#0ea5e9;--cyan:#06b6d4;--mint:#10b981;--purple:#7c3aed;--orange:#f97316;--card:#fff;--text:#1f2937;--line:#dbe4f0;}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.18),transparent 28%),radial-gradient(circle at 92% 8%,rgba(16,185,129,.18),transparent 25%),linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);color:var(--text);line-height:1.75}
+header{padding:64px 24px 48px;background:linear-gradient(135deg,#0f172a,#1e3a8a 52%,#0891b2);color:white;text-align:center;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:-90px;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-6deg)}
+header:after{content:"PYTHON";position:absolute;right:-38px;bottom:-64px;font-size:145px;font-weight:900;color:rgba(255,255,255,.055);letter-spacing:-8px}
+header .inner{position:relative;z-index:2}.badge{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px;margin-bottom:16px}
+h1{margin:0;font-size:43px;font-weight:900;letter-spacing:-1.5px;line-height:1.25}header p{max-width:940px;margin:18px auto 0;color:#dbeafe;font-size:18px}
+.container{width:min(1180px,calc(100% - 32px));margin:28px auto 80px}.toc,section{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.07)}
+.toc{padding:24px;margin-bottom:28px}.toc h2{margin-top:0}.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.toc a{display:block;text-decoration:none;color:#0f172a;padding:12px 14px;border-radius:14px;background:#f1f5f9;border:1px solid #e2e8f0;font-weight:800}.toc a:hover{background:#dbeafe;color:#1d4ed8}
+section{margin:24px 0;padding:28px}h2{font-size:28px;color:var(--navy);margin:0 0 18px;letter-spacing:-.6px}h3{font-size:21px;color:#1d4ed8;margin-top:24px}h4{font-size:18px;color:#0f766e;margin-bottom:8px}.kicker{color:var(--blue);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.goal{border-left:6px solid var(--blue);background:#eff6ff}.concept{border-left:6px solid var(--mint);background:#ecfdf5}.finish{border-left:6px solid var(--purple);background:#f5f3ff}.warning{border-left:6px solid var(--orange);background:#fff7ed}
+.codebox{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.6;border:1px solid #1e293b}.codebox code{font-family:Consolas,Monaco,monospace}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:14px 0;background:white}th,td{border:1px solid #dbe4f0;padding:12px 14px;vertical-align:top}th{background:#eaf2ff;color:#173b7a}.q{border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;margin:16px 0}.q-title{font-weight:900;color:#111827}.choice{margin:8px 0 0;padding-left:0;list-style:none}.choice li{padding:4px 0}.answer{margin-top:10px;padding:12px 14px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;font-weight:800}.explain{margin-top:8px;color:#334155}.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:12px;margin-right:6px}.ment{font-size:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe}.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}.flow span{padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;border:1px solid #c7d2fe}.arrow{color:#64748b;font-weight:900}.note{padding:14px 16px;border-radius:16px;background:#fffbeb;border:1px solid #fde68a;color:#78350f}.footer{text-align:center;color:#64748b;padding:40px 0}mjx-container[jax="SVG"]:not([display="true"]){font-size:.92em!important}
+@media print{header{padding:34px 20px}section{break-inside:avoid;box-shadow:none}}
+</style>
+</head>
+<body>
+<header><div class="inner"><div class="badge">고등학교 데이터 과학과 머신러닝 · 1. 데이터 프로그래밍</div><h1>데이터 분석 프로그램 ②<br>데이터 분석을 위한 파이썬 기초</h1><p>데이터를 저장하고, 계산하고, 조건에 따라 분류하며, 반복 처리하는 파이썬 기초 문법을 데이터 분석 관점에서 배우는 수업자료</p></div></header>
+<div class="container">
+<nav class="toc"><h2>차례</h2><div class="toc-grid">
+<a href="#plan">1. 수업지도안</a><a href="#opening">2. 수업을 여는 멘트</a><a href="#concepts">3. 핵심 개념 상세 설명</a><a href="#codes">4. 개념별 파이썬 코드</a><a href="#diagnosis">5. 진단평가 OX 10문항</a><a href="#formative">6. 형성평가 5지선다 10문항</a><a href="#life">7. 실생활 코드 예제 5개</a><a href="#closing">8. 수업 마무리 멘트</a>
+</div></nav>
+
+<section id="plan"><div class="kicker">Lesson Design</div><h2>1. 개념기반 목표지향 수업지도안</h2>
+<div class="table-wrap"><table>
+<tr><th>영역</th><td>데이터 과학과 머신러닝 → 1. 데이터 프로그래밍 → (2) 데이터 분석 프로그램 → 2) 데이터 분석을 위한 파이썬 기초</td></tr>
+<tr><th>핵심 개념</th><td>변수, 자료형, 리스트, 딕셔너리, 인덱싱, 조건문, 반복문, 함수, 내장 함수, 데이터 요약, 코드 실행 흐름</td></tr>
+<tr><th>수업 목표</th><td>① 파이썬 변수와 자료형의 의미를 설명할 수 있다.<br>② 리스트와 딕셔너리를 활용하여 데이터를 저장할 수 있다.<br>③ 조건문으로 데이터를 분류하고 판단할 수 있다.<br>④ 반복문으로 여러 데이터를 자동 처리할 수 있다.<br>⑤ 함수를 사용하여 데이터 분석 과정을 재사용 가능한 코드로 만들 수 있다.</td></tr>
+<tr><th>핵심 질문</th><td>“컴퓨터는 현실 세계의 데이터를 어떤 이름과 형태로 저장할까?”<br>“많은 데이터를 사람이 하나씩 계산하지 않고 어떻게 자동으로 처리할 수 있을까?”<br>“파이썬 기초 문법은 데이터 분석과 머신러닝의 어떤 출발점이 될까?”</td></tr>
+<tr><th>성취 기준</th><td>파이썬의 기본 문법과 자료구조를 활용하여 데이터를 저장·탐색·계산·분류하고, 간단한 데이터 분석 프로그램을 작성한다.</td></tr>
+<tr><th>수업 흐름</th><td>도입: 생활 속 데이터 처리 사례 제시 → 전개: 변수·자료형·리스트·딕셔너리·조건문·반복문·함수 학습 → 실습: 데이터 요약 코드 작성 → 적용: 실생활 데이터 분석 예제 → 정리: 컴퓨터과학·수학·과학과 연결</td></tr>
+<tr><th>평가 방법</th><td>진단평가 OX, 형성평가 5지선다, 코드 실행 결과 예측, 짧은 데이터 분석 코드 작성, 실생활 데이터 처리 활동</td></tr>
+</table></div>
+<div class="grid">
+<div class="card goal"><h3>지식 목표</h3><p>변수, 자료형, 리스트, 딕셔너리, 조건문, 반복문, 함수의 의미와 역할을 이해한다.</p></div>
+<div class="card concept"><h3>기능 목표</h3><p>파이썬 기초 문법으로 데이터를 저장, 계산, 필터링, 요약하는 프로그램을 작성한다.</p></div>
+<div class="card finish"><h3>태도 목표</h3><p>코드를 단순 암기가 아니라 문제 해결과 데이터 해석의 도구로 활용하려는 태도를 기른다.</p></div>
+</div>
+<div class="flow"><span>데이터 입력</span><span class="arrow">→</span><span>변수 저장</span><span class="arrow">→</span><span>자료구조 구성</span><span class="arrow">→</span><span>조건·반복 처리</span><span class="arrow">→</span><span>분석 결과 출력</span></div>
+</section>
+
+<section id="opening"><div class="kicker">Opening Talk</div><h2>2. 수업을 여는 멘트</h2>
+<div class="ment">여러분이 하루 동안 사용하는 앱들은 수많은 데이터를 자동으로 처리합니다. 음악 앱은 재생 기록을 저장하고, 쇼핑몰은 구매 기록을 분석하며, 날씨 앱은 기온 데이터를 계산해 알려 줍니다. 사람이 직접 모든 데이터를 하나씩 계산한다면 너무 오래 걸리겠지만, 파이썬을 사용하면 많은 데이터를 빠르고 정확하게 처리할 수 있습니다. 오늘은 데이터 분석의 도구가 되는 파이썬 기초 문법을 배웁니다.</div>
+</section>
+
+<section id="concepts"><div class="kicker">Core Concepts</div><h2>3. 각각의 개념에 대한 상세 설명</h2>
+<div class="card"><h3>개념 1. 변수</h3><p>변수는 데이터를 저장하는 이름표입니다. 예를 들어 <code>score = 90</code>에서 <code>score</code>는 변수이고 <code>90</code>은 값입니다. 데이터 분석에서는 온도, 점수, 판매량, 이름, 날짜 등을 변수에 저장하여 처리합니다.</p></div>
+<div class="card"><h3>개념 2. 자료형</h3><p>자료형은 데이터의 종류입니다. 정수형 <code>int</code>, 실수형 <code>float</code>, 문자열 <code>str</code>, 참거짓 <code>bool</code> 등이 있습니다. 자료형을 이해해야 계산 가능한 데이터와 분류용 데이터를 구분할 수 있습니다.</p></div>
+<div class="card"><h3>개념 3. 리스트</h3><p>리스트는 여러 데이터를 순서대로 저장하는 자료구조입니다. 시험 점수 목록, 일주일 기온, 상품별 판매량처럼 여러 값을 한 번에 다룰 때 유용합니다.</p></div>
+<div class="card"><h3>개념 4. 딕셔너리</h3><p>딕셔너리는 <code>키:값</code> 형태로 데이터를 저장합니다. 학생 한 명의 이름, 점수, 희망 진로를 묶거나 상품명과 판매량을 연결할 때 적합합니다.</p></div>
+<div class="card"><h3>개념 5. 인덱싱과 슬라이싱</h3><p>인덱싱은 리스트에서 특정 위치의 값을 꺼내는 방법이고, 슬라이싱은 여러 값을 범위로 잘라내는 방법입니다. 파이썬의 인덱스는 0부터 시작합니다.</p></div>
+<div class="card"><h3>개념 6. 조건문</h3><p>조건문은 조건에 따라 다른 명령을 실행하는 구조입니다. 예를 들어 기온이 30도 이상이면 “더움”, 그렇지 않으면 “보통”으로 분류할 수 있습니다.</p></div>
+<div class="card"><h3>개념 7. 반복문</h3><p>반복문은 여러 데이터를 하나씩 처리할 때 사용합니다. 점수 목록 전체를 출력하거나, 평균 계산을 위해 모든 값을 더하는 작업을 자동화할 수 있습니다.</p></div>
+<div class="card"><h3>개념 8. 함수</h3><p>함수는 자주 사용하는 코드를 이름 붙여 재사용하는 방법입니다. 평균 계산 함수, 등급 판정 함수처럼 데이터 분석 과정을 정리할 수 있습니다.</p></div>
+<div class="card warning"><h3>개념 9. 데이터 분석 코드의 흐름</h3><p>데이터 분석 코드는 일반적으로 데이터를 입력받고, 저장하고, 계산·분류하고, 결과를 출력하는 흐름을 가집니다. 이 흐름을 이해하면 복잡한 분석 프로그램도 단계적으로 만들 수 있습니다.</p></div>
+</section>
+
+<section id="codes"><div class="kicker">Python Codes</div><h2>4. 각각의 개념과 상세 설명 관련 파이썬 코드</h2>
+
+<h3>코드 1. 변수와 값</h3><pre class="codebox"><code>temperature = 28
+print("오늘 기온:", temperature, "도")</code></pre><p><strong>설명:</strong> <code>temperature</code> 변수에 28이라는 기온 데이터를 저장했습니다.</p>
+
+<h3>코드 2. 자료형 확인</h3><pre class="codebox"><code>score = 90
+name = "민수"
+passed = True
+
+print(type(score))
+print(type(name))
+print(type(passed))</code></pre><p><strong>설명:</strong> <code>type()</code> 함수는 데이터가 정수, 문자열, 참거짓 중 어떤 자료형인지 알려 줍니다.</p>
+
+<h3>코드 3. 리스트로 점수 데이터 저장</h3><pre class="codebox"><code>scores = [80, 90, 75, 88, 92]
+
+print("첫 번째 점수:", scores[0])
+print("전체 점수:", scores)</code></pre><p><strong>설명:</strong> 리스트는 여러 점수를 하나의 이름으로 저장할 수 있습니다. 인덱스는 0부터 시작합니다.</p>
+
+<h3>코드 4. 딕셔너리로 학생 데이터 저장</h3><pre class="codebox"><code>student = {
+    "이름": "지우",
+    "수학": 91,
+    "과학": 88,
+    "희망진로": "데이터 과학자"
+}
+
+print(student["이름"])
+print(student["희망진로"])</code></pre><p><strong>설명:</strong> 딕셔너리는 키를 사용하여 원하는 데이터를 쉽게 찾을 수 있습니다.</p>
+
+<h3>코드 5. 조건문으로 등급 판정</h3><pre class="codebox"><code>score = 85
+
+if score >= 90:
+    print("A등급")
+elif score >= 80:
+    print("B등급")
+else:
+    print("C등급 이하")</code></pre><p><strong>설명:</strong> 조건에 따라 점수를 등급으로 분류합니다.</p>
+
+<h3>코드 6. 반복문으로 데이터 합계 구하기</h3><pre class="codebox"><code>scores = [80, 90, 75, 88, 92]
+
+total = 0
+for s in scores:
+    total += s
+
+print("점수 합계:", total)</code></pre><p><strong>설명:</strong> 반복문은 리스트의 값을 하나씩 꺼내 자동으로 처리합니다.</p>
+
+<h3>코드 7. 함수로 평균 계산하기</h3><pre class="codebox"><code>def average(data):
+    return sum(data) / len(data)
+
+scores = [80, 90, 75, 88, 92]
+print("평균:", average(scores))</code></pre><p><strong>설명:</strong> 평균 계산을 함수로 만들면 다른 데이터에도 반복해서 사용할 수 있습니다.</p>
+</section>
+
+<section id="diagnosis"><div class="kicker">Diagnostic Assessment</div><h2>5. 진단평가 OX 예제 10개 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. 변수는 데이터를 저장하는 이름표 역할을 한다. (O/X)</p><div class="answer">정답: O</div><div class="explain">변수는 값에 이름을 붙여 나중에 다시 사용할 수 있게 합니다.</div></div>
+<div class="q"><p class="q-title">2. 파이썬의 리스트 인덱스는 1부터 시작한다. (O/X)</p><div class="answer">정답: X</div><div class="explain">파이썬의 인덱스는 0부터 시작합니다.</div></div>
+<div class="q"><p class="q-title">3. <code>type()</code> 함수는 데이터의 자료형을 확인할 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain"><code>type(90)</code>은 정수형을 의미하는 <code>int</code>를 보여 줍니다.</div></div>
+<div class="q"><p class="q-title">4. 리스트는 여러 데이터를 하나로 묶어 저장할 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">예를 들어 <code>[80, 90, 70]</code>처럼 여러 점수를 저장할 수 있습니다.</div></div>
+<div class="q"><p class="q-title">5. 딕셔너리는 키와 값의 쌍으로 데이터를 저장한다. (O/X)</p><div class="answer">정답: O</div><div class="explain">예: <code>{'이름':'민수', '점수':90}</code>처럼 저장합니다.</div></div>
+<div class="q"><p class="q-title">6. 조건문은 반복을 위해서만 사용된다. (O/X)</p><div class="answer">정답: X</div><div class="explain">조건문은 조건에 따라 다른 코드를 실행하기 위해 사용됩니다.</div></div>
+<div class="q"><p class="q-title">7. 반복문은 여러 데이터를 자동으로 처리할 때 유용하다. (O/X)</p><div class="answer">정답: O</div><div class="explain">리스트의 모든 점수를 하나씩 처리할 때 반복문을 사용합니다.</div></div>
+<div class="q"><p class="q-title">8. 함수는 자주 사용하는 코드를 재사용하기 위해 만들 수 있다. (O/X)</p><div class="answer">정답: O</div><div class="explain">평균 계산처럼 반복되는 작업을 함수로 만들면 편리합니다.</div></div>
+<div class="q"><p class="q-title">9. <code>sum(data) / len(data)</code>는 평균을 구하는 기본 형태이다. (O/X)</p><div class="answer">정답: O</div><div class="explain">합계를 개수로 나누면 평균입니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 분석을 위해서는 파이썬 문법을 전혀 알 필요가 없다. (O/X)</p><div class="answer">정답: X</div><div class="explain">기초 문법을 알아야 데이터를 저장하고 처리하는 코드를 작성할 수 있습니다.</div></div>
+</section>
+
+<section id="formative"><div class="kicker">Formative Assessment</div><h2>6. 형성평가 5지선다형 10문항 + 상세풀이</h2>
+<div class="q"><p class="q-title">1. <code>score = 90</code>에서 변수는 무엇인가?</p><ul class="choice"><li>① score</li><li>② 90</li><li>③ =</li><li>④ print</li><li>⑤ int</li></ul><div class="answer">정답: ①</div><div class="explain"><code>score</code>는 값을 저장하는 변수 이름입니다.</div></div>
+<div class="q"><p class="q-title">2. 문자열 자료형의 예로 옳은 것은?</p><ul class="choice"><li>① 90</li><li>② 3.14</li><li>③ "데이터"</li><li>④ True</li><li>⑤ [1,2,3]</li></ul><div class="answer">정답: ③</div><div class="explain">따옴표로 감싼 값은 문자열입니다.</div></div>
+<div class="q"><p class="q-title">3. 여러 점수를 순서대로 저장하기에 가장 적절한 자료구조는?</p><ul class="choice"><li>① 리스트</li><li>② 주석</li><li>③ 들여쓰기</li><li>④ import</li><li>⑤ 오류 메시지</li></ul><div class="answer">정답: ①</div><div class="explain">리스트는 여러 값을 순서대로 저장합니다.</div></div>
+<div class="q"><p class="q-title">4. 딕셔너리의 특징으로 옳은 것은?</p><ul class="choice"><li>① 키와 값의 쌍으로 저장한다.</li><li>② 항상 숫자만 저장한다.</li><li>③ 반복문으로 사용할 수 없다.</li><li>④ 인덱스가 반드시 1부터 시작한다.</li><li>⑤ 조건문과 함께 사용할 수 없다.</li></ul><div class="answer">정답: ①</div><div class="explain">딕셔너리는 <code>키:값</code> 구조를 사용합니다.</div></div>
+<div class="q"><p class="q-title">5. 조건문에 사용되는 키워드가 아닌 것은?</p><ul class="choice"><li>① if</li><li>② elif</li><li>③ else</li><li>④ for</li><li>⑤ 조건식</li></ul><div class="answer">정답: ④</div><div class="explain"><code>for</code>는 반복문에 사용하는 키워드입니다.</div></div>
+<div class="q"><p class="q-title">6. 리스트 <code>scores = [80, 90, 70]</code>에서 <code>scores[0]</code>의 값은?</p><ul class="choice"><li>① 80</li><li>② 90</li><li>③ 70</li><li>④ 0</li><li>⑤ 오류</li></ul><div class="answer">정답: ①</div><div class="explain">파이썬 인덱스는 0부터 시작하므로 첫 번째 값은 80입니다.</div></div>
+<div class="q"><p class="q-title">7. 리스트의 모든 값을 하나씩 처리할 때 주로 사용하는 문법은?</p><ul class="choice"><li>① 반복문</li><li>② 제목</li><li>③ 색상</li><li>④ 파일명</li><li>⑤ 주석만</li></ul><div class="answer">정답: ①</div><div class="explain">반복문은 여러 데이터를 자동으로 처리할 때 사용합니다.</div></div>
+<div class="q"><p class="q-title">8. 평균을 구하는 코드로 가장 적절한 것은?</p><ul class="choice"><li>① max(data)</li><li>② min(data)</li><li>③ sum(data) / len(data)</li><li>④ type(data)</li><li>⑤ print = data</li></ul><div class="answer">정답: ③</div><div class="explain">합계를 개수로 나누면 평균입니다.</div></div>
+<div class="q"><p class="q-title">9. 함수 정의에 사용하는 키워드는?</p><ul class="choice"><li>① def</li><li>② if</li><li>③ for</li><li>④ list</li><li>⑤ print</li></ul><div class="answer">정답: ①</div><div class="explain">파이썬에서 함수를 만들 때 <code>def</code>를 사용합니다.</div></div>
+<div class="q"><p class="q-title">10. 데이터 분석 코드 작성 태도로 가장 바람직한 것은?</p><ul class="choice"><li>① 결과만 맞으면 변수 이름은 아무렇게나 쓴다.</li><li>② 코드의 의미를 이해하고 단계별로 확인한다.</li><li>③ 오류 메시지는 절대 읽지 않는다.</li><li>④ 반복 계산은 모두 손으로 한다.</li><li>⑤ 데이터를 저장하지 않는다.</li></ul><div class="answer">정답: ②</div><div class="explain">코드의 흐름을 이해하고 중간 결과를 확인하는 태도가 중요합니다.</div></div>
+</section>
+
+<section id="life"><div class="kicker">Real Life Coding</div><h2>7. 실생활 관련 코드 예제 5개 + 상세설명</h2>
+<h3>예제 1. 일주일 기온 평균 구하기</h3><pre class="codebox"><code>temperatures = [22, 24, 26, 25, 28, 30, 27]
+
+average = sum(temperatures) / len(temperatures)
+
+print("일주일 평균 기온:", round(average, 2))</code></pre><p><span class="tag">날씨 데이터</span>리스트에 저장된 기온 데이터를 평균으로 요약하여 한 주의 날씨 특징을 파악할 수 있습니다.</p>
+
+<h3>예제 2. 과목별 점수 딕셔너리 분석</h3><pre class="codebox"><code>scores = {
+    "국어": 88,
+    "수학": 92,
+    "영어": 85,
+    "과학": 95
+}
+
+best_subject = max(scores, key=scores.get)
+
+print("가장 높은 과목:", best_subject)
+print("점수:", scores[best_subject])</code></pre><p><span class="tag">학습 데이터</span>딕셔너리를 사용하면 과목명과 점수를 연결하여 가장 높은 과목을 쉽게 찾을 수 있습니다.</p>
+
+<h3>예제 3. 미세먼지 수치 등급 판정</h3><pre class="codebox"><code>dust = 87
+
+if dust <= 30:
+    level = "좋음"
+elif dust <= 80:
+    level = "보통"
+elif dust <= 150:
+    level = "나쁨"
+else:
+    level = "매우 나쁨"
+
+print("미세먼지 등급:", level)</code></pre><p><span class="tag">환경 데이터</span>조건문을 사용하면 숫자 데이터를 생활 속 의사결정에 필요한 등급 정보로 바꿀 수 있습니다.</p>
+
+<h3>예제 4. 판매량이 높은 상품만 고르기</h3><pre class="codebox"><code>sales = {
+    "물": 35,
+    "주스": 28,
+    "빵": 42,
+    "우유": 19,
+    "과자": 31
+}
+
+for item, count in sales.items():
+    if count >= 30:
+        print(item, ":", count, "개")</code></pre><p><span class="tag">매점 데이터</span>반복문과 조건문을 함께 사용하면 기준 이상의 상품만 자동으로 골라낼 수 있습니다.</p>
+
+<h3>예제 5. 평균 계산 함수 만들기</h3><pre class="codebox"><code>def average(data):
+    return sum(data) / len(data)
+
+steps = [5200, 6100, 7300, 6900, 8100]
+
+print("평균 걸음 수:", average(steps))</code></pre><p><span class="tag">건강 데이터</span>평균 계산 함수를 만들면 점수, 기온, 걸음 수 등 다양한 데이터에 같은 분석 방법을 재사용할 수 있습니다.</p>
+</section>
+
+<section id="closing"><div class="kicker">Closing Talk</div><h2>8. 수업을 마무리하는 멘트</h2>
+<div class="ment">오늘 우리는 데이터 분석을 위한 파이썬 기초를 배웠습니다. 변수는 데이터를 저장하고, 자료형은 데이터의 성격을 구분하며, 리스트와 딕셔너리는 여러 데이터를 구조적으로 담아 줍니다. 조건문은 데이터를 판단하고, 반복문은 많은 데이터를 자동으로 처리하며, 함수는 분석 과정을 재사용하게 해 줍니다. 컴퓨터과학은 이런 명령을 알고리즘으로 구성하게 해 주고, 수학은 평균과 비교 같은 계산 원리를 제공합니다. 과학은 관찰과 측정으로 얻은 데이터를 코드로 분석하게 합니다. 결국 파이썬 기초는 데이터 과학과 머신러닝으로 나아가는 첫 번째 도구입니다.</div>
+<div class="grid" style="margin-top:18px;">
+<div class="card"><h3>컴퓨터과학과의 연결</h3><p>변수, 자료구조, 조건문, 반복문, 함수는 알고리즘을 구성하는 기본 요소입니다.</p></div>
+<div class="card"><h3>수학과의 연결</h3><p>합계, 평균, 비교, 비율 계산을 코드로 구현하여 데이터를 정량적으로 해석합니다.</p></div>
+<div class="card"><h3>과학과의 연결</h3><p>관찰과 측정으로 얻은 데이터를 파이썬으로 처리하여 실험 결과를 분석합니다.</p></div>
+<div class="card"><h3>머신러닝과의 연결</h3><p>머신러닝도 데이터를 변수와 자료구조로 저장하고 반복 계산하는 프로그램 위에서 작동합니다.</p></div>
+</div></section>
+<div class="footer">고등학교 데이터 과학과 머신러닝 · 데이터 프로그래밍 · 데이터 분석을 위한 파이썬 기초 수업자료</div>
+</div>
+</body>
+</html>
